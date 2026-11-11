@@ -1,0 +1,2 @@
+# Vendored files must stay byte-identical to their upstream releases: never convert line endings.
+extension/vendor/** -text

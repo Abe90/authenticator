@@ -1,0 +1,14 @@
+Google Sans
+Copyright 2017 Google, Inc. All Rights Reserved.
+Licensed under the SIL Open Font License, Version 1.1. See GoogleSans-OFL.txt.
+
+Bundled files: GoogleSans-400.woff2, GoogleSans-500.woff2, GoogleSans-600.woff2.
+Latin subsets distributed by Fontsource, copied without modification.
+Original project: https://github.com/googlefonts/googlesans
+Distribution: https://github.com/fontsource/font-files/tree/main/fonts/google/google-sans
+Git blob SHA-1:
+400: c8f7bd262f56a37a470b74784a8f5661c461c3e1
+500: 135f4c331aea823d2cd14e055d76c749b3f4965e
+600: 8867e79ec6fb391eac9c2868fbd0be552aa0c98c
+
+URLs are attribution only. The extension loads fonts from its own files.

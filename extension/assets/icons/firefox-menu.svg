@@ -1,0 +1,7 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<!-- Firefox's menu button: chrome://browser/skin/menu.svg of Firefox 157, its Nova variant, filled in currentColor. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+  <path d="M13.25 11a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5zm0-4a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5zm0-4a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5z"/>
+</svg>
