@@ -4,9 +4,13 @@ A two-factor authentication app that lives in Firefox. It generates the six-digi
 
 There is no account and no server: the extension collects nothing, and the only data that leaves your computer is the encrypted vault, carried by your own Firefox Sync. It is plain HTML, CSS and JavaScript modules, with no build step and no runtime dependency.
 
+## Install
+
+Get it from addons.mozilla.org: **https://addons.mozilla.org/firefox/addon/authenticator-vault/** (Firefox 140 or later).
+
 ## Features
 
-- **Codes on every computer.** Sign in to Firefox with the same Mozilla account, keep **Add-ons** checked in the Sync settings, and install the extension on each computer. The first computer creates the vault; on the others choose **I use it on another computer** and enter the same password. Without an account the vault stays on the computer.
+- **Codes on every computer.** Sign in to Firefox with the same Mozilla account and keep **Add-ons** checked in the Sync settings: Firefox installs the extension on your other computers too. The first computer creates the vault; on the others choose **I use it on another computer** and enter the same password. Without an account the vault stays on the computer.
 - **Time-based (TOTP) and counter-based (HOTP) codes**, SHA-1, six digits, 30-second period. Counter-based accounts work as in Google Authenticator: they show dashes until you press the button next to the code, which advances the counter and shows the new code.
 - **Copy with a click.** Click an account, or press Enter or Space on it, to copy its code.
 - **Add accounts** from the round + button:
