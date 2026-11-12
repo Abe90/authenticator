@@ -10,11 +10,10 @@ export function createScanResult({ addWindow, session, form, scanConfirm, notice
   async function start() {
     if (blocked()) return;
     await targetRecorded;
-    // "When the popup closes": the scan belongs to this popup session, and the background hands the unlock on.
-    session.handOff(false);
-    try { await browser.runtime.sendMessage({ type: 'scan-page' }); }
+    // The background answers once the scan holds this window's unlock, which it hands on to the window that shows a
+    // picked code: this popup may then close.
+    try { await browser.runtime.sendMessage({ type: 'scan-page', windowId: session.windowId }); }
     catch {
-      session.cancelHandOff();
       onError('Could not start the scan. Please try again.');
       return;
     }

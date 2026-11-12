@@ -1,3 +1,4 @@
+import { cleanName } from '../../core/limits.mjs';
 import { NAME_REQUIRED } from './account-input.mjs';
 import { element, message } from './dom.mjs';
 import { failureText } from './messages.mjs';
@@ -132,7 +133,7 @@ export function createAccountActions({ vault, blocked, onOpen, onLeave, onRename
   function submitEdit(event) {
     event.preventDefault();
     if (saving || !target) return;
-    const name = editName.value.trim();
+    const name = cleanName(editName.value);
     if (!name) {
       message(editError, NAME_REQUIRED);
       editName.focus();

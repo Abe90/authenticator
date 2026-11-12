@@ -1,6 +1,6 @@
 import { message } from './dom.mjs';
 import { PASSWORD_MISMATCH, PASSWORD_TOO_SHORT } from './messages.mjs';
-import { isNewPassword } from '../../core/limits.mjs';
+import { passwordProblem } from '../../core/limits.mjs';
 
 // Resolves to what task returns, or to null after onError(error) when it fails.
 export async function attempt(task, onError) {
@@ -62,7 +62,7 @@ export function formError(form, node) {
 
 // Why a new password and its confirmation cannot be saved, as [text, field] for formError().show, or null.
 export function newPasswordProblem(password, confirm) {
-  if (!isNewPassword(password.value)) return [PASSWORD_TOO_SHORT, password];
+  if (passwordProblem(password.value)) return [PASSWORD_TOO_SHORT, password];
   if (password.value !== confirm.value) return [PASSWORD_MISMATCH, confirm];
   return null;
 }

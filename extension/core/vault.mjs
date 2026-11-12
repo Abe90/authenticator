@@ -1,17 +1,24 @@
 import {
-  createVault, decode, importVaultKey, openAccount, parseRecoveryKey, passwordKey, recoveryKey, rewrap, sealAccount,
-  unwrapVaultKey, validateHeader, verifyVaultKey,
+  createVault, decode, importVaultKey, openAccount, openCounters, parseRecoveryKey, passwordKey, recoveryKey, rewrap,
+  sealAccount, sealCounters, unwrapVaultKey, validateHeader, verifyVaultKey,
 } from './vault-crypto.mjs';
 import { DuplicateAccountError, accountKey } from './duplicates.mjs';
-import { MAX_COUNTER, isAccountName } from './limits.mjs';
-import { UNLOCK_STORAGE_KEY, accountItem, isId, parseItem, randomId, vaultItem } from './storage-keys.mjs';
+import { MAX_COUNTER, isAccountName, isNewPassword, shownName } from './limits.mjs';
+import {
+  CLOSED_STORAGE_KEY, HANDOFF_STORAGE_KEY, HOLDERS_STORAGE_KEY, HOTP_COUNTERS_KEY, LAST_INPUT_STORAGE_KEY,
+  TRUSTED_HEADER_KEY,
+  UNLOCK_STORAGE_KEY, accountItem, isId, parseItem, randomId, vaultItem,
+} from './storage-keys.mjs';
+import { HANDOFF_MS, withUnlockLock } from './auto-lock.mjs';
 
 const compareIds = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
 const byPosition = (a, b) => a.position - b.position || compareIds(a.id, b.id);
-// Accounts as pages see them: in list order, without the position.
-const visible = (accounts) => accounts.toSorted(byPosition).map(({ position, ...account }) => account);
+// Accounts as pages see them: in list order, without the position, with their names cleaned (limits.mjs).
+const visible = (accounts) => accounts.toSorted(byPosition)
+  .map(({ position, ...account }) => ({ ...account, name: shownName(account.name) }));
+const maxCounter = (a, b) => (BigInt(a) >= BigInt(b) ? a : b);
 const nextPosition = (accounts) => (accounts.length ? Math.max(...accounts.map((account) => account.position)) + 1 : 0);
-// The minutes a remembered unlock lasts after the last extension window closes: a whole number whose milliseconds
+// The minutes a remembered unlock lasts after the last window holding it closes: a whole number whose milliseconds
 // stay exact, or null for no time limit.
 const validMinutes = (minutes) => minutes === null
   || (Number.isSafeInteger(minutes) && minutes > 0 && Number.isSafeInteger(minutes * 60000));
@@ -22,6 +29,8 @@ const validMinutes = (minutes) => minutes === null
 // - 'not-found': the vault asked for is not in sync storage;
 // - 'exists': a vault is already there;
 // - 'storage-full': sync storage refused the write for its limits;
+// - 'weak-password': a new password is too short (limits.mjs);
+// - 'changed': another vault changed since its codes were read for a copy;
 // - 'locked': the vault was locked, or another vault became the main one, since the call started.
 export class VaultError extends Error {
   constructor(reason, message) {
@@ -30,6 +39,8 @@ export class VaultError extends Error {
     this.reason = reason;
   }
 }
+
+const weakPassword = () => new VaultError('weak-password', 'The new password is too short');
 
 // Serialises every write to the vaults across windows and the background script.
 export const withVaultLock = (operation) => navigator.locks.request('authenticator-vault', operation);
@@ -66,6 +77,9 @@ function otherVault(items, vaultId) {
 
 // Every key of one vault, its header and its accounts.
 const vaultKeys = (items, vaultId) => Object.keys(items).filter((name) => parseItem(name)?.vaultId === vaultId);
+// One vault's items as stored, in a fixed order: a copy from it checks that it has not changed since its preview.
+export const snapshotOf = (items, vaultId) => JSON.stringify(vaultKeys(items, vaultId).sort()
+  .map((name) => [name, items[name]]));
 
 // An account that does not decrypt or validate is skipped and counted, and never written back.
 async function openAccounts(key, vault) {
@@ -93,6 +107,21 @@ function recoveryBytes(text) {
   try { return parseRecoveryKey(text); } catch { throw new VaultError('not-recovery-key', 'Invalid recovery key'); }
 }
 
+// For the read-only recovery (core/recovery.mjs).
+export { unwrap as unwrapVault, openAccounts, visible };
+
+// Reads the accounts of a vault, as readVaults() gives it, with its password or recovery key (wrap), without
+// unlocking it: in list order, with their ids.
+export async function openVault(vault, wrap, text) {
+  const secret = wrap === 'recovery' ? recoveryBytes(text) : text;
+  try {
+    const { accounts, damaged } = await openAccounts(await unwrap(vault, wrap, secret), vault);
+    return { accounts: visible(accounts), damaged };
+  } finally {
+    if (wrap === 'recovery') secret.fill(0);
+  }
+}
+
 function addRecords(accounts, records) {
   if (!Array.isArray(records) || !records.length) throw new Error('Select at least one account');
   const names = new Map(accounts.map((account) => [accountKey(account), account.name]));
@@ -100,19 +129,52 @@ function addRecords(accounts, records) {
   const now = Date.now();
   for (const { name, secret, type, counter, added } of records) {
     const key = accountKey({ secret, type });
-    if (names.has(key)) throw new DuplicateAccountError(names.get(key));
+    if (names.has(key)) throw new DuplicateAccountError(shownName(names.get(key)));
     names.set(key, name);
     accounts.push({ id: randomId(), name, secret, type, counter, position: position++, added: added ?? now });
   }
 }
 
+// Adds accounts copied from another vault, keeping their dates. A key already stored is not added again, except that
+// an HOTP account whose copy has a higher counter takes that counter: its codes up to there may have been used.
+// Resolves to the IDs of the accounts added.
+function copyRecords(accounts, records) {
+  if (!Array.isArray(records) || !records.length) throw new Error('Select at least one account');
+  const stored = new Map(accounts.map((account) => [accountKey(account), account]));
+  const added = [];
+  let position = nextPosition(accounts);
+  const now = Date.now();
+  for (const { name, secret, type, counter, added: date } of records) {
+    const key = accountKey({ secret, type });
+    const existing = stored.get(key);
+    if (existing) {
+      if (type !== 'hotp' || BigInt(counter) <= BigInt(existing.counter)) {
+        throw new DuplicateAccountError(shownName(existing.name));
+      }
+      existing.counter = counter;
+      continue;
+    }
+    const account = { id: randomId(), name, secret, type, counter, position: position++, added: date ?? now };
+    accounts.push(account);
+    stored.set(key, account);
+    added.push(account.id);
+  }
+  return added;
+}
+
 // The vault in storage.sync and its remembered unlock in storage.session; Web Locks serialise writes across windows.
+// With local, storage.local, it keeps the trusted header of the read-only recovery.
 export class VaultSession {
   #storage;
   #session;
+  #local;
   #exclusive;
+  #unlockExclusive;
   #key = null;
   #vaultId = null;
+  // The remembered unlock this session holds: set by restore() and remember(), and null after a password, the
+  // recovery key or a new vault, whose first remember() starts a new one.
+  #sessionId = null;
   #revision = 0;
   #damaged = 0;
 
@@ -120,14 +182,21 @@ export class VaultSession {
     if (current !== this.#revision) throw new VaultError('locked', 'Vault is locked');
   }
 
-  constructor(storage, session, exclusive = withVaultLock) {
+  constructor(storage, session, exclusive = withVaultLock, unlockExclusive = withUnlockLock, local = null) {
     this.#storage = storage;
     this.#session = session;
+    this.#local = local;
     this.#exclusive = exclusive;
+    this.#unlockExclusive = unlockExclusive;
   }
 
   // Accounts of the main vault that could not be read at the last unlock, restore, read or write.
   get damaged() { return this.#damaged; }
+
+  get sessionId() { return this.#sessionId; }
+
+  // The ID of the vault this session holds open, or null.
+  get vaultId() { return this.#vaultId; }
 
   #items() {
     return this.#storage.get(null);
@@ -142,10 +211,54 @@ export class VaultSession {
     }
   }
 
-  #take(key, vaultId, damaged) {
+  // This computer's highest HOTP counters for a vault: { counters }, or { counters: null } when the stored ones do not
+  // open, which an advance then refuses rather than start again from what sync storage says.
+  async #counters(key, vaultId) {
+    if (!this.#local) return { counters: {} };
+    const { [HOTP_COUNTERS_KEY]: stored } = await this.#local.get(HOTP_COUNTERS_KEY);
+    const sealed = stored?.[vaultId];
+    if (sealed === undefined) return { counters: {} };
+    try { return { counters: await openCounters(key, vaultId, sealed) }; } catch { return { counters: null }; }
+  }
+
+  // Keeps counters, each the highest of them and of what another window kept meanwhile.
+  async #keepCounters(key, vaultId, counters) {
+    if (!this.#local) return;
+    const { counters: stored } = await this.#counters(key, vaultId);
+    if (!stored) throw new Error('Counters unreadable');
+    const merged = { ...stored };
+    for (const [id, counter] of Object.entries(counters)) merged[id] = maxCounter(merged[id] ?? '0', counter);
+    const { [HOTP_COUNTERS_KEY]: all } = await this.#local.get(HOTP_COUNTERS_KEY);
+    await this.#local.set({ [HOTP_COUNTERS_KEY]: { ...all, [vaultId]: await sealCounters(key, vaultId, merged) } });
+  }
+
+  // Each HOTP account takes the highest counter of sync storage and of this computer, which keeps what it sees.
+  async #reconcile(key, vaultId, accounts) {
+    const { counters } = await this.#counters(key, vaultId);
+    if (!counters) return { counters };
+    const seen = {};
+    for (const account of accounts) {
+      if (account.type !== 'hotp') continue;
+      const id = accountKey(account);
+      const known = counters[id];
+      if (known !== undefined && BigInt(known) > BigInt(account.counter)) account.counter = known;
+      else if (known === undefined || BigInt(account.counter) > BigInt(known)) seen[id] = account.counter;
+    }
+    Object.assign(counters, seen);
+    if (Object.keys(seen).length) await this.#keepCounters(key, vaultId, seen).catch(() => {});
+    return { counters };
+  }
+
+  // The header this computer just proved with the password; a failure to keep it only leaves the previous one.
+  async #trust(vaultId, header) {
+    await this.#local?.set({ [TRUSTED_HEADER_KEY]: { vaultId, header } }).catch(() => {});
+  }
+
+  #take(key, vaultId, damaged, sessionId = null) {
     this.#key = key;
     this.#vaultId = vaultId;
     this.#damaged = damaged;
+    this.#sessionId = sessionId;
   }
 
   // Any vault header, readable or not: a damaged vault must not invite a new one over it.
@@ -155,11 +268,15 @@ export class VaultSession {
 
   // The vaults besides the main one, made on a computer before it was connected to Firefox Sync.
   async others() {
-    const [, ...others] = readVaults(await this.#items());
-    return others.map(({ id, header, accounts }) => ({ id, created: header.created, codes: accounts.size }));
+    const items = await this.#items();
+    const [, ...others] = readVaults(items);
+    return others.map(({ id, header, accounts }) => ({
+      id, created: header.created, codes: accounts.size, snapshot: snapshotOf(items, id),
+    }));
   }
 
   async create(password, recoveryText) {
+    if (!isNewPassword(password)) throw weakPassword();
     const current = this.#revision;
     const recovery = recoveryBytes(recoveryText);
     try {
@@ -168,6 +285,7 @@ export class VaultSession {
         const { vaultId, header, key } = await createVault(password, recovery);
         this.#assertCurrent(current);
         await this.#write({ [vaultItem(vaultId)]: header });
+        await this.#trust(vaultId, header);
         this.#assertCurrent(current);
         this.#take(key, vaultId, 0);
         return [];
@@ -189,6 +307,9 @@ export class VaultSession {
     const main = await this.#mainVault();
     const key = await unwrap(main, 'password', password);
     const { accounts, damaged } = await openAccounts(key, main);
+    await this.#reconcile(key, main.id, accounts);
+    this.#assertCurrent(current);
+    await this.#trust(main.id, main.header);
     this.#assertCurrent(current);
     this.#take(key, main.id, damaged);
     return visible(accounts);
@@ -206,6 +327,7 @@ export class VaultSession {
 
   // Forgot password: the recovery key replaces the password, and the vault opens.
   async resetPassword(recoveryText, password) {
+    if (!isNewPassword(password)) throw weakPassword();
     this.lock();
     const current = this.#revision;
     const recovery = recoveryBytes(recoveryText);
@@ -216,8 +338,10 @@ export class VaultSession {
         const salt = decode(main.header.salt, 16);
         const header = await rewrap(main.id, main.header, 'password', await passwordKey(password, salt), key);
         const { accounts, damaged } = await openAccounts(key, main);
+        await this.#reconcile(key, main.id, accounts);
         this.#assertCurrent(current);
         await this.#write({ [vaultItem(main.id)]: header });
+        await this.#trust(main.id, header);
         this.#assertCurrent(current);
         this.#take(key, main.id, damaged);
         return visible(accounts);
@@ -229,6 +353,7 @@ export class VaultSession {
 
   // Both need the current password. The vault key stays, so other computers keep their unlock.
   changePassword(currentPassword, password) {
+    if (!isNewPassword(password)) return Promise.reject(weakPassword());
     return this.#replaceWrap(currentPassword, 'password', (salt) => passwordKey(password, salt));
   }
 
@@ -249,12 +374,16 @@ export class VaultSession {
       const header = await rewrap(vault.id, vault.header, wrap, await wrapKey(decode(vault.header.salt, 16)), key);
       this.#assertCurrent(current);
       await this.#write({ [vaultItem(vault.id)]: header });
+      await this.#trust(vault.id, header);
     });
   }
 
-  // The unlock ends minutesAfterClose minutes after the last extension window closes, null meaning no time limit, or
-  // with lockOnClose when that window closes; both are up to the popup.
-  async remember(minutes = 0, lockOnClose = false) {
+  // The unlock ends minutesAfterClose minutes after the last window holding it closes, null meaning no time limit, or
+  // with lockOnClose when that window closes; both are up to the popup. After a password, the recovery key or a new
+  // vault it starts a new remembered unlock, with a new sessionId, handed off to the window holder that unlocked
+  // (core/auto-lock.mjs). Otherwise it changes how the one this session holds ends, and fails with 'locked' once that
+  // one has ended or another unlock replaced it, rather than bring it back.
+  async remember(minutes = 0, lockOnClose = false, holder = null) {
     if (!this.#key) throw new VaultError('locked', 'Vault is locked');
     // 0 asks for no time limit, which only null stands for once stored.
     const minutesAfterClose = minutes === 0 ? null : minutes;
@@ -264,11 +393,31 @@ export class VaultSession {
     }
     const current = this.#revision;
     const vaultId = this.#vaultId;
+    const held = this.#sessionId;
     const bytes = new Uint8Array(await crypto.subtle.exportKey('raw', this.#key));
     try {
-      this.#assertCurrent(current);
-      const entry = { key: bytes.toBase64(), vaultId, minutesAfterClose, ...(lockOnClose && { lockOnClose }) };
-      await this.#session.set({ [UNLOCK_STORAGE_KEY]: entry });
+      await this.#unlockExclusive(async () => {
+        this.#assertCurrent(current);
+        if (held) {
+          const { [UNLOCK_STORAGE_KEY]: stored } = await this.#session.get(UNLOCK_STORAGE_KEY);
+          this.#assertCurrent(current);
+          if (stored?.sessionId !== held) throw new VaultError('locked', 'Vault is locked');
+        }
+        const sessionId = held ?? randomId();
+        const entry = {
+          key: bytes.toBase64(), vaultId, sessionId, minutesAfterClose, ...(lockOnClose && { lockOnClose }),
+        };
+        const items = { [UNLOCK_STORAGE_KEY]: entry };
+        if (!held) {
+          // The windows, times and handoff of an earlier unlock do not carry over.
+          await this.#session.remove([
+            CLOSED_STORAGE_KEY, HOLDERS_STORAGE_KEY, HANDOFF_STORAGE_KEY, LAST_INPUT_STORAGE_KEY,
+          ]);
+          if (holder) items[HANDOFF_STORAGE_KEY] = { sessionId, to: holder, until: Date.now() + HANDOFF_MS };
+        }
+        await this.#session.set(items);
+        if (current === this.#revision) this.#sessionId = sessionId;
+      });
     } finally { bytes.fill(0); }
     return { minutesAfterClose, lockOnClose };
   }
@@ -280,7 +429,9 @@ export class VaultSession {
     const { [UNLOCK_STORAGE_KEY]: saved } = await this.#session.get(UNLOCK_STORAGE_KEY);
     if (!saved) return null;
     try {
-      if (!isId(saved.vaultId) || !validMinutes(saved.minutesAfterClose)) throw new Error('Invalid unlock');
+      if (!isId(saved.vaultId) || !isId(saved.sessionId) || !validMinutes(saved.minutesAfterClose)) {
+        throw new Error('Invalid unlock');
+      }
       const [main] = readVaults(await this.#items());
       if (main?.id !== saved.vaultId) throw new Error('Vault changed');
       const raw = decode(saved.key, 32);
@@ -288,25 +439,30 @@ export class VaultSession {
       try { key = await importVaultKey(raw); } finally { raw.fill(0); }
       await verifyVaultKey(key, main.id, main.header);
       const { accounts, damaged } = await openAccounts(key, main);
+      await this.#reconcile(key, main.id, accounts);
       this.#assertCurrent(current);
-      this.#take(key, main.id, damaged);
+      this.#take(key, main.id, damaged, saved.sessionId);
       return visible(accounts);
     } catch {
       if (current !== this.#revision) return null;
-      await this.forget();
+      await this.forget(saved.sessionId);
       return null;
     }
   }
 
-  // Ends the remembered unlock without locking this session.
-  forget() {
-    return this.#session.remove(UNLOCK_STORAGE_KEY);
+  // Ends the remembered unlock with this sessionId without locking this session; an unlock that replaced it stays.
+  forget(sessionId) {
+    return this.#unlockExclusive(async () => {
+      const { [UNLOCK_STORAGE_KEY]: stored } = await this.#session.get(UNLOCK_STORAGE_KEY);
+      if (stored && stored.sessionId === sessionId) await this.#session.remove(UNLOCK_STORAGE_KEY);
+    });
   }
 
   lock() {
     this.#revision++;
     this.#key = null;
     this.#vaultId = null;
+    this.#sessionId = null;
   }
 
   // Reads with the key held when the call started; a lock in between wins over a stale result.
@@ -319,10 +475,16 @@ export class VaultSession {
     this.#assertCurrent(current);
     const [main] = readVaults(items);
     if (main?.id !== vaultId) throw new VaultError('locked', 'Vault changed');
+    // A key that no longer opens the check would read an empty list and seal accounts no one could open.
+    try { await verifyVaultKey(key, main.id, main.header); } catch {
+      throw new VaultError('locked', 'Vault key changed');
+    }
+    this.#assertCurrent(current);
     const { accounts, damaged } = await openAccounts(key, main);
+    const { counters } = await this.#reconcile(key, main.id, accounts);
     this.#assertCurrent(current);
     this.#damaged = damaged;
-    return { key, vault: main, accounts, items };
+    return { key, vault: main, accounts, items, counters };
   }
 
   async read() {
@@ -399,13 +561,25 @@ export class VaultSession {
     });
   }
 
+  // The next HOTP counter, from the highest of sync storage and this computer. This computer keeps it before sync
+  // storage gets it and before the page shows its code: if it cannot, the advance fails and no code shows. Two
+  // computers that advance the same key offline may show the same code once.
   advance(id) {
-    return this.#commit((accounts) => {
+    const current = this.#revision;
+    return this.#exclusive(async () => {
+      const { key, vault, accounts, counters } = await this.#load(current);
       const account = accounts.find((entry) => entry.id === id && entry.type === 'hotp');
       if (!account) throw new Error('Counter account not found');
+      if (!counters) throw new Error('Counters unreadable');
       const next = BigInt(account.counter) + 1n;
       if (next > MAX_COUNTER) throw new Error('Counter limit reached');
       account.counter = String(next);
+      this.#assertCurrent(current);
+      await this.#keepCounters(key, vault.id, { [accountKey(account)]: account.counter });
+      const sealed = await sealAccount(key, vault.id, account);
+      this.#assertCurrent(current);
+      await this.#write({ [accountItem(vault.id, id)]: sealed });
+      return visible(accounts);
     });
   }
 
@@ -416,12 +590,16 @@ export class VaultSession {
       if (!kept) throw new Error('Account not found');
       const key = accountKey(kept);
       for (let index = accounts.length - 1; index >= 0; index--) {
-        if (accounts[index] !== kept && accountKey(accounts[index]) === key) accounts.splice(index, 1);
+        if (accounts[index] === kept || accountKey(accounts[index]) !== key) continue;
+        // The highest counter of the entries removed stays: their codes up to there may have been used.
+        if (kept.type === 'hotp') kept.counter = maxCounter(kept.counter, accounts[index].counter);
+        accounts.splice(index, 1);
       }
     });
   }
 
-  // Reads the accounts of another vault with its password or recovery key, without unlocking it.
+  // Reads the accounts of another vault with its password or recovery key, without unlocking it: { accounts, damaged,
+  // snapshot, reload() }, with reload() reading them again with the same key.
   async openOther(vaultId, password) {
     return this.#openOther(vaultId, 'password', password);
   }
@@ -432,20 +610,29 @@ export class VaultSession {
   }
 
   async #openOther(vaultId, wrap, secret) {
-    const vault = otherVault(await this.#items(), vaultId);
-    const key = await unwrap(vault, wrap, secret);
-    return visible((await openAccounts(key, vault)).accounts);
+    const key = await unwrap(otherVault(await this.#items(), vaultId), wrap, secret);
+    const read = async () => {
+      const items = await this.#items();
+      const { accounts, damaged } = await openAccounts(key, otherVault(items, vaultId));
+      return { accounts: visible(accounts), damaged, snapshot: snapshotOf(items, vaultId), reload: read };
+    };
+    return read();
   }
 
-  // Adds accounts read from another vault, keeping their dates, then removes that vault from every computer.
-  mergeOther(vaultId, records) {
-    return this.#commit((accounts, items) => {
+  // Copies accounts read from another vault into the main one, and leaves that vault as it is. It fails with
+  // 'changed' when that vault is no longer the snapshot its accounts were read from. Resolves to { records, added },
+  // the accounts of the main vault and the IDs of those added.
+  async copyFromOther(vaultId, records, snapshot) {
+    let added = [];
+    const result = await this.#commit((accounts, items) => {
       otherVault(items, vaultId);
-      addRecords(accounts, records);
-      return vaultKeys(items, vaultId);
+      if (snapshotOf(items, vaultId) !== snapshot) throw new VaultError('changed', 'The other vault changed');
+      added = copyRecords(accounts, records);
     });
+    return { records: result, added };
   }
 
+  // Removes another vault from every computer, unread: a separate choice from copying its codes.
   removeOther(vaultId) {
     return this.#commit((accounts, items) => {
       otherVault(items, vaultId);

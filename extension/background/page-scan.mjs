@@ -51,8 +51,9 @@ export function readCandidates(message) {
   return { innerWidth: viewport.innerWidth, items: rects };
 }
 
-// Resolves to the picked record, or null when cancelled; rejects with a message for the user.
-export async function scanPage({ api = browser, signal, ...overrides } = {}) {
+// Resolves to the picked record, or null when cancelled; rejects with a message for the user. onInput(time) runs for
+// the user's input on the page.
+export async function scanPage({ api = browser, signal, onInput, ...overrides } = {}) {
   const deps = { ...DEFAULTS, ...overrides };
   if (signal?.aborted) return null;
   const target = await findTarget(api);
@@ -148,6 +149,8 @@ export async function scanPage({ api = browser, signal, ...overrides } = {}) {
       try { record = deps.parse(payloads.get(message.id)); } catch (error) { finish(null, error); return; }
       finish(record);
     } else if (message.type === 'cancel') cancel();
+    // The user's input on the page while the overlay shows, for the auto-lock.
+    else if (message.type === 'input') onInput?.(message.at);
     // 'keepalive' messages only keep the background script awake while the user picks.
   }
 

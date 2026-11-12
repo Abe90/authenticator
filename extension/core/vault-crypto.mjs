@@ -67,6 +67,7 @@ const wrapData = (vaultId, { version, created, kdf, iterations, salt }, wrap) =>
   bind({ version, vault: vaultId, created, kdf, iterations, salt, wrap }));
 const checkData = (vaultId) => bind({ version: FORMAT, vault: vaultId, check: true });
 const accountData = (vaultId, accountId) => bind({ version: FORMAT, vault: vaultId, account: accountId });
+const countersData = (vaultId) => bind({ version: FORMAT, vault: vaultId, counters: true });
 
 async function seal(key, additionalData, bytes) {
   const iv = crypto.getRandomValues(new Uint8Array(IV));
@@ -159,6 +160,25 @@ export async function sealAccount(key, vaultId, account) {
   const bytes = encoder.encode(JSON.stringify({ name, secret, type, counter, position, added }));
   try {
     return await seal(key, accountData(vaultId, id), bytes);
+  } finally {
+    bytes.fill(0);
+  }
+}
+
+// This computer's highest HOTP counters, { [accountKey]: counter }, sealed so that neither the keys nor an index of
+// them are stored in the clear.
+export async function sealCounters(key, vaultId, counters) {
+  const bytes = encoder.encode(JSON.stringify(counters));
+  try { return await seal(key, countersData(vaultId), bytes); } finally { bytes.fill(0); }
+}
+
+export async function openCounters(key, vaultId, text) {
+  const bytes = await open(key, countersData(vaultId), text);
+  try {
+    const counters = JSON.parse(decoder.decode(bytes));
+    if (!counters || typeof counters !== 'object' || Array.isArray(counters)
+      || !Object.values(counters).every(isCounter)) throw new Error('Invalid counters');
+    return counters;
   } finally {
     bytes.fill(0);
   }

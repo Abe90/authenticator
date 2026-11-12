@@ -1,4 +1,5 @@
 import { DuplicateAccountError, duplicateReasons, findDuplicate } from '../../core/duplicates.mjs';
+import { cleanName } from '../../core/limits.mjs';
 import { NAME_REQUIRED, changeHint, saveFailure, storedAccounts } from './account-input.mjs';
 import { element, message } from './dom.mjs';
 import { createMigrationPreview } from './migration-preview.mjs';
@@ -70,7 +71,7 @@ export function createScanConfirm({ vault, notice, active, onSaved, onCancel }) 
   async function submit(event) {
     event.preventDefault();
     if (saving || !record || !active()) return;
-    const label = name.value.trim();
+    const label = cleanName(name.value);
     if (!isExport() && !label) {
       message(error, NAME_REQUIRED);
       name.focus();

@@ -1,5 +1,5 @@
 import { decodeBase32 } from './base32.mjs';
-import { MAX_NAME_LENGTH, MAX_SECRET_LENGTH, isCounter } from './limits.mjs';
+import { MAX_NAME_LENGTH, MAX_SECRET_LENGTH, cleanName, isCounter } from './limits.mjs';
 import { TOTP_PERIOD } from './totp.mjs';
 
 export function parseOtpAuth(text) {
@@ -22,9 +22,9 @@ export function parseOtpAuth(text) {
     throw new Error('Only SHA-1, six-digit codes and a 30-second TOTP period are supported.');
   }
   let label;
-  try { label = decodeURIComponent(url.pathname.slice(1)).trim(); }
+  try { label = cleanName(decodeURIComponent(url.pathname.slice(1))); }
   catch { throw new Error('The QR code has an invalid account name.'); }
-  const issuer = (params.get('issuer') ?? '').trim();
+  const issuer = cleanName(params.get('issuer') ?? '');
   const separator = label.indexOf(':');
   if (separator >= 0 && issuer && label.slice(0, separator).trim() !== issuer) {
     throw new Error('The QR code contains conflicting account providers.');

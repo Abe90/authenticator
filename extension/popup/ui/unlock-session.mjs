@@ -1,56 +1,34 @@
-import {
-  AFTER_UNLOCK_KEY, CLOSED_STORAGE_KEY, HANDOFF_STORAGE_KEY, REVEALED_STORAGE_KEY, UNLOCK_STORAGE_KEY, parseItem,
-} from '../../core/storage-keys.mjs';
+import { REVEALED_STORAGE_KEY, UNLOCK_STORAGE_KEY, parseItem } from '../../core/storage-keys.mjs';
+import { revokeUnlock } from '../../core/auto-lock.mjs';
 import { readRevealed } from '../../core/revealed-codes.mjs';
-import { HANDOFF_MS } from '../../shared/add-window.mjs';
 import { announceWindow } from '../../shared/open-windows.mjs';
 
-const SESSION_KEYS = [
-  UNLOCK_STORAGE_KEY, REVEALED_STORAGE_KEY, HANDOFF_STORAGE_KEY, AFTER_UNLOCK_KEY, CLOSED_STORAGE_KEY,
-];
+// Following another window's new unlock can arrive before that window has claimed it: the claim is asked again
+// this often, for as long as a handoff lasts.
+const FOLLOW_RETRY_MS = 250;
+const FOLLOW_TRIES = 40;
 
-// Extension pages share a process, so this sees every popup and Add code window. The background page is a view
-// too, so only 'popup' and 'tab' views count.
-function otherWindowsOpen() {
-  try {
-    const pages = [...browser.extension.getViews({ type: 'popup' }), ...browser.extension.getViews({ type: 'tab' })];
-    return pages.some((page) => page !== window);
-  } catch { return false; }
-}
-
-// A timed unlock ends its minutes after the last extension window closed; a close time that is not a number ends it
-// too. No timer runs while a window is open.
-function timedOut(entry, closedAt) {
-  if (!Number.isSafeInteger(entry.minutesAfterClose) || closedAt === undefined) return false;
-  return !Number.isSafeInteger(closedAt) || Date.now() >= closedAt + entry.minutesAfterClose * 60000;
-}
-
-// This window's unlock, kept in line with the remembered unlock all windows share. repair() puts back a vault that
-// Firefox Sync lost, before a change to the vaults is followed; onEnded(revoke) locks this window, and with revoke
-// every window; onFollowed() shows the codes after following another window's unlock; onVaultsChanged() tells a
-// locked window that a vault came or went through Firefox Sync.
-export function createUnlockSession({ vault, list, auth, repair, onEnded, onFollowed, onVaultsChanged }) {
+// This window's unlock, kept in line with the remembered unlock all windows share. The background script decides
+// whether this window may hold it, and ends it (core/auto-lock.mjs). onEnded(revoke) locks this window, and with
+// revoke every window; onFollowed() shows the codes after following another window's unlock; onVaultsChanged() tells
+// a locked window that a vault came or went through Firefox Sync.
+export function createUnlockSession({ vault, list, auth, onEnded, onFollowed, onVaultsChanged }) {
   const storage = browser.storage.session;
   let unlocked = false;
   // Bumped by every lock, so asynchronous work started before it can tell its outcome is stale.
   let lockRevision = 0;
   let readRevision = 0;
-  let lockOnClose = false;
-  let handoffUntil = 0;
   // The latest remembered unlock announced by a change event, for a restore that read an older one meanwhile.
   let latestEntry = null;
   let entryEvents = 0;
   let followTimer = 0;
+  let followTries = 0;
   let following = false;
+  let refused = false;
   let started = false;
   let disposed = false;
-  // Until this window closes, the background script counts it as open.
-  const leave = announceWindow();
-
-  // Takes how the remembered unlock ends: { minutesAfterClose, lockOnClose }.
-  function adopt(entry) {
-    lockOnClose = entry?.lockOnClose === true;
-  }
+  // The background script counts this window as holding the unlock from a granted claim until it locks or closes.
+  const link = announceWindow();
 
   // Shows records saved here or in another window; false once the vault has locked.
   async function show(records) {
@@ -60,36 +38,44 @@ export function createUnlockSession({ vault, list, auth, repair, onEnded, onFoll
     return true;
   }
 
-  // Restores the remembered unlock and shows its codes; false when there is none or a lock overtook the restore.
+  function followSoon(delay) {
+    clearTimeout(followTimer);
+    followTimer = setTimeout(follow, delay);
+  }
+
+  // Restores the remembered unlock and shows its codes; false when there is none, the background script refused it,
+  // or a lock overtook the restore.
   async function restore() {
+    refused = false;
     const currentLock = lockRevision;
     const events = entryEvents;
     const records = await vault.restore();
     if (!records) return false;
-    // Read again for the expiry; another window may have locked since the restore.
-    const stored = await storage.get(SESSION_KEYS);
-    const { [UNLOCK_STORAGE_KEY]: entry, [HANDOFF_STORAGE_KEY]: handoff } = stored;
+    // Read again: another window may have locked or unlocked again since the restore.
+    const stored = await storage.get([UNLOCK_STORAGE_KEY, REVEALED_STORAGE_KEY]);
+    const entry = stored[UNLOCK_STORAGE_KEY];
     if (!entry || currentLock !== lockRevision) {
       if (currentLock === lockRevision) vault.lock();
       return false;
     }
-    // A handoff from the popup that opened this window, or from the background after a scan, allows one restore.
-    const handedOff = Number.isSafeInteger(handoff) && Date.now() < handoff;
-    const ended = (entry.lockOnClose === true && !handedOff) || timedOut(entry, stored[CLOSED_STORAGE_KEY]);
-    if (ended && !otherWindowsOpen()) {
-      // Every window of that unlock has closed and it has ended since; the closing window could not clear it.
+    // A change event during the restore was dropped, since only unlocked windows follow them.
+    const latest = entryEvents !== events ? latestEntry : entry;
+    if (entry.sessionId !== vault.sessionId || latest.sessionId !== vault.sessionId) {
+      // Another window unlocked again meanwhile: this window follows that unlock instead.
       vault.lock();
-      await storage.remove(SESSION_KEYS);
+      followSoon(50);
       return false;
     }
-    // The handoff is used; with this window open no timer runs, and the background script records the next close.
-    const used = [HANDOFF_STORAGE_KEY, CLOSED_STORAGE_KEY].filter((key) => stored[key] !== undefined);
-    if (used.length) storage.remove(used).catch(() => {});
+    const granted = await link.claim(vault.sessionId);
+    if (currentLock !== lockRevision) return false;
+    if (!granted) {
+      refused = true;
+      vault.lock();
+      return false;
+    }
     unlocked = true;
     list.reveal(readRevealed(stored[REVEALED_STORAGE_KEY]));
     list.render(records);
-    // A change event during the restore was dropped, since only unlocked windows follow them.
-    adopt(entryEvents !== events ? latestEntry : entry);
     await list.update();
     return unlocked;
   }
@@ -99,13 +85,15 @@ export function createUnlockSession({ vault, list, auth, repair, onEnded, onFoll
     clearTimeout(followTimer);
     if (unlocked || disposed || following) return;
     if (!started || auth.busy) {
-      followTimer = setTimeout(follow, 50);
+      followSoon(50);
       return;
     }
     following = true;
     auth.cancel();
     try {
       if (await restore()) await onFollowed();
+      // The window that unlocked may not have claimed its unlock yet.
+      else if (refused && ++followTries < FOLLOW_TRIES) followSoon(FOLLOW_RETRY_MS);
     } catch {
       // The password form stays available.
     } finally {
@@ -126,8 +114,6 @@ export function createUnlockSession({ vault, list, auth, repair, onEnded, onFoll
   async function changed(changes, area) {
     if (area === 'sync') {
       if (!Object.keys(changes).some((key) => parseItem(key))) return;
-      // Its write back is another change, which reloads again.
-      await repair();
       // A read fails once this vault is no longer the main one, which locks this window.
       if (unlocked) await reload();
       else onVaultsChanged();
@@ -138,8 +124,13 @@ export function createUnlockSession({ vault, list, auth, repair, onEnded, onFoll
     if (entry?.newValue) {
       latestEntry = entry.newValue;
       entryEvents++;
-      if (unlocked) adopt(entry.newValue);
-      else follow();
+      // This window's own unlock, or a change of its setting, needs nothing. Another window unlocked, again with a
+      // password or the recovery key: this window follows that unlock.
+      if (entry.newValue.sessionId !== vault.sessionId) {
+        if (unlocked) await onEnded(false);
+        followTries = 0;
+        follow();
+      }
     } else if (entry) {
       if (unlocked || auth.busy) await onEnded(false);
       else {
@@ -159,31 +150,20 @@ export function createUnlockSession({ vault, list, auth, repair, onEnded, onFoll
   async function lock(revoke = true) {
     unlocked = false;
     lockRevision++;
-    lockOnClose = false;
     clearTimeout(followTimer);
     vault.lock();
+    link.release();
     if (!revoke) return true;
     try {
-      await storage.remove(SESSION_KEYS);
+      await revokeUnlock(storage);
       return true;
     } catch { return false; }
   }
 
-  // Lets the window opened next restore an unlock that ends with the popup; for a scan the background stores it.
-  async function handOff(store) {
-    if (!lockOnClose) return;
-    handoffUntil = Date.now() + HANDOFF_MS;
-    if (store) await storage.set({ [HANDOFF_STORAGE_KEY]: handoffUntil });
-  }
-
   function dispose() {
     disposed = true;
-    // "When the popup closes": the last extension window to close ends the unlock. Firefox drops storage calls
-    // made while a window closes (they only run when the page navigates), so the next start enforces it.
-    if (unlocked && lockOnClose && Date.now() >= handoffUntil && !otherWindowsOpen()) {
-      storage.remove(SESSION_KEYS).catch(() => {});
-    }
-    leave();
+    // The background script sees the port close: it ends an unlock that ends with the popup, or starts its timer.
+    link.close();
     clearTimeout(followTimer);
     browser.storage.onChanged.removeListener(changed);
     vault.lock();
@@ -191,20 +171,18 @@ export function createUnlockSession({ vault, list, auth, repair, onEnded, onFoll
 
   browser.storage.onChanged.addListener(changed);
   return {
-    restore, show, adopt, lock, handOff, dispose,
-    // A password unlock in this window.
-    begin() {
-      unlocked = true;
-      storage.remove(CLOSED_STORAGE_KEY).catch(() => {});
-    },
-    // The window was not opened after all.
-    cancelHandOff() {
-      if (!handoffUntil) return;
-      handoffUntil = 0;
-      storage.remove(HANDOFF_STORAGE_KEY).catch(() => {});
-    },
+    restore, show, lock, dispose,
+    // After a password, the recovery key or a new vault: the unlock remember() has just stored is handed off to this
+    // window, which asks to hold it. Resolves to false when the background script refused.
+    claim: () => link.claim(vault.sessionId),
+    begin() { unlocked = true; },
+    // The Add code window that this popup opens next may take over the unlock, also one that ends with the popup.
+    handOff: () => link.handOff('add'),
+    // The Add code window was open already.
+    cancelHandOff: () => link.cancelHandOff('add'),
     // Start-up has finished: unlocks made in other windows are followed from now on.
     ready() { started = true; },
     get unlocked() { return unlocked; },
+    get windowId() { return link.windowId; },
   };
 }

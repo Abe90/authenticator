@@ -18,7 +18,8 @@ Get it from addons.mozilla.org: **https://addons.mozilla.org/firefox/addon/authe
   - **Enter a setup key** opens a window for a name and a Base32 key, or for a QR code from an image file or a pasted screenshot.
   - `otpauth://` links and Google Authenticator exports (`otpauth-migration://`) are read too; from an export you choose which accounts to keep. A key already in your list is not added twice.
 - **Organise** your accounts: search them, rename or remove them from the right-click menu, and drag them (or press Alt+Up and Alt+Down) to change the order.
-- **Password lock.** The vault locks 5 minutes after the popup closes, or when you choose in Settings: as soon as the popup closes, after 1 or 30 minutes or 1 hour, or never until Firefox closes. **Lock now** locks it at once.
+- **Password lock.** The vault locks 5 minutes after the popup closes or after 5 minutes without using an open Authenticator window, or when you choose in Settings: as soon as the popup closes (an open window then locks after 1 minute without use), after 1 or 30 minutes or 1 hour, or never until Firefox closes. **Lock now** locks it at once. **Suggest a password** fills in 20 random letters, digits and symbols.
+- **Read-only codes when something is wrong.** If the vault in Firefox Sync is damaged or replaced, or another vault claims to be older, your password still opens your codes read-only, without writing anything to Firefox Sync.
 - **Recovery key.** Shown once when the vault is created; with it, **Forgot password?** sets a new password.
 - Light and dark themes that follow Firefox's.
 
@@ -30,13 +31,13 @@ Not supported: SHA-256 or SHA-512, eight-digit codes, periods other than 30 seco
 
 Each account is stored as its own encrypted item in `browser.storage.sync`. Accounts are sealed with AES-256-GCM under a random 256-bit vault key, with a fresh IV on every write. The vault key itself is stored twice, wrapped with a key derived from your password (PBKDF2-SHA256, 600,000 iterations) and with one derived from the recovery key. Neither the password nor the recovery key is ever stored.
 
-Unlocking unwraps the vault key and keeps it in `browser.storage.session`, which lives in memory until Firefox closes; locking removes it. Codes are computed on the computer from the decrypted keys, as RFC 4226 and RFC 6238 describe.
+Unlocking unwraps the vault key and keeps it in `browser.storage.session`, which lives in memory until Firefox closes; locking removes it, and the background script removes it when the time chosen in Settings is up, even with no extension window open. Every read and write checks that the key still opens the vault. Codes are computed on the computer from the decrypted keys, as RFC 4226 and RFC 6238 describe.
 
 ### Sync between computers
 
 Firefox Sync carries `browser.storage.sync` between your computers, encrypted again end to end, every 10 minutes or on **Sync now**. Each change writes only the accounts it touches, so changes made on different computers merge.
 
-Removing a Firefox extension deletes its sync data on every computer. To survive that, each computer keeps a copy of the encrypted vault in `browser.storage.local` and writes it back when it disappears from sync; the vault lasts as long as one computer still has the extension. A vault created on a computer before it was connected to Firefox Sync is offered after the next unlock, to add its codes to the main vault.
+Removing a Firefox extension deletes its sync data on every computer. To survive that, each computer keeps a copy of the encrypted vault in `browser.storage.local`. When the vault disappears from sync, the copy is kept aside and **Restore this computer's copy** puts it back after its password, with the codes you choose; it never goes back on its own, since an old copy could bring back a password changed since. A vault created on a computer before it was connected to Firefox Sync is offered after the next unlock, to copy its codes into the main vault; it stays until you remove it from Settings. A counter-based code never goes back to an older counter.
 
 ### Scan a QR code
 
@@ -50,6 +51,7 @@ The extension has no server, sends nothing and collects nothing. QR codes are de
 |---|---|
 | `storage` | The encrypted vault, its local copy and the unlock settings. |
 | `clipboardWrite` | Copying a code. |
+| `alarms` | Locking the vault when its time is up, also with no extension window open. |
 | `activeTab`, `scripting` | Scan a QR code: they apply only to the tab where you clicked the extension's button, until it loads another page. |
 
 Firefox's sync storage holds 100 KB per extension: around 450 typical accounts.

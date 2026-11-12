@@ -4,9 +4,21 @@ export const MAX_COUNTER = 0xffffffffffffffffn;
 // For a password chosen from now on; an existing vault opens with whatever password it has.
 export const MIN_PASSWORD_LENGTH = 4;
 
+// Characters a name never needs, which can make it look like another: controls, the bidirectional controls and the
+// invisible ones. cleanName() folds white space into single spaces, removes them, and trims; it is applied to every
+// name typed or imported, and to every stored name shown (shownName), not in validateAccount, which would otherwise
+// count older accounts with them as damaged.
+const HIDDEN = /[\p{Cc}\u202A-\u202E\u2066-\u2069\u200E\u200F\u061C\u200B-\u200D\u2060\uFEFF]/gu;
+export const cleanName = (text) => String(text).replace(/\s+/g, ' ').replace(HIDDEN, '').replace(/ {2,}/g, ' ').trim();
+export const shownName = (name) => cleanName(name) || 'Unnamed account';
+
 export const isAccountName = (name) => typeof name === 'string' && name.trim() !== '' && name.length <= MAX_NAME_LENGTH;
 
-// Counted as characters, not UTF-16 units: an emoji is one.
-export const isNewPassword = (text) => typeof text === 'string' && [...text].length >= MIN_PASSWORD_LENGTH;
+// What is wrong with a new password: 'short', or null. Its length is counted in characters, not UTF-16 units: an
+// emoji is one.
+export function passwordProblem(text) {
+  return typeof text !== 'string' || [...text].length < MIN_PASSWORD_LENGTH ? 'short' : null;
+}
+export const isNewPassword = (text) => passwordProblem(text) === null;
 
 export const isCounter = (text) => typeof text === 'string' && /^\d{1,20}$/.test(text) && BigInt(text) <= MAX_COUNTER;

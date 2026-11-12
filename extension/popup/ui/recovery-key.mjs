@@ -12,7 +12,7 @@ export function keptOrNewKey(state) {
 }
 
 // A recovery key on two lines of four groups each; Copy takes it whole, and shows a tick for a moment. show(key)
-// sets the key.
+// sets the key, clear() forgets it.
 export function recoveryKeyView(output, copy) {
   const icon = copy.querySelector('.icon');
   let key = '';
@@ -25,6 +25,10 @@ export function recoveryKeyView(output, copy) {
     show(next) {
       key = next;
       output.textContent = `${key.slice(0, 19)}\n${key.slice(20)}`;
+    },
+    clear() {
+      key = '';
+      output.textContent = '';
     },
   };
 }
@@ -51,11 +55,17 @@ export function createNewRecoveryKey({ vault, store, onDone }) {
     if (replaced) await store.leave(onDone);
   });
 
-  function reset() {
+  function resetForm() {
     password = '';
     form.reset();
     error.clear();
     replace.disabled = true;
+  }
+  // At the end, the exit or a lock: the password and the new key are forgotten too.
+  function reset() {
+    resetForm();
+    key = '';
+    keyView.clear();
   }
   return {
     // Before the password is asked: the key kept from a popup that closed, or a new one, kept in turn.
@@ -67,7 +77,7 @@ export function createNewRecoveryKey({ vault, store, onDone }) {
     },
     // checked: the password, just checked.
     start(checked) {
-      reset();
+      resetForm();
       password = checked;
     },
     reset,

@@ -23,6 +23,13 @@ export function createCountdown() {
     if (previous?.frame) cancelAnimationFrame(previous.frame);
     const state = { remaining, frame: 0 };
     states.set(sector, state);
+    // A new period: the full circle fades in and grows from the centre, instead of appearing at once.
+    if (!reducedMotion() && previous && remaining === TOTP_PERIOD && previous.remaining < TOTP_PERIOD) {
+      paint(sector, remaining);
+      sector.animate([{ opacity: 0, transform: 'scale(0.5)' }, { opacity: 1, transform: 'scale(1)' }],
+        { duration: 300, easing: 'cubic-bezier(0.2, 0, 0, 1)' });
+      return;
+    }
     if (reducedMotion() || !previous || previous.remaining - remaining !== 1) {
       paint(sector, remaining);
       return;

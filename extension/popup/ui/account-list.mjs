@@ -1,6 +1,6 @@
 import { MAX_COUNTER } from '../../core/limits.mjs';
 import { TOTP_PERIOD, createHotpGenerator, totpStep } from '../../core/totp.mjs';
-import { element } from './dom.mjs';
+import { element, reducedMotion } from './dom.mjs';
 import { createCountdown } from './countdown.mjs';
 import { failureText } from './messages.mjs';
 import { createToast } from './toast.mjs';
@@ -98,7 +98,7 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
     }
   }
 
-  function createAccount(record, index) {
+  function createAccount(record) {
     const row = template.cloneNode(true);
     row.setAttribute('aria-label', `${record.name}: copy code`);
     row.setAttribute('role', 'button');
@@ -109,14 +109,11 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
     const timerIcon = element('svg', row);
     timerIcon.removeAttribute('id');
     timerIcon.classList.add('timer');
-    const title = element('title', timerIcon);
-    title.id = `countdown-${index}`;
-    timerIcon.setAttribute('aria-labelledby', title.id);
     const sector = element('path', timerIcon);
     sector.removeAttribute('id');
     sector.classList.add('timer-sector');
     const account = {
-      ...record, counter: BigInt(record.counter), entry: row, row, code, title, sector,
+      ...record, counter: BigInt(record.counter), entry: row, row, code, timer: timerIcon, sector,
       shownStep: null, pending: false, generate: null,
     };
     async function copy() {
@@ -147,7 +144,6 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
       next.type = 'button';
       next.className = 'counter-next icon-button';
       next.setAttribute('aria-label', `Generate the next code for ${record.name}`);
-      next.title = 'Generate next code';
       const icon = document.createElement('span');
       icon.className = 'icon icon-refresh';
       next.append(icon);
@@ -172,13 +168,37 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
     return account;
   }
 
+  // A new code shows digit by digit as the timer fills again: each digit that changed fades in and grows from its own
+  // centre, a little after the one before it. A row's first code, at once, and reduced motion show at once.
+  function showCode(account, text, atOnce = false) {
+    const { code } = account;
+    const before = code.textContent;
+    if (atOnce || reducedMotion() || account.shownStep === null) {
+      code.textContent = text;
+      return;
+    }
+    if (before === text) return;
+    let order = 0;
+    code.replaceChildren(...[...text].map((character, index) => {
+      if (character === ' ') return document.createTextNode(' ');
+      const digit = document.createElement('span');
+      digit.className = 'code-digit';
+      digit.textContent = character;
+      if (character !== before[index]) {
+        digit.animate([{ opacity: 0, transform: 'scale(0.5)' }, { opacity: 1, transform: 'none' }],
+          { duration: 300, delay: 25 * order++, easing: 'cubic-bezier(0.2, 0, 0, 1)', fill: 'backwards' });
+      }
+      return digit;
+    }));
+  }
+
   async function refresh() {
     const current = revision;
     const seconds = Math.floor(Date.now() / 1000);
     for (const account of accounts) {
       try {
         if (account.type === 'hotp' && !revealed.has(account.id)) {
-          account.code.textContent = HIDDEN_CODE;
+          showCode(account, HIDDEN_CODE, true);
           account.shownStep = null;
         } else {
           const step = account.type === 'hotp' ? account.counter : totpStep(seconds);
@@ -186,20 +206,21 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
             account.generate ??= await createHotpGenerator(account.secret);
             const value = await account.generate(step);
             if (current !== revision) return;
-            account.code.textContent = `${value.slice(0, 3)} ${value.slice(3)}`;
+            showCode(account, `${value.slice(0, 3)} ${value.slice(3)}`);
             account.shownStep = step;
           }
         }
         if (account.next) account.next.disabled = account.pending || account.counter >= MAX_COUNTER;
         else {
           const remaining = TOTP_PERIOD - seconds % TOTP_PERIOD;
-          account.title.textContent = `New code in ${remaining} s`;
+          // A label for screen readers only: no tooltip.
+          account.timer.setAttribute('aria-label', `New code in ${remaining} s`);
           countdown.draw(account.sector, remaining);
         }
       } catch {
         if (current !== revision) return;
-        account.code.textContent = 'Error';
-        account.title.textContent = 'Code unavailable. Reopen the popup.';
+        showCode(account, 'Error', true);
+        account.timer.setAttribute('aria-label', 'Code unavailable. Reopen the popup.');
         countdown.draw(account.sector, 0);
       }
     }

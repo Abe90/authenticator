@@ -10,9 +10,13 @@ const damagedMessage = (count) => (count === 1
   : `${count} codes in your vault are damaged and can’t be shown. The others work as usual.`);
 
 // Once after an unlock with a password or the recovery key, the toolbar popup looks in turn for another vault, a key
-// added on two computers and damaged accounts, and offers each on its page before the list. Not now leaves it for
-// the next unlock. onMerge(vaultId) opens the window that adds another vault's codes; onDone() returns to the list.
-export function createAfterUnlock({ vault, views, notice, onMerge, onDone, onError }) {
+// added on two computers, a password too weak for a new one and damaged accounts, and offers each on its page before
+// the list. Not now leaves it for the next unlock. Another vault whose copy left a receipt on this computer, and has
+// not changed since, is not offered again; Settings opens it all the same (showOther), and Not now returns there
+// (onSettings). onMerge(vaultId) opens the pages that copy another vault's codes; onDone() returns to the list.
+export function createAfterUnlock({
+  vault, views, notice, receipts, onMerge, onDone, onSettings, onError,
+}) {
   const storage = browser.storage.session;
   const otherDescription = element('#other-description');
   const removeMessage = element('#remove-vault-message');
@@ -24,6 +28,7 @@ export function createAfterUnlock({ vault, views, notice, onMerge, onDone, onErr
   let queue = [];
   let other = null;
   let groups = [];
+  let fromSettings = false;
   const action = pageAction();
   // Bumped by every clear, so work started before a lock no longer opens a page.
   let revision = 0;
@@ -32,12 +37,15 @@ export function createAfterUnlock({ vault, views, notice, onMerge, onDone, onErr
     while (queue.length && current === revision) {
       const check = queue.shift();
       if (check === 'other') {
-        [other] = await vault.others();
+        other = null;
+        const ids = (await vault.read()).map((account) => account.id);
+        for (const candidate of await vault.others()) {
+          if (await receipts.current(candidate, vault.vaultId, ids).catch(() => null)) continue;
+          other = candidate;
+          break;
+        }
         if (other && current === revision) {
-          const codes = plural(other.codes, 'code');
-          otherDescription.textContent = `One of your computers made a separate vault with ${codes} before it was `
-            + 'connected to Firefox Sync.';
-          await views.navigate('other');
+          await showOtherPage();
           return;
         }
       } else if (check === 'duplicates') {
@@ -56,7 +64,19 @@ export function createAfterUnlock({ vault, views, notice, onMerge, onDone, onErr
     if (current === revision) await onDone();
   }
 
+  async function showOtherPage() {
+    const codes = plural(other.codes, 'code');
+    otherDescription.textContent = `One of your computers made a separate vault with ${codes} before it was `
+      + 'connected to Firefox Sync.';
+    await views.navigate('other');
+  }
+
   function next() {
+    if (fromSettings) {
+      fromSettings = false;
+      onSettings();
+      return;
+    }
     step(revision).catch(() => onDone());
   }
 
@@ -66,6 +86,7 @@ export function createAfterUnlock({ vault, views, notice, onMerge, onDone, onErr
     const { [AFTER_UNLOCK_KEY]: due } = await storage.get(AFTER_UNLOCK_KEY);
     if (!due || current !== revision) return false;
     await storage.remove(AFTER_UNLOCK_KEY);
+    fromSettings = false;
     queue = ['other', 'duplicates', 'damaged'];
     await step(current);
     return true;
@@ -122,11 +143,18 @@ export function createAfterUnlock({ vault, views, notice, onMerge, onDone, onErr
 
   element('#other-add').addEventListener('click', () => { if (!action.busy && other) onMerge(other.id); });
   element('#other-later').addEventListener('click', () => { if (!action.busy) next(); });
-  element('#other-remove').addEventListener('click', () => {
+  // The second step of removing it says what it still holds that was not copied here.
+  element('#other-remove').addEventListener('click', async () => {
     if (action.busy || !other) return;
     const codes = plural(other.codes, 'code');
-    removeMessage.textContent = `Its ${codes} will be deleted on all your computers without being opened. `
-      + 'The codes in your vault are not affected.';
+    const ids = await vault.read().then((accounts) => accounts.map((account) => account.id), () => []);
+    const receipt = await receipts.current(other, vault.vaultId, ids).catch(() => null);
+    removeMessage.textContent = receipt
+      ? `Its ${codes} will be deleted on all your computers. On this computer you copied ${receipt.added.length}; `
+        + `${receipt.skipped} were not copied and ${receipt.unreadable} can’t be opened. The codes in your vault are `
+        + 'not affected.'
+      : `Its ${codes} have not been copied, and will be deleted on all your computers without being opened. The codes `
+        + 'in your vault are not affected.';
     message(removeError);
     views.navigate('remove-vault');
   });
@@ -144,6 +172,14 @@ export function createAfterUnlock({ vault, views, notice, onMerge, onDone, onErr
 
   return {
     run,
+    // From Settings: the first other vault, copied before or not.
+    async showOther() {
+      if (action.busy) return;
+      [other] = await vault.others();
+      if (!other) return;
+      fromSettings = true;
+      await showOtherPage();
+    },
     // Back from adding another vault's codes: its page again, or the list once it is gone.
     async reopen() {
       if (other) await views.navigate('other');

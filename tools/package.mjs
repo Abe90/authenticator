@@ -1,8 +1,9 @@
 // Builds the unsigned Mozilla upload archive and a readable source archive.
 //
 // Usage: node tools/package.mjs [--allow-dirty]
-// A release is built from committed files only, so that its sources reproduce it; --allow-dirty
-// builds from the working tree for local tries.
+// A release is built from committed files only, read from the last commit rather than the working tree, so that its
+// sources reproduce it whatever line endings the checkout has; --allow-dirty builds from the working tree for local
+// tries. Outside a git checkout, as in an unpacked source archive, the files are read as they are.
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
@@ -77,6 +78,14 @@ function sourceFiles() {
   return known ? files.filter((path) => known.has(path)) : files;
 }
 
+/** Reads a packaged file from the last commit, or with fromCommit false from the folder. */
+function reader(fromCommit) {
+  if (!fromCommit) return (path) => readFileSync(path);
+  return (path) => execFileSync('git', ['show', `HEAD:${name(path)}`], {
+    cwd: ROOT, stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 64 * 1024 * 1024,
+  });
+}
+
 /** Packaged files that are untracked or differ from the last commit. */
 function uncommitted(files) {
   const known = tracked();
@@ -96,13 +105,13 @@ const DOS_DATE = ((2026 - 1980) << 9) | (1 << 5) | 1;
  * A reproducible zip archive of the files: sorted entries, fixed timestamps and permissions.
  * It has no ZIP64 records, so it holds up to 65,535 files and 4 GiB.
  */
-function archive(files, nameOf) {
+function archive(files, nameOf, read) {
   const parts = [];
   const directory = [];
   let offset = 0;
   const entries = [...new Set(files)].map((path) => [nameOf(path), path]).sort(([a], [b]) => byName(a, b));
   for (const [archiveName, path] of entries) {
-    const data = readFileSync(path);
+    const data = read(path);
     const compressed = deflateRawSync(data);
     const entryName = Buffer.from(archiveName, 'utf8');
     // The fields that the local header and the central directory entry share.
@@ -139,16 +148,18 @@ function archive(files, nameOf) {
 }
 
 function main() {
+  const dirty = process.argv.slice(2).includes('--allow-dirty');
   const pending = uncommitted([...runtimeFiles(), ...sourceFiles()]);
-  if (pending.length && !process.argv.slice(2).includes('--allow-dirty')) {
+  if (pending.length && !dirty) {
     console.error(`Commit these files first, or pass --allow-dirty:\n  ${pending.map(name).join('\n  ')}`);
     process.exit(1);
   }
-  const { version } = JSON.parse(readFileSync(join(EXTENSION, 'manifest.json'), 'utf8'));
+  const read = reader(!dirty && tracked() !== null);
+  const { version } = JSON.parse(read(join(EXTENSION, 'manifest.json')).toString('utf8'));
   mkdirSync(DIST, { recursive: true });
   for (const [fileName, files, nameOf] of [[`authenticator-${version}-unsigned.zip`, runtimeFiles(), packagedName],
     [`authenticator-${version}-source.zip`, sourceFiles(), name]]) {
-    const bytes = archive(files, nameOf);
+    const bytes = archive(files, nameOf, read);
     writeFileSync(join(DIST, fileName), bytes);
     console.log(`${fileName}: ${bytes.length} bytes; SHA256 ${createHash('sha256').update(bytes).digest('hex')}`);
   }

@@ -1,2 +1,5 @@
+# Text files are checked out with LF line endings on every system, Windows included.
+* text=auto eol=lf
+
 # Vendored files must stay byte-identical to their upstream releases: never convert line endings.
 extension/vendor/** -text

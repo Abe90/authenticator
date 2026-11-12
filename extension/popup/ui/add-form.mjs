@@ -1,5 +1,6 @@
 import { decodeBase32 } from '../../core/base32.mjs';
 import { isShortManualKey } from '../../core/totp.mjs';
+import { cleanName } from '../../core/limits.mjs';
 import { DuplicateAccountError, duplicateReasons } from '../../core/duplicates.mjs';
 import { NAME_REQUIRED, changeHint, saveFailure, storedAccounts } from './account-input.mjs';
 import { element, message } from './dom.mjs';
@@ -96,7 +97,7 @@ export function createAddForm({ vault, active, blocked, onSaved, onCancel }) {
   }
 
   function manualRecord() {
-    const label = name.value.trim();
+    const label = cleanName(name.value);
     const key = secret.value.toUpperCase().replace(/\s/g, '');
     if (!label) {
       message(error, NAME_REQUIRED);

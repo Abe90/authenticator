@@ -83,8 +83,13 @@ export function createSetup({ vault, views, store, onDone, onVaultArrived }) {
     }
   });
 
+  // The end of the setup, or a vault that arrived: the password typed and the recovery key are forgotten.
   function stop() {
     active = false;
+    passwordForm.reset();
+    keyForm.reset();
+    key = '';
+    keyView.clear();
   }
 
   return {

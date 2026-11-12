@@ -1,12 +1,13 @@
 import { encodeBase32 } from './base32.mjs';
 import { parseOtpAuth } from './otpauth.mjs';
+import { cleanName } from './limits.mjs';
 
 const invalid = () => new Error('Invalid Google Authenticator export.');
 const damaged = () => new Error('This account is damaged in the export.');
 const utf8 = new TextDecoder('utf-8', { fatal: true });
 
 function readText(bytes) {
-  try { return utf8.decode(bytes).trim(); }
+  try { return cleanName(utf8.decode(bytes)); }
   catch { throw new Error('The account name is not valid text.'); }
 }
 

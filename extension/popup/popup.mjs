@@ -1,12 +1,16 @@
 import { VaultSession } from '../core/vault.mjs';
 import { VaultCopy } from '../core/vault-copy.mjs';
-import { AFTER_UNLOCK_KEY, LEGACY_LOCAL_KEYS } from '../core/storage-keys.mjs';
+import { Recovery } from '../core/recovery.mjs';
+import {
+  AFTER_UNLOCK_KEY, KEPT_COPY_KEY, LEGACY_LOCAL_KEYS, parseItem,
+} from '../core/storage-keys.mjs';
 import { RevealedCodes } from '../core/revealed-codes.mjs';
+import { MergeReceipts } from '../core/merge-receipts.mjs';
 import { openAddCodeWindow } from '../shared/add-window.mjs';
 import { element } from './ui/dom.mjs';
 import { createViews } from './ui/views.mjs';
 import { createAuthentication } from './ui/authentication.mjs';
-import { createSettings } from './ui/settings.mjs';
+import { createSettings, normalizeSettings } from './ui/settings.mjs';
 import { createAccountList } from './ui/account-list.mjs';
 import { createAddForm } from './ui/add-form.mjs';
 import { createScanConfirm } from './ui/scan-confirm.mjs';
@@ -23,30 +27,36 @@ import { createSetup } from './ui/setup.mjs';
 import { createReset } from './ui/reset-password.mjs';
 import { createNewRecoveryKey } from './ui/recovery-key.mjs';
 import { createMerge } from './ui/merge.mjs';
+import { createRestoreCopy } from './ui/restore-copy.mjs';
+import { createRecoveryView } from './ui/recovery-view.mjs';
 import { setUpPasswordFields } from './ui/password-fields.mjs';
-import { setUpPasswordMeters } from './ui/password-meter.mjs';
+import { setUpPasswordHints } from './ui/password-meter.mjs';
 
 // The same page is the toolbar popup and, with ?view=add, the Add code window.
 const addWindow = new URLSearchParams(location.search).get('view') === 'add';
 const homeView = addWindow ? 'add' : 'list';
 document.body.classList.toggle('add-window', addWindow);
 setUpPasswordFields();
-setUpPasswordMeters();
-const vault = new VaultSession(browser.storage.sync, browser.storage.session);
+setUpPasswordHints();
+const vault = new VaultSession(
+  browser.storage.sync, browser.storage.session, undefined, undefined, browser.storage.local,
+);
+const readOnly = new Recovery(browser.storage.sync, browser.storage.local);
 const vaultCopy = new VaultCopy(browser.storage.sync, browser.storage.local);
 const revealed = new RevealedCodes(browser.storage.session);
+const receipts = new MergeReceipts(browser.storage.local);
 const search = element('#search');
 const addCodeButton = element('#add-code');
 const scanButton = element('#scan');
 // The + button and the entries of its menu, off while the Add code window opens.
 const launchers = [element('#add'), addCodeButton, scanButton];
 const settingsButton = element('#settings');
-const timers = { navigation: 0, leave: 0, notice: 0 };
+const timers = { navigation: 0, leave: 0, notice: 0, change: 0 };
 let opening = false;
 let disposed = false;
 let started = false;
 const busy = () => form.busy || list.busy || settings.busy || actions.busy || scanConfirm.busy || newPassword.busy
-  || recovery.busy || afterUnlock.busy || merge.busy || setup.busy;
+  || recovery.busy || afterUnlock.busy || merge.busy || setup.busy || restoreCopy.busy;
 const setLaunchersDisabled = (disabled) => {
   for (const button of launchers) button.disabled = disabled;
 };
@@ -92,7 +102,7 @@ const scanConfirm = createScanConfirm({
   onCancel: () => leave(),
 });
 const settings = createSettings({
-  vault, storage: browser.storage.local, onRemember: (entry) => session.adopt(entry),
+  vault, storage: browser.storage.local,
   // A change that failed because the vault locked meanwhile has nothing left to report.
   onError: (text) => { if (session.unlocked) showError(text); },
 });
@@ -112,14 +122,15 @@ const actions = createAccountActions({
   },
 });
 const auth = createAuthentication({
-  vault,
+  vault, recovery: readOnly,
   active: () => views.current === 'auth' && !session.unlocked,
   blocked: () => views.changing,
   // A password unlock starts a new session, in which every HOTP code is hidden again, and asks for the checks after
-  // an unlock.
+  // an unlock. The background script must let this window hold it.
   async remember() {
     await revealed.clear();
-    await settings.remember();
+    await settings.remember(session.windowId);
+    if (!(await session.claim())) throw new Error('Unlock refused');
     await browser.storage.session.set({ [AFTER_UNLOCK_KEY]: true });
   },
   async onUnlocked(records) {
@@ -129,6 +140,17 @@ const auth = createAuthentication({
     await openUnlocked();
   },
   onForgot: () => reset.start(),
+  onRecover: (found) => recoveryView.start(found).catch(() => showError('Could not read the codes. Please try again.')),
+});
+// The time of Lock automatically, also for Codes, read-only: 1 minute with When the popup closes, null with Never.
+const recoveryView = createRecoveryView({
+  recovery: readOnly, views,
+  async minutes() {
+    const { autoLock } = normalizeSettings(await browser.storage.local.get('autoLock'));
+    if (autoLock === 'never') return null;
+    return autoLock === 'close' ? 1 : autoLock;
+  },
+  onExit: () => leaveRestore(),
 });
 // Like the password page, it is not busy while it checks: once the password is right it opens the next page.
 const check = createPasswordCheck({
@@ -138,15 +160,18 @@ const check = createPasswordCheck({
 });
 const newPassword = createNewPassword();
 const afterUnlock = createAfterUnlock({
-  vault, views, notice, onError: showError,
+  vault, views, notice, receipts, onError: showError,
   onMerge: (vaultId) => merge.start({ vaultId }),
+  onSettings: () => views.navigate('settings', () => element('#other-vaults').focus()),
   onDone: () => (views.current === 'list' ? undefined : views.navigate('list')),
 });
 // A popup that closes during the first setup, as the user copies or pastes a key elsewhere, goes on from the same
 // choice and recovery key when it opens again; so do New recovery key, with the same key, Forgot password, from its
 // recovery key, and another vault's codes, from its first page.
-const store = procedureStore(browser.storage.session);
-const recovery = createNewRecoveryKey({ vault, store, onDone: () => leaveVaultChange() });
+const store = procedureStore(browser.storage.session, {
+  onError: () => showError('Could not clear the progress of this procedure. Close Firefox to clear it.'),
+});
+const recovery = createNewRecoveryKey({ vault, store, onDone: () => leaveVaultChange(true) });
 const reset = createReset({
   vault, views, store, newPassword, blocked: () => views.changing, onDone: unlockedHere, onExit: showLockedView,
 });
@@ -154,16 +179,23 @@ const setup = createSetup({
   vault, views, store, onDone: unlockedHere, onVaultArrived: leaveSetup,
 });
 const merge = createMerge({
-  vault, views, store,
-  // Another vault's codes are in: the checks after an unlock go on, with the key added twice and damaged codes.
+  vault, views, store, receipts,
+  // Another vault's codes are copied: the checks after an unlock go on, with the key added twice and damaged codes.
   async onDone() {
     await browser.storage.session.set({ [AFTER_UNLOCK_KEY]: true }).catch(() => {});
     if (!(await afterUnlock.run().catch(() => false))) await views.navigate('list');
   },
   onExit: () => afterUnlock.reopen(),
 });
+// A vault that left Firefox Sync goes back only from these pages, with its password or recovery key. They start from
+// the setup or the password page, and lead back there.
+const restoreCopy = createRestoreCopy({
+  copy: vaultCopy, views,
+  onDone: () => leaveRestore('Your vault is back in Firefox Sync. Enter its password to open it.'),
+  onExit: () => leaveRestore(),
+});
 const session = createUnlockSession({
-  vault, list, auth, repair: () => vaultCopy.repair(), onEnded: lockVault,
+  vault, list, auth, onEnded: lockVault,
   onFollowed: () => showUnlockedView(),
   onVaultsChanged: () => refreshAuth(),
 });
@@ -186,6 +218,9 @@ const back = {
   reset: () => reset.back(),
   'merge-open': () => merge.back(),
   'merge-codes': () => merge.back(),
+  recovery: () => recoveryView.stop(),
+  'restore-open': () => restoreCopy.back(),
+  'restore-codes': () => restoreCopy.back(),
   'new-key': () => leaveVaultChange(),
   other: () => afterUnlock.back(),
   'remove-vault': () => afterUnlock.back(),
@@ -212,6 +247,7 @@ async function showUnlockedView() {
 // The first page once unlocked: the list, or straight the page of a code picked with Scan page, so that the list
 // never shows in between. The Add code window opens on its form, which then takes a waiting result.
 async function openUnlocked() {
+  recoveryView.clear();
   const page = await scan.prepare();
   if (!session.unlocked) return;
   await views.navigate(page ?? homeView, page === 'scan' ? scanConfirm.focus : undefined);
@@ -241,20 +277,26 @@ async function lockVault(revoke = true) {
   clearVaultChange();
   afterUnlock.clear();
   setup.stop();
-  store.clear();
+  merge.reset();
+  restoreCopy.reset();
+  recoveryView.clear();
+  const forgotten = store.clear().then(() => true, () => false);
   search.value = '';
   list.clear();
   auth.configure();
   await showLockedView();
-  if (!(await cleared)) showError('Could not clear the remembered unlock. Close Firefox to clear it.');
+  if (!(await cleared) || !(await forgotten)) {
+    showError('Could not clear the remembered unlock. Close Firefox to clear it.');
+  }
 }
 async function openAddWindow() {
   if (opening) return;
   opening = true;
   setLaunchersDisabled(true);
   try {
-    await session.handOff(true);
-    await openAddCodeWindow();
+    await session.handOff();
+    const { created } = await openAddCodeWindow();
+    if (!created) session.cancelHandOff();
   }
   catch {
     session.cancelHandOff();
@@ -283,8 +325,8 @@ const VAULT_CHANGES = {
           return true;
         },
         failure: 'Could not change the password. Please try again.',
-        done: leaveVaultChange,
-        back: leaveVaultChange,
+        done: () => leaveVaultChange(true),
+        back: () => leaveVaultChange(),
       });
       return views.navigate('password');
     },
@@ -315,21 +357,31 @@ function clearVaultChange() {
   recovery.reset();
   vaultChange = null;
 }
-async function leaveVaultChange() {
-  if (busy() || check.busy) return;
+// saved: the change is done. Back is ignored while a page is busy; the end of a change waits instead, since the
+// password page that led to it may still be finishing its move to the next page, and a lost end would leave the new
+// key on the page.
+async function leaveVaultChange(saved = false) {
+  clearTimeout(timers.change);
+  if (busy() || check.busy) {
+    if (saved && !disposed) timers.change = setTimeout(() => leaveVaultChange(true), 50);
+    return;
+  }
   const setting = vaultChange?.setting ?? '#change-password';
   clearVaultChange();
-  await store.clear();
-  await views.navigate('settings', () => element(setting).focus());
+  await store.leave(() => views.navigate('settings', () => element(setting).focus()));
 }
 // The vault opened by the setup or Forgot password: a new session, as after a password unlock, with the checks after
 // an unlock.
 async function unlockedHere(records) {
   try {
     await revealed.clear();
-    await settings.remember();
+    await settings.remember(session.windowId);
+    if (!(await session.claim())) throw new Error('Unlock refused');
     await browser.storage.session.set({ [AFTER_UNLOCK_KEY]: true });
-  } catch { /* Only this popup holds the unlock; other windows ask for the password. */ }
+  } catch {
+    // Only this popup holds the unlock; other windows ask for the password.
+    await vault.forget(vault.sessionId).catch(() => {});
+  }
   session.begin();
   await session.show(records);
   await openUnlocked();
@@ -337,8 +389,34 @@ async function unlockedHere(records) {
 // A vault arrived from Firefox Sync during the setup: the password page opens it.
 async function leaveSetup() {
   setup.stop();
-  await store.clear();
+  await store.leave(() => {
+    auth.configure();
+    return showLockedView();
+  });
+}
+// Restore this computer's copy shows on the setup and the password page while the copy keeps a vault.
+async function showRestoreLinks() {
+  const kept = await vaultCopy.kept().then((vaults) => vaults.length > 0, () => false);
+  element('#choose-copy').hidden = !kept;
+  element('#restore-copy').hidden = !kept;
+}
+async function startRestore() {
+  if (disposed || session.unlocked || busy() || auth.busy || views.changing) return;
+  auth.cancel();
+  setup.stop();
+  await restoreCopy.start();
+}
+// Back from restoring: to the password page with a vault, or else to the setup. text replaces its description.
+async function leaveRestore(text) {
+  if (disposed || session.unlocked) return;
+  await showRestoreLinks();
+  if (!(await vault.exists())) {
+    await setup.start({});
+    return;
+  }
   auth.configure();
+  if (text) element('#auth-description').textContent = text;
+  revealAuth();
   await showLockedView();
 }
 // The last vault went while the password page showed: the setup starts.
@@ -355,17 +433,16 @@ async function initialize() {
     // The version 1 vault is not read: vaults now live in storage.sync.
     browser.storage.local.remove(LEGACY_LOCAL_KEYS).catch(() => {});
     await settings.load();
-    // A lost vault goes back before the remembered unlock is read, which would otherwise be dropped. The background
-    // script keeps the copy in line; refreshing it here too covers a background that did not run.
-    await vaultCopy.repair();
-    vaultCopy.refresh().catch(() => {});
-    const kept = addWindow ? null : await store.load();
+    // The background script keeps the copy in line, and keeps a lost vault aside; refreshing it here too covers a
+    // background that did not run. Restore this computer’s copy shows once it has run.
+    vaultCopy.refresh().catch(() => {}).then(showRestoreLinks);
+    const kept = addWindow ? null : await store.load(vault);
     if (await session.restore()) {
       // New recovery key and another vault's codes go on where a closed popup left them.
       if (kept?.run === 'recovery') await startVaultChange('recovery', kept);
       else if (kept?.run === 'merge') await merge.start(kept);
       else {
-        if (kept) await store.clear();
+        if (kept) await store.forget();
         await openUnlocked();
       }
     } else {
@@ -374,7 +451,7 @@ async function initialize() {
       if (!addWindow && !(await vault.exists())) await setup.start(kept?.run === 'setup' ? kept : {});
       else if (kept?.run === 'reset') await reset.start();
       else {
-        if (kept) await store.clear();
+        if (kept) await store.forget();
         revealAuth();
       }
     }
@@ -397,15 +474,26 @@ addCodeButton.addEventListener('click', openAddWindow);
 scanButton.addEventListener('click', () => scan.start());
 element('#lock-vault').addEventListener('click', () => lockVault());
 element('#notice-close').addEventListener('click', closeNotice);
+element('#recovery-close').addEventListener('click', () => recoveryView.stop());
 for (const button of document.querySelectorAll('header .back')) {
   button.addEventListener('click', () => back[views.current]?.());
 }
 element('#change-password').addEventListener('click', () => startVaultChange('password'));
-element('#new-recovery-key').addEventListener('click', () => startVaultChange('recovery'));
-settingsButton.addEventListener('click', () => {
-  if (search.value) { search.value = ''; list.filter(); search.focus(); }
-  else views.navigate('settings');
+element('#choose-copy').addEventListener('click', startRestore);
+element('#restore-copy').addEventListener('click', startRestore);
+browser.storage.onChanged.addListener((changes, area) => {
+  if ((area === 'local' && KEPT_COPY_KEY in changes) || (area === 'sync' && Object.keys(changes).some(parseItem))) {
+    showRestoreLinks();
+  }
 });
+element('#new-recovery-key').addEventListener('click', () => startVaultChange('recovery'));
+settingsButton.addEventListener('click', async () => {
+  if (search.value) { search.value = ''; list.filter(); search.focus(); return; }
+  // Another vault shows while there is one, copied or not.
+  element('#other-vaults').hidden = !(await vault.others().then((others) => others.length > 0, () => false));
+  views.navigate('settings');
+});
+element('#other-vaults').addEventListener('click', () => afterUnlock.showOther());
 // Escape goes back from a page, and closes the Add code window; on the list it closes the popup, as by default.
 document.addEventListener('keydown', (event) => {
   if (event.key !== 'Escape') return;

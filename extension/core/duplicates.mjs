@@ -38,3 +38,21 @@ export function duplicateReasons(entries, accounts) {
     return null;
   });
 }
+
+// For each record read from another vault: { skip, note }. A key already stored is skipped, unless it is an HOTP
+// account with a higher counter, which the copy raises (vault.mjs copyRecords): its codes up to there may be used.
+export function copyChoices(records, accounts) {
+  const stored = new Map(accounts.map((account) => [accountKey(account), account]));
+  const seen = new Set();
+  return records.map((record) => {
+    const key = accountKey(record);
+    if (seen.has(key)) return { skip: 'Listed twice in that vault.', note: null };
+    seen.add(key);
+    const existing = stored.get(key);
+    if (!existing) return { skip: null, note: null };
+    if (record.type === 'hotp' && BigInt(record.counter) > BigInt(existing.counter)) {
+      return { skip: null, note: `In your list as “${existing.name}” with a lower counter, which the copy raises.` };
+    }
+    return { skip: 'Already in your list.', note: null };
+  });
+}

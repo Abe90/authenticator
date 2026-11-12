@@ -406,6 +406,10 @@ main > :nth-last-child(1 of :not([hidden])) .account::after {
 .code-area {
   position: relative;
 }
+/* Each digit of a new code grows from its own centre (account-list.mjs showCode). */
+.code-digit {
+  display: inline-block;
+}
 .code-area.copying output {
   visibility: hidden;
 }
@@ -487,8 +491,11 @@ output {
 .timer-track {
   fill: none;
 }
+/* A new period grows the full circle from its centre (countdown.mjs). */
 .timer-sector {
   fill: currentColor;
+  transform-box: view-box;
+  transform-origin: 50% 50%;
 }
 
 /* Controls */
@@ -986,6 +993,7 @@ select.field {
   gap: 8px;
   min-height: 132px;
 }
+/* Under a new password: its length against the minimum, and Suggest a password. */
 /* The quality of a new password, under its fields: the meter of Firefox's Primary Password dialog, a 14 px pill
    outlined like a menu and filled in the violet of a pressed button. */
 .password-quality label {
@@ -1004,6 +1012,9 @@ select.field {
 }
 .password-meter::-moz-progress-bar {
   background: var(--button-active);
+}
+.suggest {
+  margin-top: 0;
 }
 .auth-form > .wide {
   margin-top: auto;
@@ -1387,6 +1398,40 @@ output.key {
 }
 .merge-accounts .migration-account {
   margin: 0;
+}
+/* Codes, read-only: each account with its code, and buttons to copy the code or the key. */
+.recovery-account {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: baseline;
+  gap: 0 4px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--divider);
+}
+.recovery-name {
+  grid-column: 1 / -1;
+  font-size: 13px;
+  font-weight: 500;
+}
+.recovery-code {
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+}
+.recovery-note {
+  grid-column: 1;
+  grid-row: 3;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+.recovery-account .text-link {
+  margin: 0;
+  grid-row: 2;
+}
+.recovery-section {
+  margin: 16px 0 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
 }
 .warning {
   margin: 12px 0 0;

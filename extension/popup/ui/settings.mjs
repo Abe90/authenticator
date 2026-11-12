@@ -21,7 +21,7 @@ export function normalizeSettings(stored) {
   return { autoLock: CHOICES.has(autoLock) ? autoLock : DEFAULT };
 }
 
-export function createSettings({ vault, storage, onRemember, onError }) {
+export function createSettings({ vault, storage, onError }) {
   const menu = element('#auto-lock');
   let saved;
   let busy = false;
@@ -44,13 +44,18 @@ export function createSettings({ vault, storage, onRemember, onError }) {
     }
   }
 
-  // The remembered unlock takes the minutes after the last extension window closes, 0 for no time limit, and whether
-  // that close locks.
-  const rememberWith = ({ autoLock }) => (
-    vault.remember(typeof autoLock === 'number' ? autoLock : 0, autoLock === CLOSE));
+  // The remembered unlock takes the minutes after the last window holding it closes, 0 for no time limit, and
+  // whether that close locks.
+  const rememberWith = ({ autoLock }, holder) => (
+    vault.remember(typeof autoLock === 'number' ? autoLock : 0, autoLock === CLOSE, holder));
 
-  async function remember() {
-    onRemember(await rememberWith(read()));
+  // A new unlock, handed off to the window holder: it takes the stored choice, which another window may have changed
+  // since this menu showed it.
+  async function remember(holder) {
+    const stored = await storage.get(['autoLock', ...OLD_KEYS]);
+    saved = normalizeSettings(stored);
+    apply(saved);
+    await rememberWith(saved, holder);
   }
 
   async function save() {
@@ -62,7 +67,7 @@ export function createSettings({ vault, storage, onRemember, onError }) {
     try {
       await storage.set(next);
       stored = true;
-      onRemember(await rememberWith(next));
+      await rememberWith(next);
       saved = next;
     } catch {
       apply(saved);
@@ -79,5 +84,11 @@ export function createSettings({ vault, storage, onRemember, onError }) {
   }
 
   menu.addEventListener('change', save);
+  // Another window changed the choice.
+  storage.onChanged.addListener((changes) => {
+    if (!('autoLock' in changes) || busy) return;
+    saved = normalizeSettings({ autoLock: changes.autoLock.newValue });
+    apply(saved);
+  });
   return { load, remember, get busy() { return busy; } };
 }

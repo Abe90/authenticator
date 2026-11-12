@@ -33,6 +33,10 @@
         <button id="scan-back" class="back icon-button" type="button" aria-label="Back to codes"><span class="icon icon-back"></span></button>
         <h1 id="scan-title">Scanned code</h1>
       </div>
+      <div id="recovery-header" class="page-header" hidden>
+        <button id="recovery-back" class="back icon-button" type="button" aria-label="Back to the password page"><span class="icon icon-back"></span></button>
+        <h1 id="recovery-title">Codes, read-only</h1>
+      </div>
       <div id="notice-header" class="page-header" hidden>
         <button id="notice-back" class="back icon-button" type="button" aria-label="Back to codes"><span class="icon icon-back"></span></button>
         <h1 id="notice-title"></h1>
@@ -55,7 +59,7 @@
         <button id="password-back" class="back icon-button" type="button" aria-label="Back to settings"><span class="icon icon-back"></span></button>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
         <h1 id="password-title">Choose a new password</h1>
-        <p>It works at once on all your computers. Your recovery key does not change.</p>
+        <p>It works at once on all your computers. Your recovery key does not change. Don’t reuse your Firefox account password.</p>
       </div>
       <div id="reset-header" class="intro" hidden>
         <button id="reset-back" class="back icon-button" type="button" aria-label="Back to the password page"><span class="icon icon-back"></span></button>
@@ -72,7 +76,7 @@
         <button id="setup-password-back" class="back icon-button" type="button" aria-label="Back"><span class="icon icon-back"></span></button>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
         <h1 id="setup-password-title">Create a password</h1>
-        <p>It protects your codes on every computer where you use them.</p>
+        <p>It protects your codes on every computer where you use them. Don’t reuse your Firefox account password.</p>
       </div>
       <div id="setup-key-header" class="intro" hidden>
         <button id="setup-key-back" class="back icon-button" type="button" aria-label="Back"><span class="icon icon-back"></span></button>
@@ -96,7 +100,19 @@
         <button id="merge-codes-back" class="back icon-button" type="button" aria-label="Back"><span class="icon icon-back"></span></button>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
         <h1 id="merge-codes-title"></h1>
-        <p>Choose the codes to add. The other vault is then removed from all your computers.</p>
+        <p>Choose the codes to copy into your vault. The other vault stays as it is: you can remove it afterwards.</p>
+      </div>
+      <div id="restore-open-header" class="intro" hidden>
+        <button id="restore-open-back" class="back icon-button" type="button" aria-label="Back"><span class="icon icon-back"></span></button>
+        <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
+        <h1 id="restore-open-title">Restore this computer’s copy</h1>
+        <p id="restore-description"></p>
+      </div>
+      <div id="restore-codes-header" class="intro" hidden>
+        <button id="restore-codes-back" class="back icon-button" type="button" aria-label="Back"><span class="icon icon-back"></span></button>
+        <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
+        <h1 id="restore-codes-title"></h1>
+        <p>Choose the codes to put back in Firefox Sync. The codes it already has stay as they are.</p>
       </div>
       <div id="new-key-header" class="intro" hidden>
         <button id="new-key-back" class="back icon-button" type="button" aria-label="Back to settings"><span class="icon icon-back"></span></button>
@@ -125,7 +141,9 @@
         <label class="visually-hidden" for="vault-password">Password</label>
         <span class="password-field"><input id="vault-password" class="secret field large" type="text" placeholder="Password" autocomplete="off" spellcheck="false" autocapitalize="off" disabled aria-describedby="auth-description auth-error"><button class="reveal icon-button" type="button" aria-label="Show password" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
         <p id="auth-error" class="error centered" role="alert" hidden></p>
+        <button id="auth-recover" class="text-link" type="button" hidden>Show codes read-only</button>
         <button id="forgot-password" class="text-link" type="button">Forgot password?</button>
+        <button id="restore-copy" class="text-link" type="button" hidden>Restore this computer’s copy</button>
       </div>
       <button id="auth-submit" class="primary wide" type="submit" disabled><span class="icon icon-firefox-unlock"></span>Unlock</button>
     </form>
@@ -142,10 +160,11 @@
         </select>
         <span class="icon icon-firefox-arrow-down"></span>
       </span>
-      <p id="auto-lock-description" class="setting-description">The timer starts when the popup closes. Never keeps the vault unlocked until Firefox closes or you select Lock now.</p>
+      <p id="auto-lock-description" class="setting-description">The timer starts when you close the popup or stop using an open Authenticator window. With When the popup closes, an open window locks after 1 minute without use. Never keeps the vault unlocked until Firefox closes or you select Lock now.</p>
       <h2 class="settings-section">Vault</h2>
       <button id="change-password" class="setting-link" type="button">Change password<span class="icon icon-chevron"></span></button>
       <button id="new-recovery-key" class="setting-link" type="button">New recovery key<span class="icon icon-chevron"></span></button>
+      <button id="other-vaults" class="setting-link" type="button" hidden>Another vault<span class="icon icon-chevron"></span></button>
       <button id="lock-vault" class="secondary" type="button"><span class="icon icon-firefox-lock"></span>Lock now</button>
     </section>
     <form id="scan-confirm" class="page" hidden autocomplete="off" aria-labelledby="scan-title">
@@ -165,6 +184,18 @@
         <button id="scan-save" class="primary" type="submit">Add</button>
       </div>
     </form>
+    <section id="recovery-panel" class="page" hidden aria-labelledby="recovery-title">
+      <p id="recovery-source" class="hint"></p>
+      <div id="recovery-accounts"></div>
+      <h2 id="recovery-older-title" class="recovery-section" hidden>Only in this computer’s copy</h2>
+      <p id="recovery-older-hint" class="hint" hidden>They may be out of date.</p>
+      <div id="recovery-older" hidden></div>
+      <p id="recovery-unreadable" class="hint" hidden></p>
+      <p id="recovery-status" class="hint" role="status" aria-live="polite"></p>
+      <div class="form-actions">
+        <button id="recovery-close" class="secondary" type="button">Close</button>
+      </div>
+    </section>
     <section id="notice-panel" class="page" hidden aria-labelledby="notice-title">
       <p id="notice-message" class="page-message" role="alert"></p>
       <div class="form-actions">
@@ -206,6 +237,7 @@
           <label for="password-quality">Password quality meter</label>
           <progress id="password-quality" class="password-meter" max="100" value="0" data-password="password-new"></progress>
         </div>
+        <button class="text-link suggest" type="button" data-suggest="password-new" data-confirm="password-confirm">Suggest a password</button>
         <p id="password-error" class="error centered" role="alert" hidden></p>
       </div>
       <button id="password-save" class="primary wide" type="submit">Change password</button>
@@ -232,10 +264,31 @@
     <form id="merge-codes-form" class="auth-form" hidden aria-labelledby="merge-codes-title">
       <div>
         <div id="merge-accounts" class="merge-accounts"></div>
-        <p class="warning">Unchecked codes are deleted with it.</p>
+        <p id="merge-damaged" class="warning" hidden></p>
         <p id="merge-codes-error" class="error centered" role="alert" hidden></p>
       </div>
       <button id="merge-add" class="primary wide" type="submit"></button>
+    </form>
+    <form id="restore-open-form" class="auth-form" hidden autocomplete="off" aria-labelledby="restore-open-title">
+      <div class="auth-fields">
+        <label class="visually-hidden" for="restore-password">Password of the copy</label>
+        <span class="password-field"><input id="restore-password" class="secret field large" type="text" placeholder="Password" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="restore-description restore-warning restore-open-error"><button class="reveal icon-button" type="button" aria-label="Show password" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
+        <label class="visually-hidden" for="restore-key">Recovery key of the copy</label>
+        <input id="restore-key" class="key-input field large" type="text" placeholder="Recovery key" autocomplete="off" spellcheck="false" aria-describedby="restore-description restore-warning restore-open-error" hidden>
+        <p id="restore-open-error" class="error centered" role="alert" hidden></p>
+        <button id="restore-use-key" class="text-link" type="button">Use its recovery key instead</button>
+        <p id="restore-warning" class="warning">Its codes may be out of date. If you changed your password since, the old one opens the copy, and works again once you restore it.</p>
+      </div>
+      <button id="restore-continue" class="primary wide" type="submit">Continue</button>
+    </form>
+    <form id="restore-codes-form" class="auth-form" hidden aria-labelledby="restore-codes-title">
+      <div>
+        <div id="restore-accounts" class="merge-accounts"></div>
+        <p id="restore-codes-note" class="warning" hidden></p>
+        <p id="restore-codes-error" class="error centered" role="alert" hidden></p>
+      </div>
+      <button id="restore-submit" class="primary wide" type="submit"></button>
+      <button id="restore-discard" class="text-link danger" type="button">Delete this copy</button>
     </form>
     <form id="new-key-form" class="auth-form" hidden aria-labelledby="new-key-title">
       <div>
@@ -251,7 +304,7 @@
     </form>
     <section id="other-panel" class="page interstitial" hidden aria-labelledby="other-title">
       <div class="interstitial-actions">
-        <button id="other-add" class="primary wide" type="button">Add its codes</button>
+        <button id="other-add" class="primary wide" type="button">Copy its codes</button>
         <button id="other-later" class="secondary wide" type="button">Not now</button>
         <button id="other-remove" class="text-link danger" type="button">Remove that vault</button>
       </div>
@@ -292,6 +345,11 @@
           <span class="choice-text"><span class="choice-title">I use it on another computer</span><span class="choice-hint">Through Firefox Sync.</span></span>
           <span class="icon icon-chevron"></span>
         </button>
+        <button id="choose-copy" class="choice" type="button" hidden>
+          <span class="choice-icon"><span class="icon icon-computer"></span></span>
+          <span class="choice-text"><span class="choice-title">Restore this computer’s copy</span><span class="choice-hint">Kept when your vault left Firefox Sync.</span></span>
+          <span class="icon icon-chevron"></span>
+        </button>
         <p id="choice-notice" class="setup-note" hidden>Your codes have not arrived yet. Sync can take a few minutes: press <strong>Sync now</strong> on your other computer too.</p>
       </div>
     </section>
@@ -305,6 +363,7 @@
           <label for="setup-password-quality">Password quality meter</label>
           <progress id="setup-password-quality" class="password-meter" max="100" value="0" data-password="new-password"></progress>
         </div>
+        <button class="text-link suggest" type="button" data-suggest="new-password" data-confirm="new-confirm">Suggest a password</button>
         <p id="setup-password-error" class="error centered" role="alert" hidden></p>
       </div>
       <button id="setup-password-next" class="primary wide" type="submit">Continue</button>
@@ -358,8 +417,7 @@
           <h2>Demo account</h2>
           <div class="code-area"><output id="code" aria-label="One-time code">--- ---</output></div>
         </div>
-        <svg id="timer" viewBox="0 0 32 32" role="img" aria-labelledby="countdown">
-          <title id="countdown">Generating code…</title>
+        <svg id="timer" viewBox="0 0 32 32" role="img" aria-label="Generating code…">
           <circle class="timer-track" cx="16" cy="16" r="14"></circle>
           <path id="timer-sector" d=""></path>
         </svg>

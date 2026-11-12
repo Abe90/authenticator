@@ -9,6 +9,8 @@ const PAGES = {
   settings: { nodes: ['#settings-header', '#settings-panel'], focus: '#settings-back' },
   scan: { nodes: ['#scan-header', '#scan-confirm'], focus: '#scan-name' },
   notice: { nodes: ['#notice-header', '#notice-panel'], focus: '#notice-close' },
+  // Codes, read-only: a vault the password opens but cannot unlock, from the password page.
+  recovery: { nodes: ['#recovery-header', '#recovery-panel'], focus: '#recovery-close' },
   edit: { nodes: ['#edit-header', '#edit-form'], focus: '#edit-name' },
   remove: { nodes: ['#remove-header', '#remove-panel'], focus: '#remove-cancel' },
   // Change password and New recovery key: the password first, on a page like the password page.
@@ -23,6 +25,9 @@ const PAGES = {
   // Another vault's codes: its password or recovery key, then its codes.
   'merge-open': { nodes: ['#merge-open-header', '#merge-open-form'], focus: '#merge-password' },
   'merge-codes': { nodes: ['#merge-codes-header', '#merge-codes-form'], focus: '#merge-add' },
+  // A vault that left Firefox Sync, from this computer's copy: its password or recovery key, then its codes.
+  'restore-open': { nodes: ['#restore-open-header', '#restore-open-form'], focus: '#restore-password' },
+  'restore-codes': { nodes: ['#restore-codes-header', '#restore-codes-form'], focus: '#restore-submit' },
   duplicates: { nodes: ['#duplicates-header', '#duplicates-panel'], focus: '#duplicates-choices input' },
   // The first setup: the choice, then a new vault's password and recovery key, or Get your codes.
   setup: { nodes: ['#setup-header', '#setup-choice'], focus: '#choose-new' },

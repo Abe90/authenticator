@@ -23,6 +23,25 @@
   const keepAlive = setInterval(() => {
     try { port.postMessage({ type: 'keepalive' }); } catch { /* The port closed; destroy() follows. */ }
   }, 10_000);
+  // The user's input on the page reaches the extension at most every 15 seconds, and once more after the last one,
+  // so that the auto-lock counts the scan as use (shared/open-windows.mjs does the same in the extension's windows).
+  const INPUT_EVENTS = ['keydown', 'pointerdown', 'pointermove', 'wheel'];
+  let inputSeen = 0;
+  let inputSent = 0;
+  let inputTimer = 0;
+  function sendInput() {
+    inputTimer = 0;
+    inputSent = Date.now();
+    try { port.postMessage({ type: 'input', at: inputSeen }); } catch { /* The port closed; destroy() follows. */ }
+  }
+  function onInput(event) {
+    if (!event.isTrusted || destroyed) return;
+    inputSeen = Date.now();
+    if (inputTimer) return;
+    const wait = inputSent + 15_000 - inputSeen;
+    if (wait <= 0) sendInput();
+    else inputTimer = setTimeout(sendInput, wait);
+  }
   // Regions are measured at the scroll position of the last report; the holes follow the document scroll.
   let reported = { x: scrollX, y: scrollY };
   let origin = reported;
@@ -203,6 +222,8 @@
     destroyed = true;
     clearTimeout(debounce);
     clearInterval(keepAlive);
+    clearTimeout(inputTimer);
+    for (const type of INPUT_EVENTS) removeEventListener(type, onInput, true);
     observer.disconnect();
     removeEventListener('keydown', onKey, true);
     removeEventListener('scroll', onLayoutChange, true);
@@ -228,6 +249,7 @@
   addEventListener('scroll', onLayoutChange, true);
   addEventListener('scrollend', onScrollEnd, true);
   addEventListener('resize', onLayoutChange);
+  for (const type of INPUT_EVENTS) addEventListener(type, onInput, { capture: true, passive: true });
   observer.observe(document.documentElement, { childList: true });
   globalThis[KEY] = { destroy };
   report();
