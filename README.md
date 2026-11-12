@@ -57,14 +57,6 @@ The extension has no server, sends nothing and collects nothing. QR codes are de
 
 Firefox's sync storage holds 100 KB per extension: around 450 typical accounts.
 
-## Try it from the source
-
-1. Open Firefox 140 or later and go to `about:debugging#/runtime/this-firefox`.
-2. Select **Load Temporary Add-on…** and choose `extension/manifest.json`.
-3. Open **Authenticator** from the extensions menu, choose **Create a new vault**, set a password and add the public test key `GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ` (never use it for a real account). As a counter-based key, its button gives `287082`, then `359152`.
-
-A temporary add-on is removed when Firefox closes, and Firefox Sync then removes its vault from your other computers too, unless one of them still has the extension.
-
 ## Development
 
 The project needs only Firefox and Node.js 22.18 or later, with no packages to install. It has no automated tests: changes are tried by hand in Firefox.
@@ -75,6 +67,16 @@ node tools/package.mjs   # builds the archives in dist/
 ```
 
 `tools/check.mjs` checks text hygiene and syntax, follows the manifest through HTML, CSS, imports and asset paths, so that every file the extension loads exists and is packaged, and checks that every text the extension shows is in each language of `extension/_locales`. `tools/package.mjs` builds, from committed files, the archive to upload to Mozilla and a source archive that reproduces it; both are reproducible byte for byte.
+
+### Run it from the source
+
+To try a change, load the folder as a temporary add-on:
+
+1. Open Firefox 140 or later and go to `about:debugging#/runtime/this-firefox`.
+2. Select **Load Temporary Add-on…** and choose `extension/manifest.json`.
+3. Open **Authenticator** from the extensions menu, choose **Create a new vault**, set a password and add the public test key `GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ` (never use it for a real account). As a counter-based key, its button gives `287082`, then `359152`.
+
+A temporary add-on is removed when Firefox closes, and Firefox Sync then removes its vault from your other computers too, unless one of them still has the extension.
 
 ### Project structure
 
