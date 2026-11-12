@@ -1,0 +1,851 @@
+{
+  "locale": {
+    "message": "en"
+  },
+  "extensionDescription": {
+    "message": "TOTP and HOTP authenticator. Codes come from an encrypted vault that Firefox Sync can carry between your computers; no data is collected."
+  },
+  "settings": {
+    "message": "Settings"
+  },
+  "password": {
+    "message": "Password"
+  },
+  "recoveryKey": {
+    "message": "Recovery key"
+  },
+  "back": {
+    "message": "Back"
+  },
+  "backToCodes": {
+    "message": "Back to codes"
+  },
+  "backToSettings": {
+    "message": "Back to settings"
+  },
+  "backToPassword": {
+    "message": "Back to the password page"
+  },
+  "cancel": {
+    "message": "Cancel"
+  },
+  "close": {
+    "message": "Close"
+  },
+  "save": {
+    "message": "Save"
+  },
+  "saving": {
+    "message": "Saving…"
+  },
+  "add": {
+    "message": "Add"
+  },
+  "edit": {
+    "message": "Edit"
+  },
+  "remove": {
+    "message": "Remove"
+  },
+  "continue": {
+    "message": "Continue"
+  },
+  "checking": {
+    "message": "Checking…"
+  },
+  "notNow": {
+    "message": "Not now"
+  },
+  "showPassword": {
+    "message": "Show password"
+  },
+  "hidePassword": {
+    "message": "Hide password"
+  },
+  "unnamedAccount": {
+    "message": "Unnamed account"
+  },
+  "codeCount_one": {
+    "message": "$1 code"
+  },
+  "codeCount_other": {
+    "message": "$1 codes"
+  },
+  "accountCount_one": {
+    "message": "$1 Account"
+  },
+  "accountCount_other": {
+    "message": "$1 Accounts"
+  },
+  "errorTitle": {
+    "message": "Something went wrong"
+  },
+  "wrongPassword": {
+    "message": "Incorrect password. Please try again."
+  },
+  "passwordMismatch": {
+    "message": "The passwords do not match."
+  },
+  "passwordTooShort": {
+    "message": "The password needs at least $1 characters."
+  },
+  "duplicateAccount": {
+    "message": "This code is already in your list as “$1”."
+  },
+  "storageFull": {
+    "message": "Firefox’s sync storage is full."
+  },
+  "clipboardFailed": {
+    "message": "Copy failed. Please try again."
+  },
+  "newCodeIn": {
+    "message": "New code in $1 s"
+  },
+  "loading": {
+    "message": "Opening Authenticator…"
+  },
+  "authOpening": {
+    "message": "Opening your vault…"
+  },
+  "unlockTitle": {
+    "message": "Unlock your codes"
+  },
+  "authDescription": {
+    "message": "Enter your password to open your encrypted vault."
+  },
+  "unlock": {
+    "message": "Unlock"
+  },
+  "unlocking": {
+    "message": "Unlocking…"
+  },
+  "showReadOnly": {
+    "message": "Show codes read-only"
+  },
+  "forgotPassword": {
+    "message": "Forgot password?"
+  },
+  "restoreCopy": {
+    "message": "Restore this computer’s copy"
+  },
+  "unlockSessionFailed": {
+    "message": "Could not save the unlock session. Please try again."
+  },
+  "newerVault": {
+    "message": "Firefox Sync has a vault saved by a newer version of Authenticator. Update the extension to open it."
+  },
+  "wrongPasswordOrDamaged": {
+    "message": "Incorrect password or damaged vault. Please try again."
+  },
+  "explainNewer": {
+    "message": "A newer version of Authenticator saved your vault. Update the extension to open it. Until then you can see your codes, read-only."
+  },
+  "explainChanged": {
+    "message": "This password opened your vault on this computer, but the vault in Firefox Sync has changed since: its password may have changed on another computer, or it is damaged. You can see your codes, read-only."
+  },
+  "explainMissing": {
+    "message": "This password opened your vault on this computer, but the vault is no longer complete in Firefox Sync. You can see your codes, read-only."
+  },
+  "explainUnreadable": {
+    "message": "Your vault in Firefox Sync is damaged. This password opened it on this computer: you can see your codes, read-only."
+  },
+  "explainOther_one": {
+    "message": "This password does not open the main vault in Firefox Sync, but another vault, created on $2, with $1 code. You can see its codes, read-only."
+  },
+  "explainOther_other": {
+    "message": "This password does not open the main vault in Firefox Sync, but another vault, created on $2, with $1 codes. You can see its codes, read-only."
+  },
+  "readCodesFailed": {
+    "message": "Could not read the codes. Please try again."
+  },
+  "clearProgressFailed": {
+    "message": "Could not clear the progress of this procedure. Close Firefox to clear it."
+  },
+  "clearUnlockFailed": {
+    "message": "Could not clear the remembered unlock. Close Firefox to clear it."
+  },
+  "storageFailed": {
+    "message": "Could not access local storage. Reload the extension and try again."
+  },
+  "vaultBack": {
+    "message": "Your vault is back in Firefox Sync. Enter its password to open it."
+  },
+  "searchAccounts": {
+    "message": "Search accounts"
+  },
+  "searchPlaceholder": {
+    "message": "Search…"
+  },
+  "clearSearch": {
+    "message": "Clear search"
+  },
+  "noAccountsFound": {
+    "message": "No accounts found."
+  },
+  "noCodes": {
+    "message": "No codes yet."
+  },
+  "addFirst": {
+    "message": "Add your first code to get started."
+  },
+  "addACode": {
+    "message": "Add a code"
+  },
+  "scanQr": {
+    "message": "Scan a QR code"
+  },
+  "enterSetupKey": {
+    "message": "Enter a setup key"
+  },
+  "oneTimeCode": {
+    "message": "One-time code"
+  },
+  "generatingCode": {
+    "message": "Generating code…"
+  },
+  "copyCodeOf": {
+    "message": "$1: copy code"
+  },
+  "codeCopied": {
+    "message": "Code copied"
+  },
+  "nextCodeFor": {
+    "message": "Generate the next code for $1"
+  },
+  "codeError": {
+    "message": "Error"
+  },
+  "codeUnavailable": {
+    "message": "Code unavailable. Reopen the popup."
+  },
+  "nextCounterFailed": {
+    "message": "Could not save the next counter. Please try again."
+  },
+  "orderFailed": {
+    "message": "Could not save the new order. Please try again."
+  },
+  "openAddWindowFailed": {
+    "message": "Could not open the Add code window. Please try again."
+  },
+  "editCode": {
+    "message": "Edit code"
+  },
+  "codeName": {
+    "message": "Code name"
+  },
+  "nameRequired": {
+    "message": "Enter a code name."
+  },
+  "renameFailed": {
+    "message": "Could not save the name. Please try again."
+  },
+  "removeTitle": {
+    "message": "Remove $1?"
+  },
+  "removeMessage": {
+    "message": "When you remove this account from Authenticator, you won’t get codes to help you sign in securely any more. Make sure that you update your settings for this account to reflect this change."
+  },
+  "removeFailed": {
+    "message": "Could not remove the account. Please try again."
+  },
+  "addCode": {
+    "message": "Add code"
+  },
+  "scannedCode": {
+    "message": "Scanned code"
+  },
+  "importFromQr": {
+    "message": "Import from QR"
+  },
+  "importQrImage": {
+    "message": "Import QR image"
+  },
+  "qrStatus": {
+    "message": "Choose a QR image or paste a screenshot here."
+  },
+  "accounts": {
+    "message": "Accounts"
+  },
+  "orManual": {
+    "message": "or enter a key manually"
+  },
+  "namePlaceholder": {
+    "message": "e.g. Test account"
+  },
+  "yourKey": {
+    "message": "Your key"
+  },
+  "keyType": {
+    "message": "Type of key"
+  },
+  "timeBased": {
+    "message": "Time based"
+  },
+  "counterBased": {
+    "message": "Counter based"
+  },
+  "hintTotp": {
+    "message": "The code changes every 30 seconds."
+  },
+  "hintHotp": {
+    "message": "The code changes when you request the next one."
+  },
+  "scanTypeTotp": {
+    "message": "Time based. The code changes every 30 seconds."
+  },
+  "scanTypeHotp": {
+    "message": "Counter based. The code changes when you request the next one."
+  },
+  "invalidKey": {
+    "message": "Invalid key. Enter a Base32 key (letters A–Z and digits 2–7), not a six-digit code."
+  },
+  "keyTooShort": {
+    "message": "The key is too short. Check that you copied all of it."
+  },
+  "saveFailed": {
+    "message": "Could not save the codes. No codes were added. Please try again."
+  },
+  "exportPart": {
+    "message": "QR $1 of $2: this image contains only part of the export. Import the other images separately."
+  },
+  "alreadyInList": {
+    "message": "Already in your list."
+  },
+  "listedTwiceInExport": {
+    "message": "Listed twice in this export."
+  },
+  "codeAlreadyAdded": {
+    "message": "Code already added"
+  },
+  "alreadyAdded": {
+    "message": "This code is already in your list as “$1”. You don’t need to add it again."
+  },
+  "cantAddTitle": {
+    "message": "Can’t add this code"
+  },
+  "scanStartFailed": {
+    "message": "Could not start the scan. Please try again."
+  },
+  "imageType": {
+    "message": "Choose a PNG, JPEG, WebP, GIF or BMP image."
+  },
+  "imageTooBig": {
+    "message": "Choose an image smaller than 10 MB."
+  },
+  "imageTooLarge": {
+    "message": "The image is too large. Crop it around the QR code."
+  },
+  "imageUnreadable": {
+    "message": "Could not read the image. Try a PNG or JPEG screenshot."
+  },
+  "qrNotFound": {
+    "message": "No readable QR code found. Try a clearer image cropped around the code."
+  },
+  "qrInvalid": {
+    "message": "Invalid authenticator QR code."
+  },
+  "qrNotAccount": {
+    "message": "This QR code is not an authenticator account."
+  },
+  "qrUnsupported": {
+    "message": "This QR code is not a supported authenticator account."
+  },
+  "qrDuplicateParameters": {
+    "message": "The QR code contains duplicate parameters."
+  },
+  "qrUnsupportedCode": {
+    "message": "Only SHA-1, six-digit codes and a 30-second TOTP period are supported."
+  },
+  "qrInvalidName": {
+    "message": "The QR code has an invalid account name."
+  },
+  "qrConflictingProviders": {
+    "message": "The QR code contains conflicting account providers."
+  },
+  "qrNameLength": {
+    "message": "The account name must contain 1 to $1 characters."
+  },
+  "qrInvalidSecret": {
+    "message": "The QR code contains an invalid secret key."
+  },
+  "qrInvalidCounter": {
+    "message": "The QR code contains an invalid HOTP counter."
+  },
+  "exportInvalid": {
+    "message": "Invalid Google Authenticator export."
+  },
+  "exportDamagedAccount": {
+    "message": "This account is damaged in the export."
+  },
+  "exportInvalidName": {
+    "message": "The account name is not valid text."
+  },
+  "exportInvalidData": {
+    "message": "The export contains invalid Base64 data. Try a fresh QR image."
+  },
+  "exportIncomplete": {
+    "message": "The export data is incomplete. Try a clearer QR image."
+  },
+  "exportVersion": {
+    "message": "Google export version $1 is not supported yet."
+  },
+  "exportPages": {
+    "message": "The Google export has invalid QR page information."
+  },
+  "exportEmpty": {
+    "message": "No accounts found in the Google export."
+  },
+  "exportTooMany": {
+    "message": "Too many accounts in this QR image."
+  },
+  "exportUnsupportedCode": {
+    "message": "Only SHA-1 and six-digit codes are supported."
+  },
+  "exportUnsupportedType": {
+    "message": "Unsupported account type."
+  },
+  "exportMissingName": {
+    "message": "Missing account name."
+  },
+  "scanGrant": {
+    "message": "Click the Authenticator icon while the page with the QR code is open, then press Scan page again."
+  },
+  "scanUnscannable": {
+    "message": "This page cannot be scanned. Take a screenshot of the QR code and paste it here instead."
+  },
+  "scanFailed": {
+    "message": "Could not scan this page. Please try again."
+  },
+  "overlayLabel": {
+    "message": "QR codes on this page"
+  },
+  "overlayHint": {
+    "message": "Click a QR code to import it · Esc to cancel"
+  },
+  "overlayNone": {
+    "message": "No whole QR code visible · Scroll until it shows or press Esc"
+  },
+  "overlayFound_one": {
+    "message": "$1 QR code found. Click it or press Enter to import it, or press Escape to cancel."
+  },
+  "overlayFound_other": {
+    "message": "$1 QR codes found. Click one to import it, or press Escape to cancel."
+  },
+  "autoLock": {
+    "message": "Lock automatically"
+  },
+  "autoLockClose": {
+    "message": "When the popup closes"
+  },
+  "autoLock1": {
+    "message": "After 1 minute"
+  },
+  "autoLock5": {
+    "message": "After 5 minutes"
+  },
+  "autoLock30": {
+    "message": "After 30 minutes"
+  },
+  "autoLockHour": {
+    "message": "After 1 hour"
+  },
+  "autoLockNever": {
+    "message": "Never"
+  },
+  "autoLockDescription": {
+    "message": "The timer starts when you close the popup or stop using an open Authenticator window. With When the popup closes, an open window locks after 1 minute without use. Never keeps the vault unlocked until Firefox closes or you select Lock now."
+  },
+  "vault": {
+    "message": "Vault"
+  },
+  "changePassword": {
+    "message": "Change password"
+  },
+  "newRecoveryKey": {
+    "message": "New recovery key"
+  },
+  "anotherVault": {
+    "message": "Another vault"
+  },
+  "lockNow": {
+    "message": "Lock now"
+  },
+  "settingFailed": {
+    "message": "Could not update the unlock setting. Please try again."
+  },
+  "changePasswordPrompt": {
+    "message": "Enter your password to choose a new one."
+  },
+  "changePasswordFailed": {
+    "message": "Could not change the password. Please try again."
+  },
+  "newPasswordTitle": {
+    "message": "Choose a new password"
+  },
+  "newPasswordIntro": {
+    "message": "It works at once on all your computers. Your recovery key does not change. Don’t reuse your Firefox account password."
+  },
+  "newPassword": {
+    "message": "New password"
+  },
+  "confirmNewPassword": {
+    "message": "Confirm new password"
+  },
+  "confirmPassword": {
+    "message": "Confirm password"
+  },
+  "passwordQuality": {
+    "message": "Password quality meter"
+  },
+  "suggestPassword": {
+    "message": "Suggest a password"
+  },
+  "resetTitle": {
+    "message": "Reset your password"
+  },
+  "resetDescription": {
+    "message": "Enter the recovery key you saved when you created your vault."
+  },
+  "resetPassword": {
+    "message": "Reset password"
+  },
+  "resetFailed": {
+    "message": "Could not reset the password. Please try again."
+  },
+  "notAKey": {
+    "message": "This is not a recovery key: it has 32 letters and digits."
+  },
+  "wrongKey": {
+    "message": "This recovery key does not open this vault. Check it and try again."
+  },
+  "newKeyPrompt": {
+    "message": "A new key will replace the one you saved before. Enter your password to continue."
+  },
+  "saveNewKeyTitle": {
+    "message": "Save your new recovery key"
+  },
+  "keyIntro": {
+    "message": "If you forget your password, this key is the only way back to your codes."
+  },
+  "keyHint": {
+    "message": "Print it, or keep it in a password manager. Anyone with this key can set a new password."
+  },
+  "copyRecoveryKey": {
+    "message": "Copy recovery key"
+  },
+  "savedNewKey": {
+    "message": "I saved my new recovery key"
+  },
+  "savedKey": {
+    "message": "I saved my recovery key"
+  },
+  "replaceKey": {
+    "message": "Replace key"
+  },
+  "replaceKeyFailed": {
+    "message": "Could not replace the key. Please try again."
+  },
+  "setupTitle": {
+    "message": "Set up Authenticator"
+  },
+  "setupQuestion": {
+    "message": "How do you want to start?"
+  },
+  "createNewVault": {
+    "message": "Create a new vault"
+  },
+  "firstComputer": {
+    "message": "Your first computer."
+  },
+  "useOnOther": {
+    "message": "I use it on another computer"
+  },
+  "throughSync": {
+    "message": "Through Firefox Sync."
+  },
+  "keptCopyHint": {
+    "message": "Kept when your vault left Firefox Sync."
+  },
+  "choiceNotice": {
+    "message": "Your codes have not arrived yet. Sync can take a few minutes: press $1 on your other computer too."
+  },
+  "createPasswordTitle": {
+    "message": "Create a password"
+  },
+  "createPasswordIntro": {
+    "message": "It protects your codes on every computer where you use them. Don’t reuse your Firefox account password."
+  },
+  "saveKeyTitle": {
+    "message": "Save your recovery key"
+  },
+  "createVault": {
+    "message": "Create vault"
+  },
+  "vaultArrived": {
+    "message": "A vault arrived from Firefox Sync meanwhile. Go back and unlock it instead."
+  },
+  "createFailed": {
+    "message": "Could not create the vault. Please try again."
+  },
+  "getCodesTitle": {
+    "message": "Get your codes"
+  },
+  "getCodesIntro": {
+    "message": "Firefox Sync brings them from your other computer."
+  },
+  "howto1": {
+    "message": "Open $1 › $2."
+  },
+  "howto2": {
+    "message": "In the $1 $2 card, check that $3 $4. If not, sign in with the account of your other computer."
+  },
+  "howto3": {
+    "message": "Under $1, check that $2 $3 is there."
+  },
+  "howto4": {
+    "message": "Press $1, then open $2 $3 again."
+  },
+  "firefoxMenu": {
+    "message": "Menu"
+  },
+  "firefoxSettings": {
+    "message": "Settings"
+  },
+  "firefoxSync": {
+    "message": "Sync"
+  },
+  "firefoxSyncOn": {
+    "message": "Syncing is ON"
+  },
+  "firefoxSyncedData": {
+    "message": "Data synced across devices"
+  },
+  "firefoxAddons": {
+    "message": "Add-ons"
+  },
+  "firefoxSyncNow": {
+    "message": "Sync now"
+  },
+  "otherTitle": {
+    "message": "Codes from another vault"
+  },
+  "otherDescription_one": {
+    "message": "One of your computers made a separate vault with $1 code before it was connected to Firefox Sync."
+  },
+  "otherDescription_other": {
+    "message": "One of your computers made a separate vault with $1 codes before it was connected to Firefox Sync."
+  },
+  "copyItsCodes": {
+    "message": "Copy its codes"
+  },
+  "removeThatVault": {
+    "message": "Remove that vault"
+  },
+  "removeVaultTitle": {
+    "message": "Remove the other vault?"
+  },
+  "removeVault": {
+    "message": "Remove vault"
+  },
+  "removeVaultCopied_one": {
+    "message": "Its $1 code will be deleted on all your computers. On this computer you copied $2; $3 were not copied and $4 can’t be opened. The codes in your vault are not affected."
+  },
+  "removeVaultCopied_other": {
+    "message": "Its $1 codes will be deleted on all your computers. On this computer you copied $2; $3 were not copied and $4 can’t be opened. The codes in your vault are not affected."
+  },
+  "removeVaultNotCopied_one": {
+    "message": "Its $1 code has not been copied, and will be deleted on all your computers without being opened. The codes in your vault are not affected."
+  },
+  "removeVaultNotCopied_other": {
+    "message": "Its $1 codes have not been copied, and will be deleted on all your computers without being opened. The codes in your vault are not affected."
+  },
+  "removeVaultFailed": {
+    "message": "Could not remove the vault. Please try again."
+  },
+  "mergeOpenTitle": {
+    "message": "Open the other vault"
+  },
+  "mergePasswordPrompt": {
+    "message": "Enter the password you chose for it on the other computer."
+  },
+  "mergeKeyPrompt": {
+    "message": "Enter the recovery key that was saved when the other vault was created."
+  },
+  "passwordOfOther": {
+    "message": "Password of the other vault"
+  },
+  "keyOfOther": {
+    "message": "Recovery key of the other vault"
+  },
+  "useKeyInstead": {
+    "message": "Use its recovery key instead"
+  },
+  "usePasswordInstead": {
+    "message": "Use its password instead"
+  },
+  "vaultGone": {
+    "message": "That vault is no longer there."
+  },
+  "keyNotThatVault": {
+    "message": "This recovery key does not open that vault."
+  },
+  "mergeCodesIntro": {
+    "message": "Choose the codes to copy into your vault. The other vault stays as it is: you can remove it afterwards."
+  },
+  "copyCodes_one": {
+    "message": "Copy $1 code"
+  },
+  "copyCodes_other": {
+    "message": "Copy $1 codes"
+  },
+  "copyCodesNone": {
+    "message": "Copy codes"
+  },
+  "listedTwiceInVault": {
+    "message": "Listed twice in that vault."
+  },
+  "copyRaisesCounter": {
+    "message": "In your list as “$1” with a lower counter, which the copy raises."
+  },
+  "mergeDamaged_one": {
+    "message": "$1 code of the other vault can’t be opened. They stay in it."
+  },
+  "mergeDamaged_other": {
+    "message": "$1 codes of the other vault can’t be opened. They stay in it."
+  },
+  "otherChanged": {
+    "message": "The other vault changed meanwhile. Check the codes again."
+  },
+  "copyFailed": {
+    "message": "Could not copy the codes. Please try again."
+  },
+  "duplicatesTitle": {
+    "message": "Same code added twice"
+  },
+  "duplicatesIntro": {
+    "message": "You added this key on two computers before they synced. Keep one; the other is removed everywhere."
+  },
+  "keepThisOne": {
+    "message": "Keep this one"
+  },
+  "addedOn": {
+    "message": "Added $1"
+  },
+  "removeEntryFailed": {
+    "message": "Could not remove the other entry. Please try again."
+  },
+  "damagedTitle": {
+    "message": "Some codes can’t be read"
+  },
+  "damagedCodes_one": {
+    "message": "One code in your vault is damaged and can’t be shown. The others work as usual."
+  },
+  "damagedCodes_other": {
+    "message": "$1 codes in your vault are damaged and can’t be shown. The others work as usual."
+  },
+  "readOnlyTitle": {
+    "message": "Codes, read-only"
+  },
+  "recoverySourceTrusted": {
+    "message": "Read with the vault header this computer last opened with your password. Nothing is written to Firefox Sync, and these codes cannot be changed here."
+  },
+  "recoverySourceOther": {
+    "message": "Read from another vault in Firefox Sync. Nothing is written to Firefox Sync, and these codes cannot be changed here."
+  },
+  "onlyInCopy": {
+    "message": "Only in this computer’s copy"
+  },
+  "mayBeOutdated": {
+    "message": "They may be out of date."
+  },
+  "hotpMayBeUsed": {
+    "message": "Counter-based: this code may already have been used."
+  },
+  "copyCode": {
+    "message": "Copy code"
+  },
+  "copyKey": {
+    "message": "Copy key"
+  },
+  "codeCopiedFor": {
+    "message": "Code for $1 copied"
+  },
+  "keyCopiedFor": {
+    "message": "Key for $1 copied"
+  },
+  "codeCannotShow": {
+    "message": "This code cannot be shown."
+  },
+  "unreadableNewer_one": {
+    "message": "$1 code saved by a newer version of Authenticator cannot be shown here."
+  },
+  "unreadableNewer_other": {
+    "message": "$1 codes saved by a newer version of Authenticator cannot be shown here."
+  },
+  "unreadableCodes_one": {
+    "message": "$1 code cannot be read."
+  },
+  "unreadableCodes_other": {
+    "message": "$1 codes cannot be read."
+  },
+  "restoreDescription": {
+    "message": "This computer kept a copy of your vault when it left Firefox Sync. Enter the password it had then."
+  },
+  "restoreDescriptionDated": {
+    "message": "This computer kept a copy of your vault, as it was on $1, when it left Firefox Sync. Enter the password it had then."
+  },
+  "passwordOfCopy": {
+    "message": "Password of the copy"
+  },
+  "keyOfCopy": {
+    "message": "Recovery key of the copy"
+  },
+  "restoreWarning": {
+    "message": "Its codes may be out of date. If you changed your password since, the old one opens the copy, and works again once you restore it."
+  },
+  "copyGone": {
+    "message": "This copy is no longer here."
+  },
+  "keyNotCopy": {
+    "message": "This recovery key does not open the copy."
+  },
+  "restoreCodesIntro": {
+    "message": "Choose the codes to put back in Firefox Sync. The codes it already has stay as they are."
+  },
+  "restoreCodes_one": {
+    "message": "Restore $1 code"
+  },
+  "restoreCodes_other": {
+    "message": "Restore $1 codes"
+  },
+  "restoreVault": {
+    "message": "Restore the vault"
+  },
+  "alreadyInSync": {
+    "message": "Already in Firefox Sync"
+  },
+  "copyDamaged_one": {
+    "message": "$1 code in the copy cannot be read."
+  },
+  "copyDamaged_other": {
+    "message": "$1 codes in the copy cannot be read."
+  },
+  "becomesMain": {
+    "message": "It becomes your main vault again. You can add the codes of the vault now in Firefox Sync after you unlock."
+  },
+  "vaultIsBack": {
+    "message": "This vault is back in Firefox Sync. Go back and unlock it."
+  },
+  "restoreFailed": {
+    "message": "Could not restore the vault. Please try again."
+  },
+  "deleteCopy": {
+    "message": "Delete this copy"
+  },
+  "deleteForGood": {
+    "message": "Delete it for good"
+  },
+  "deleteCopyFailed": {
+    "message": "Could not delete the copy. Please try again."
+  }
+}

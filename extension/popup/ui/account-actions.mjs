@@ -1,11 +1,12 @@
 import { cleanName } from '../../core/limits.mjs';
+import { t } from '../../shared/i18n.mjs';
 import { NAME_REQUIRED } from './account-input.mjs';
 import { element, message } from './dom.mjs';
 import { failureText } from './messages.mjs';
 
 // Keeps the menu off the popup edges.
 const EDGE = 4;
-const removeTitleText = (name) => `Remove ${name}?`;
+const removeTitleText = (name) => t('removeTitle', name);
 
 // The Edit and Remove menu of an account row (right click, Menu key or Shift+F10), and the Edit code and Remove
 // pages it opens. onOpen(page, focus) shows a page; onLeave(id) goes back to the list and focuses the row of id,
@@ -143,8 +144,7 @@ export function createAccountActions({ vault, blocked, onOpen, onLeave, onRename
       leave(target.id);
       return;
     }
-    run(editSave, editError, (id) => vault.rename(id, name), 'Could not save the name. Please try again.',
-      onRenamed, target.id);
+    run(editSave, editError, (id) => vault.rename(id, name), t('renameFailed'), onRenamed, target.id);
   }
 
   // Back to the list without saving: the back arrow, Escape and Cancel.
@@ -179,8 +179,7 @@ export function createAccountActions({ vault, blocked, onOpen, onLeave, onRename
     if (!target) return;
     // Taken before the write: the storage event of the write may redraw the list before it reports here.
     const next = neighbour(target.id);
-    run(removeConfirm, removeError, (id) => vault.remove(id), 'Could not remove the account. Please try again.',
-      onRemoved, next);
+    run(removeConfirm, removeError, (id) => vault.remove(id), t('removeFailed'), onRemoved, next);
   });
 
   return {

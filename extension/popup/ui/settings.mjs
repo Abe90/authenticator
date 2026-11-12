@@ -1,3 +1,4 @@
+import { t } from '../../shared/i18n.mjs';
 import { element } from './dom.mjs';
 
 // When the vault locks by itself, the menu of Settings: 'close' when the last extension window closes, a number of
@@ -71,7 +72,7 @@ export function createSettings({ vault, storage, onError }) {
       saved = next;
     } catch {
       apply(saved);
-      onError('Could not update the unlock setting. Please try again.');
+      onError(t('settingFailed'));
       // The remembered unlock is written last, so only the stored preference can be ahead of the menu.
       if (stored) {
         try { await storage.set(saved); }

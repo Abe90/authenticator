@@ -1,0 +1,851 @@
+{
+  "locale": {
+    "message": "fr"
+  },
+  "extensionDescription": {
+    "message": "Authentificateur TOTP et HOTP. Les codes viennent d’un coffre chiffré que Firefox Sync peut porter d’un ordinateur à l’autre ; aucune donnée n’est collectée."
+  },
+  "settings": {
+    "message": "Paramètres"
+  },
+  "password": {
+    "message": "Mot de passe"
+  },
+  "recoveryKey": {
+    "message": "Clé de récupération"
+  },
+  "back": {
+    "message": "Retour"
+  },
+  "backToCodes": {
+    "message": "Retour aux codes"
+  },
+  "backToSettings": {
+    "message": "Retour aux paramètres"
+  },
+  "backToPassword": {
+    "message": "Retour à la page du mot de passe"
+  },
+  "cancel": {
+    "message": "Annuler"
+  },
+  "close": {
+    "message": "Fermer"
+  },
+  "save": {
+    "message": "Enregistrer"
+  },
+  "saving": {
+    "message": "Enregistrement…"
+  },
+  "add": {
+    "message": "Ajouter"
+  },
+  "edit": {
+    "message": "Modifier"
+  },
+  "remove": {
+    "message": "Supprimer"
+  },
+  "continue": {
+    "message": "Continuer"
+  },
+  "checking": {
+    "message": "Vérification…"
+  },
+  "notNow": {
+    "message": "Pas maintenant"
+  },
+  "showPassword": {
+    "message": "Afficher le mot de passe"
+  },
+  "hidePassword": {
+    "message": "Masquer le mot de passe"
+  },
+  "unnamedAccount": {
+    "message": "Compte sans nom"
+  },
+  "codeCount_one": {
+    "message": "$1 code"
+  },
+  "codeCount_other": {
+    "message": "$1 codes"
+  },
+  "accountCount_one": {
+    "message": "$1 compte"
+  },
+  "accountCount_other": {
+    "message": "$1 comptes"
+  },
+  "errorTitle": {
+    "message": "Une erreur s’est produite"
+  },
+  "wrongPassword": {
+    "message": "Mot de passe incorrect. Veuillez réessayer."
+  },
+  "passwordMismatch": {
+    "message": "Les mots de passe ne correspondent pas."
+  },
+  "passwordTooShort": {
+    "message": "Le mot de passe doit compter au moins $1 caractères."
+  },
+  "duplicateAccount": {
+    "message": "Ce code est déjà dans votre liste sous le nom « $1 »."
+  },
+  "storageFull": {
+    "message": "L’espace de synchronisation de Firefox est plein."
+  },
+  "clipboardFailed": {
+    "message": "La copie a échoué. Veuillez réessayer."
+  },
+  "newCodeIn": {
+    "message": "Nouveau code dans $1 s"
+  },
+  "loading": {
+    "message": "Ouverture d’Authenticator…"
+  },
+  "authOpening": {
+    "message": "Ouverture de votre coffre…"
+  },
+  "unlockTitle": {
+    "message": "Déverrouillez vos codes"
+  },
+  "authDescription": {
+    "message": "Saisissez votre mot de passe pour ouvrir votre coffre chiffré."
+  },
+  "unlock": {
+    "message": "Déverrouiller"
+  },
+  "unlocking": {
+    "message": "Déverrouillage…"
+  },
+  "showReadOnly": {
+    "message": "Afficher les codes en lecture seule"
+  },
+  "forgotPassword": {
+    "message": "Mot de passe oublié ?"
+  },
+  "restoreCopy": {
+    "message": "Restaurer la copie de cet ordinateur"
+  },
+  "unlockSessionFailed": {
+    "message": "Impossible d’enregistrer la session de déverrouillage. Veuillez réessayer."
+  },
+  "newerVault": {
+    "message": "Firefox Sync contient un coffre enregistré par une version plus récente d’Authenticator. Mettez l’extension à jour pour l’ouvrir."
+  },
+  "wrongPasswordOrDamaged": {
+    "message": "Mot de passe incorrect ou coffre endommagé. Veuillez réessayer."
+  },
+  "explainNewer": {
+    "message": "Une version plus récente d’Authenticator a enregistré votre coffre. Mettez l’extension à jour pour l’ouvrir. En attendant, vous pouvez voir vos codes en lecture seule."
+  },
+  "explainChanged": {
+    "message": "Ce mot de passe a ouvert votre coffre sur cet ordinateur, mais le coffre dans Firefox Sync a changé depuis : son mot de passe a peut-être été modifié sur un autre ordinateur, ou il est endommagé. Vous pouvez voir vos codes en lecture seule."
+  },
+  "explainMissing": {
+    "message": "Ce mot de passe a ouvert votre coffre sur cet ordinateur, mais le coffre n’est plus complet dans Firefox Sync. Vous pouvez voir vos codes en lecture seule."
+  },
+  "explainUnreadable": {
+    "message": "Votre coffre dans Firefox Sync est endommagé. Ce mot de passe l’a ouvert sur cet ordinateur : vous pouvez voir vos codes en lecture seule."
+  },
+  "explainOther_one": {
+    "message": "Ce mot de passe n’ouvre pas le coffre principal de Firefox Sync, mais un autre coffre, créé le $2, avec $1 code. Vous pouvez voir ses codes en lecture seule."
+  },
+  "explainOther_other": {
+    "message": "Ce mot de passe n’ouvre pas le coffre principal de Firefox Sync, mais un autre coffre, créé le $2, avec $1 codes. Vous pouvez voir ses codes en lecture seule."
+  },
+  "readCodesFailed": {
+    "message": "Impossible de lire les codes. Veuillez réessayer."
+  },
+  "clearProgressFailed": {
+    "message": "Impossible d’effacer la progression de cette procédure. Fermez Firefox pour l’effacer."
+  },
+  "clearUnlockFailed": {
+    "message": "Impossible d’effacer le déverrouillage mémorisé. Fermez Firefox pour l’effacer."
+  },
+  "storageFailed": {
+    "message": "Impossible d’accéder au stockage local. Rechargez l’extension et réessayez."
+  },
+  "vaultBack": {
+    "message": "Votre coffre est de retour dans Firefox Sync. Saisissez son mot de passe pour l’ouvrir."
+  },
+  "searchAccounts": {
+    "message": "Rechercher des comptes"
+  },
+  "searchPlaceholder": {
+    "message": "Rechercher…"
+  },
+  "clearSearch": {
+    "message": "Effacer la recherche"
+  },
+  "noAccountsFound": {
+    "message": "Aucun compte trouvé."
+  },
+  "noCodes": {
+    "message": "Pas encore de code."
+  },
+  "addFirst": {
+    "message": "Ajoutez votre premier code pour commencer."
+  },
+  "addACode": {
+    "message": "Ajouter un code"
+  },
+  "scanQr": {
+    "message": "Scanner un code QR"
+  },
+  "enterSetupKey": {
+    "message": "Saisir une clé de configuration"
+  },
+  "oneTimeCode": {
+    "message": "Code à usage unique"
+  },
+  "generatingCode": {
+    "message": "Génération du code…"
+  },
+  "copyCodeOf": {
+    "message": "$1 : copier le code"
+  },
+  "codeCopied": {
+    "message": "Code copié"
+  },
+  "nextCodeFor": {
+    "message": "Générer le code suivant pour $1"
+  },
+  "codeError": {
+    "message": "Erreur"
+  },
+  "codeUnavailable": {
+    "message": "Code indisponible. Rouvrez le panneau."
+  },
+  "nextCounterFailed": {
+    "message": "Impossible d’enregistrer le compteur suivant. Veuillez réessayer."
+  },
+  "orderFailed": {
+    "message": "Impossible d’enregistrer le nouvel ordre. Veuillez réessayer."
+  },
+  "openAddWindowFailed": {
+    "message": "Impossible d’ouvrir la fenêtre Ajouter un code. Veuillez réessayer."
+  },
+  "editCode": {
+    "message": "Modifier le code"
+  },
+  "codeName": {
+    "message": "Nom du code"
+  },
+  "nameRequired": {
+    "message": "Saisissez un nom pour le code."
+  },
+  "renameFailed": {
+    "message": "Impossible d’enregistrer le nom. Veuillez réessayer."
+  },
+  "removeTitle": {
+    "message": "Supprimer $1 ?"
+  },
+  "removeMessage": {
+    "message": "Si vous supprimez ce compte d’Authenticator, vous ne recevrez plus de codes pour vous connecter en toute sécurité. Pensez à mettre à jour les paramètres de ce compte en conséquence."
+  },
+  "removeFailed": {
+    "message": "Impossible de supprimer le compte. Veuillez réessayer."
+  },
+  "addCode": {
+    "message": "Ajouter un code"
+  },
+  "scannedCode": {
+    "message": "Code scanné"
+  },
+  "importFromQr": {
+    "message": "Importer depuis un QR"
+  },
+  "importQrImage": {
+    "message": "Importer une image QR"
+  },
+  "qrStatus": {
+    "message": "Choisissez une image QR ou collez ici une capture d’écran."
+  },
+  "accounts": {
+    "message": "Comptes"
+  },
+  "orManual": {
+    "message": "ou saisissez une clé manuellement"
+  },
+  "namePlaceholder": {
+    "message": "p. ex. Compte de test"
+  },
+  "yourKey": {
+    "message": "Votre clé"
+  },
+  "keyType": {
+    "message": "Type de clé"
+  },
+  "timeBased": {
+    "message": "Basée sur le temps"
+  },
+  "counterBased": {
+    "message": "Basée sur un compteur"
+  },
+  "hintTotp": {
+    "message": "Le code change toutes les 30 secondes."
+  },
+  "hintHotp": {
+    "message": "Le code change quand vous demandez le suivant."
+  },
+  "scanTypeTotp": {
+    "message": "Basée sur le temps. Le code change toutes les 30 secondes."
+  },
+  "scanTypeHotp": {
+    "message": "Basée sur un compteur. Le code change quand vous demandez le suivant."
+  },
+  "invalidKey": {
+    "message": "Clé invalide. Saisissez une clé Base32 (lettres A–Z et chiffres 2–7), pas un code à six chiffres."
+  },
+  "keyTooShort": {
+    "message": "La clé est trop courte. Vérifiez que vous l’avez copiée en entier."
+  },
+  "saveFailed": {
+    "message": "Impossible d’enregistrer les codes. Aucun code n’a été ajouté. Veuillez réessayer."
+  },
+  "exportPart": {
+    "message": "QR $1 sur $2 : cette image ne contient qu’une partie de l’export. Importez les autres images séparément."
+  },
+  "alreadyInList": {
+    "message": "Déjà dans votre liste."
+  },
+  "listedTwiceInExport": {
+    "message": "Présent deux fois dans cet export."
+  },
+  "codeAlreadyAdded": {
+    "message": "Code déjà ajouté"
+  },
+  "alreadyAdded": {
+    "message": "Ce code est déjà dans votre liste sous le nom « $1 ». Inutile de l’ajouter à nouveau."
+  },
+  "cantAddTitle": {
+    "message": "Impossible d’ajouter ce code"
+  },
+  "scanStartFailed": {
+    "message": "Impossible de lancer le scan. Veuillez réessayer."
+  },
+  "imageType": {
+    "message": "Choisissez une image PNG, JPEG, WebP, GIF ou BMP."
+  },
+  "imageTooBig": {
+    "message": "Choisissez une image de moins de 10 Mo."
+  },
+  "imageTooLarge": {
+    "message": "L’image est trop grande. Recadrez-la autour du code QR."
+  },
+  "imageUnreadable": {
+    "message": "Impossible de lire l’image. Essayez une capture d’écran PNG ou JPEG."
+  },
+  "qrNotFound": {
+    "message": "Aucun code QR lisible trouvé. Essayez une image plus nette, recadrée autour du code."
+  },
+  "qrInvalid": {
+    "message": "Code QR d’authentification invalide."
+  },
+  "qrNotAccount": {
+    "message": "Ce code QR n’est pas un compte d’authentification."
+  },
+  "qrUnsupported": {
+    "message": "Ce code QR n’est pas un compte d’authentification pris en charge."
+  },
+  "qrDuplicateParameters": {
+    "message": "Le code QR contient des paramètres en double."
+  },
+  "qrUnsupportedCode": {
+    "message": "Seuls SHA-1, les codes à six chiffres et une période TOTP de 30 secondes sont pris en charge."
+  },
+  "qrInvalidName": {
+    "message": "Le code QR contient un nom de compte invalide."
+  },
+  "qrConflictingProviders": {
+    "message": "Le code QR contient des fournisseurs de compte contradictoires."
+  },
+  "qrNameLength": {
+    "message": "Le nom du compte doit contenir de 1 à $1 caractères."
+  },
+  "qrInvalidSecret": {
+    "message": "Le code QR contient une clé secrète invalide."
+  },
+  "qrInvalidCounter": {
+    "message": "Le code QR contient un compteur HOTP invalide."
+  },
+  "exportInvalid": {
+    "message": "Export Google Authenticator invalide."
+  },
+  "exportDamagedAccount": {
+    "message": "Ce compte est endommagé dans l’export."
+  },
+  "exportInvalidName": {
+    "message": "Le nom du compte n’est pas un texte valide."
+  },
+  "exportInvalidData": {
+    "message": "L’export contient des données Base64 invalides. Essayez une nouvelle image QR."
+  },
+  "exportIncomplete": {
+    "message": "Les données de l’export sont incomplètes. Essayez une image QR plus nette."
+  },
+  "exportVersion": {
+    "message": "La version $1 de l’export Google n’est pas encore prise en charge."
+  },
+  "exportPages": {
+    "message": "L’export Google contient des informations de page QR invalides."
+  },
+  "exportEmpty": {
+    "message": "Aucun compte trouvé dans l’export Google."
+  },
+  "exportTooMany": {
+    "message": "Trop de comptes dans cette image QR."
+  },
+  "exportUnsupportedCode": {
+    "message": "Seuls SHA-1 et les codes à six chiffres sont pris en charge."
+  },
+  "exportUnsupportedType": {
+    "message": "Type de compte non pris en charge."
+  },
+  "exportMissingName": {
+    "message": "Nom de compte manquant."
+  },
+  "scanGrant": {
+    "message": "Cliquez sur l’icône Authenticator pendant que la page contenant le code QR est ouverte, puis relancez Scanner un code QR."
+  },
+  "scanUnscannable": {
+    "message": "Cette page ne peut pas être scannée. Faites plutôt une capture d’écran du code QR et collez-la ici."
+  },
+  "scanFailed": {
+    "message": "Impossible de scanner cette page. Veuillez réessayer."
+  },
+  "overlayLabel": {
+    "message": "Codes QR de cette page"
+  },
+  "overlayHint": {
+    "message": "Cliquez sur un code QR pour l’importer · Échap pour annuler"
+  },
+  "overlayNone": {
+    "message": "Aucun code QR entier visible · Faites défiler jusqu’à le voir ou appuyez sur Échap"
+  },
+  "overlayFound_one": {
+    "message": "$1 code QR trouvé. Cliquez dessus ou appuyez sur Entrée pour l’importer, ou sur Échap pour annuler."
+  },
+  "overlayFound_other": {
+    "message": "$1 codes QR trouvés. Cliquez sur l’un d’eux pour l’importer, ou appuyez sur Échap pour annuler."
+  },
+  "autoLock": {
+    "message": "Verrouiller automatiquement"
+  },
+  "autoLockClose": {
+    "message": "À la fermeture du panneau"
+  },
+  "autoLock1": {
+    "message": "Après 1 minute"
+  },
+  "autoLock5": {
+    "message": "Après 5 minutes"
+  },
+  "autoLock30": {
+    "message": "Après 30 minutes"
+  },
+  "autoLockHour": {
+    "message": "Après 1 heure"
+  },
+  "autoLockNever": {
+    "message": "Jamais"
+  },
+  "autoLockDescription": {
+    "message": "Le délai commence quand vous fermez le panneau ou cessez d’utiliser une fenêtre Authenticator ouverte. Avec À la fermeture du panneau, une fenêtre ouverte se verrouille après 1 minute sans utilisation. Jamais garde le coffre déverrouillé jusqu’à la fermeture de Firefox ou jusqu’à ce que vous choisissiez Verrouiller maintenant."
+  },
+  "vault": {
+    "message": "Coffre"
+  },
+  "changePassword": {
+    "message": "Changer le mot de passe"
+  },
+  "newRecoveryKey": {
+    "message": "Nouvelle clé de récupération"
+  },
+  "anotherVault": {
+    "message": "Un autre coffre"
+  },
+  "lockNow": {
+    "message": "Verrouiller maintenant"
+  },
+  "settingFailed": {
+    "message": "Impossible de mettre à jour le réglage de déverrouillage. Veuillez réessayer."
+  },
+  "changePasswordPrompt": {
+    "message": "Saisissez votre mot de passe pour en choisir un nouveau."
+  },
+  "changePasswordFailed": {
+    "message": "Impossible de changer le mot de passe. Veuillez réessayer."
+  },
+  "newPasswordTitle": {
+    "message": "Choisissez un nouveau mot de passe"
+  },
+  "newPasswordIntro": {
+    "message": "Il fonctionne aussitôt sur tous vos ordinateurs. Votre clé de récupération ne change pas. Ne réutilisez pas le mot de passe de votre compte Firefox."
+  },
+  "newPassword": {
+    "message": "Nouveau mot de passe"
+  },
+  "confirmNewPassword": {
+    "message": "Confirmer le nouveau mot de passe"
+  },
+  "confirmPassword": {
+    "message": "Confirmer le mot de passe"
+  },
+  "passwordQuality": {
+    "message": "Indicateur de qualité du mot de passe"
+  },
+  "suggestPassword": {
+    "message": "Suggérer un mot de passe"
+  },
+  "resetTitle": {
+    "message": "Réinitialisez votre mot de passe"
+  },
+  "resetDescription": {
+    "message": "Saisissez la clé de récupération que vous avez conservée à la création de votre coffre."
+  },
+  "resetPassword": {
+    "message": "Réinitialiser le mot de passe"
+  },
+  "resetFailed": {
+    "message": "Impossible de réinitialiser le mot de passe. Veuillez réessayer."
+  },
+  "notAKey": {
+    "message": "Ce n’est pas une clé de récupération : elle compte 32 lettres et chiffres."
+  },
+  "wrongKey": {
+    "message": "Cette clé de récupération n’ouvre pas ce coffre. Vérifiez-la et réessayez."
+  },
+  "newKeyPrompt": {
+    "message": "Une nouvelle clé remplacera celle que vous aviez conservée. Saisissez votre mot de passe pour continuer."
+  },
+  "saveNewKeyTitle": {
+    "message": "Conservez votre nouvelle clé de récupération"
+  },
+  "keyIntro": {
+    "message": "Si vous oubliez votre mot de passe, cette clé est le seul moyen de retrouver vos codes."
+  },
+  "keyHint": {
+    "message": "Imprimez-la ou conservez-la dans un gestionnaire de mots de passe. Toute personne qui possède cette clé peut définir un nouveau mot de passe."
+  },
+  "copyRecoveryKey": {
+    "message": "Copier la clé de récupération"
+  },
+  "savedNewKey": {
+    "message": "J’ai conservé ma nouvelle clé de récupération"
+  },
+  "savedKey": {
+    "message": "J’ai conservé ma clé de récupération"
+  },
+  "replaceKey": {
+    "message": "Remplacer la clé"
+  },
+  "replaceKeyFailed": {
+    "message": "Impossible de remplacer la clé. Veuillez réessayer."
+  },
+  "setupTitle": {
+    "message": "Configurer Authenticator"
+  },
+  "setupQuestion": {
+    "message": "Comment voulez-vous commencer ?"
+  },
+  "createNewVault": {
+    "message": "Créer un nouveau coffre"
+  },
+  "firstComputer": {
+    "message": "Votre premier ordinateur."
+  },
+  "useOnOther": {
+    "message": "Je l’utilise sur un autre ordinateur"
+  },
+  "throughSync": {
+    "message": "Via Firefox Sync."
+  },
+  "keptCopyHint": {
+    "message": "Conservée quand votre coffre a quitté Firefox Sync."
+  },
+  "choiceNotice": {
+    "message": "Vos codes ne sont pas encore arrivés. La synchronisation peut prendre quelques minutes : appuyez aussi sur $1 sur votre autre ordinateur."
+  },
+  "createPasswordTitle": {
+    "message": "Créez un mot de passe"
+  },
+  "createPasswordIntro": {
+    "message": "Il protège vos codes sur chaque ordinateur où vous les utilisez. Ne réutilisez pas le mot de passe de votre compte Firefox."
+  },
+  "saveKeyTitle": {
+    "message": "Conservez votre clé de récupération"
+  },
+  "createVault": {
+    "message": "Créer le coffre"
+  },
+  "vaultArrived": {
+    "message": "Un coffre est arrivé de Firefox Sync entre-temps. Revenez en arrière et déverrouillez-le."
+  },
+  "createFailed": {
+    "message": "Impossible de créer le coffre. Veuillez réessayer."
+  },
+  "getCodesTitle": {
+    "message": "Récupérez vos codes"
+  },
+  "getCodesIntro": {
+    "message": "Firefox Sync les apporte depuis votre autre ordinateur."
+  },
+  "howto1": {
+    "message": "Ouvrez $1 › $2."
+  },
+  "howto2": {
+    "message": "Dans la section $1 $2, vérifiez que $3 $4 s’affiche. Sinon, connectez-vous avec le compte de votre autre ordinateur."
+  },
+  "howto3": {
+    "message": "Sous $1, vérifiez que $2 $3 est présent."
+  },
+  "howto4": {
+    "message": "Appuyez sur $1, puis rouvrez $2 $3."
+  },
+  "firefoxMenu": {
+    "message": "Menu"
+  },
+  "firefoxSettings": {
+    "message": "Paramètres"
+  },
+  "firefoxSync": {
+    "message": "Synchronisation"
+  },
+  "firefoxSyncOn": {
+    "message": "La synchronisation est ACTIVÉE"
+  },
+  "firefoxSyncedData": {
+    "message": "Données synchronisées entre les appareils"
+  },
+  "firefoxAddons": {
+    "message": "Modules complémentaires"
+  },
+  "firefoxSyncNow": {
+    "message": "Synchroniser maintenant"
+  },
+  "otherTitle": {
+    "message": "Codes d’un autre coffre"
+  },
+  "otherDescription_one": {
+    "message": "L’un de vos ordinateurs a créé un coffre séparé avec $1 code avant d’être connecté à Firefox Sync."
+  },
+  "otherDescription_other": {
+    "message": "L’un de vos ordinateurs a créé un coffre séparé avec $1 codes avant d’être connecté à Firefox Sync."
+  },
+  "copyItsCodes": {
+    "message": "Copier ses codes"
+  },
+  "removeThatVault": {
+    "message": "Supprimer ce coffre"
+  },
+  "removeVaultTitle": {
+    "message": "Supprimer l’autre coffre ?"
+  },
+  "removeVault": {
+    "message": "Supprimer le coffre"
+  },
+  "removeVaultCopied_one": {
+    "message": "Son $1 code sera supprimé sur tous vos ordinateurs. Sur cet ordinateur : $2 copiés, $3 non copiés, $4 illisibles. Les codes de votre coffre ne sont pas concernés."
+  },
+  "removeVaultCopied_other": {
+    "message": "Ses $1 codes seront supprimés sur tous vos ordinateurs. Sur cet ordinateur : $2 copiés, $3 non copiés, $4 illisibles. Les codes de votre coffre ne sont pas concernés."
+  },
+  "removeVaultNotCopied_one": {
+    "message": "Son $1 code n’a pas été copié et sera supprimé sur tous vos ordinateurs sans avoir été ouvert. Les codes de votre coffre ne sont pas concernés."
+  },
+  "removeVaultNotCopied_other": {
+    "message": "Ses $1 codes n’ont pas été copiés et seront supprimés sur tous vos ordinateurs sans avoir été ouverts. Les codes de votre coffre ne sont pas concernés."
+  },
+  "removeVaultFailed": {
+    "message": "Impossible de supprimer le coffre. Veuillez réessayer."
+  },
+  "mergeOpenTitle": {
+    "message": "Ouvrez l’autre coffre"
+  },
+  "mergePasswordPrompt": {
+    "message": "Saisissez le mot de passe que vous lui avez choisi sur l’autre ordinateur."
+  },
+  "mergeKeyPrompt": {
+    "message": "Saisissez la clé de récupération conservée à la création de l’autre coffre."
+  },
+  "passwordOfOther": {
+    "message": "Mot de passe de l’autre coffre"
+  },
+  "keyOfOther": {
+    "message": "Clé de récupération de l’autre coffre"
+  },
+  "useKeyInstead": {
+    "message": "Utiliser plutôt sa clé de récupération"
+  },
+  "usePasswordInstead": {
+    "message": "Utiliser plutôt son mot de passe"
+  },
+  "vaultGone": {
+    "message": "Ce coffre n’existe plus."
+  },
+  "keyNotThatVault": {
+    "message": "Cette clé de récupération n’ouvre pas ce coffre."
+  },
+  "mergeCodesIntro": {
+    "message": "Choisissez les codes à copier dans votre coffre. L’autre coffre reste tel quel : vous pourrez le supprimer ensuite."
+  },
+  "copyCodes_one": {
+    "message": "Copier $1 code"
+  },
+  "copyCodes_other": {
+    "message": "Copier $1 codes"
+  },
+  "copyCodesNone": {
+    "message": "Copier les codes"
+  },
+  "listedTwiceInVault": {
+    "message": "Présent deux fois dans ce coffre."
+  },
+  "copyRaisesCounter": {
+    "message": "Dans votre liste sous le nom « $1 » avec un compteur plus bas, que la copie relève."
+  },
+  "mergeDamaged_one": {
+    "message": "$1 code de l’autre coffre ne peut pas être ouvert. Il y reste."
+  },
+  "mergeDamaged_other": {
+    "message": "$1 codes de l’autre coffre ne peuvent pas être ouverts. Ils y restent."
+  },
+  "otherChanged": {
+    "message": "L’autre coffre a changé entre-temps. Vérifiez à nouveau les codes."
+  },
+  "copyFailed": {
+    "message": "Impossible de copier les codes. Veuillez réessayer."
+  },
+  "duplicatesTitle": {
+    "message": "Même code ajouté deux fois"
+  },
+  "duplicatesIntro": {
+    "message": "Vous avez ajouté cette clé sur deux ordinateurs avant leur synchronisation. Gardez-en un ; l’autre est supprimé partout."
+  },
+  "keepThisOne": {
+    "message": "Garder celui-ci"
+  },
+  "addedOn": {
+    "message": "Ajouté le $1"
+  },
+  "removeEntryFailed": {
+    "message": "Impossible de supprimer l’autre entrée. Veuillez réessayer."
+  },
+  "damagedTitle": {
+    "message": "Certains codes sont illisibles"
+  },
+  "damagedCodes_one": {
+    "message": "Un code de votre coffre est endommagé et ne peut pas être affiché. Les autres fonctionnent normalement."
+  },
+  "damagedCodes_other": {
+    "message": "$1 codes de votre coffre sont endommagés et ne peuvent pas être affichés. Les autres fonctionnent normalement."
+  },
+  "readOnlyTitle": {
+    "message": "Codes en lecture seule"
+  },
+  "recoverySourceTrusted": {
+    "message": "Lus avec l’en-tête du coffre que cet ordinateur a ouvert en dernier avec votre mot de passe. Rien n’est écrit dans Firefox Sync, et ces codes ne peuvent pas être modifiés ici."
+  },
+  "recoverySourceOther": {
+    "message": "Lus depuis un autre coffre de Firefox Sync. Rien n’est écrit dans Firefox Sync, et ces codes ne peuvent pas être modifiés ici."
+  },
+  "onlyInCopy": {
+    "message": "Uniquement dans la copie de cet ordinateur"
+  },
+  "mayBeOutdated": {
+    "message": "Ils ne sont peut-être plus à jour."
+  },
+  "hotpMayBeUsed": {
+    "message": "Basé sur un compteur : ce code a peut-être déjà été utilisé."
+  },
+  "copyCode": {
+    "message": "Copier le code"
+  },
+  "copyKey": {
+    "message": "Copier la clé"
+  },
+  "codeCopiedFor": {
+    "message": "Code de $1 copié"
+  },
+  "keyCopiedFor": {
+    "message": "Clé de $1 copiée"
+  },
+  "codeCannotShow": {
+    "message": "Ce code ne peut pas être affiché."
+  },
+  "unreadableNewer_one": {
+    "message": "$1 code enregistré par une version plus récente d’Authenticator ne peut pas être affiché ici."
+  },
+  "unreadableNewer_other": {
+    "message": "$1 codes enregistrés par une version plus récente d’Authenticator ne peuvent pas être affichés ici."
+  },
+  "unreadableCodes_one": {
+    "message": "$1 code est illisible."
+  },
+  "unreadableCodes_other": {
+    "message": "$1 codes sont illisibles."
+  },
+  "restoreDescription": {
+    "message": "Cet ordinateur a conservé une copie de votre coffre quand il a quitté Firefox Sync. Saisissez le mot de passe qu’il avait alors."
+  },
+  "restoreDescriptionDated": {
+    "message": "Cet ordinateur a conservé une copie de votre coffre, tel qu’il était le $1, quand il a quitté Firefox Sync. Saisissez le mot de passe qu’il avait alors."
+  },
+  "passwordOfCopy": {
+    "message": "Mot de passe de la copie"
+  },
+  "keyOfCopy": {
+    "message": "Clé de récupération de la copie"
+  },
+  "restoreWarning": {
+    "message": "Ses codes ne sont peut-être plus à jour. Si vous avez changé de mot de passe depuis, c’est l’ancien qui ouvre la copie, et il fonctionne à nouveau une fois la copie restaurée."
+  },
+  "copyGone": {
+    "message": "Cette copie n’est plus là."
+  },
+  "keyNotCopy": {
+    "message": "Cette clé de récupération n’ouvre pas la copie."
+  },
+  "restoreCodesIntro": {
+    "message": "Choisissez les codes à remettre dans Firefox Sync. Les codes qui s’y trouvent déjà restent tels quels."
+  },
+  "restoreCodes_one": {
+    "message": "Restaurer $1 code"
+  },
+  "restoreCodes_other": {
+    "message": "Restaurer $1 codes"
+  },
+  "restoreVault": {
+    "message": "Restaurer le coffre"
+  },
+  "alreadyInSync": {
+    "message": "Déjà dans Firefox Sync"
+  },
+  "copyDamaged_one": {
+    "message": "$1 code de la copie est illisible."
+  },
+  "copyDamaged_other": {
+    "message": "$1 codes de la copie sont illisibles."
+  },
+  "becomesMain": {
+    "message": "Il redevient votre coffre principal. Vous pourrez ajouter les codes du coffre actuellement dans Firefox Sync après le déverrouillage."
+  },
+  "vaultIsBack": {
+    "message": "Ce coffre est de retour dans Firefox Sync. Revenez en arrière et déverrouillez-le."
+  },
+  "restoreFailed": {
+    "message": "Impossible de restaurer le coffre. Veuillez réessayer."
+  },
+  "deleteCopy": {
+    "message": "Supprimer cette copie"
+  },
+  "deleteForGood": {
+    "message": "La supprimer définitivement"
+  },
+  "deleteCopyFailed": {
+    "message": "Impossible de supprimer la copie. Veuillez réessayer."
+  }
+}

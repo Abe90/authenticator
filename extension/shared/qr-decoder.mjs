@@ -1,6 +1,7 @@
+import { UserError } from '../core/user-error.mjs';
+
 // QR codes are decoded locally: no image URLs, uploads or remote decoder services.
-export const UNREADABLE_IMAGE = 'Could not read the image. Try a PNG or JPEG screenshot.';
-const unreadable = () => new Error(UNREADABLE_IMAGE);
+export const unreadable = () => new UserError('imageUnreadable');
 // Longest side, in pixels, at which a whole image or screen capture is decoded.
 export const FULL_SIDE = 1800;
 

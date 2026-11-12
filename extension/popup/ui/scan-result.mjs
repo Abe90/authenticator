@@ -1,3 +1,4 @@
+import { t } from '../../shared/i18n.mjs';
 import { recordScanTarget } from './scan-target.mjs';
 
 // Scan page starts right after the toolbar click that grants the tab. The background keeps the pick until the
@@ -14,7 +15,7 @@ export function createScanResult({ addWindow, session, form, scanConfirm, notice
     // picked code: this popup may then close.
     try { await browser.runtime.sendMessage({ type: 'scan-page', windowId: session.windowId }); }
     catch {
-      onError('Could not start the scan. Please try again.');
+      onError(t('scanStartFailed'));
       return;
     }
     // The toolbar popup would cover the page; a popup page opened in a tab, as in the tests, stays.
@@ -30,7 +31,7 @@ export function createScanResult({ addWindow, session, form, scanConfirm, notice
     pending = null;
     if (!result || !session.unlocked) return null;
     if (result.error) {
-      notice.fill('Can’t add this code', result.error, 'list');
+      notice.fill(t('cantAddTitle'), result.error, 'list');
       return 'notice';
     }
     return scanConfirm.show(result.record);

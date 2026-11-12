@@ -1,0 +1,851 @@
+{
+  "locale": {
+    "message": "es"
+  },
+  "extensionDescription": {
+    "message": "Autenticador TOTP y HOTP. Los códigos salen de una caja fuerte cifrada que Firefox Sync puede llevar de un ordenador a otro; no se recopila ningún dato."
+  },
+  "settings": {
+    "message": "Ajustes"
+  },
+  "password": {
+    "message": "Contraseña"
+  },
+  "recoveryKey": {
+    "message": "Clave de recuperación"
+  },
+  "back": {
+    "message": "Atrás"
+  },
+  "backToCodes": {
+    "message": "Volver a los códigos"
+  },
+  "backToSettings": {
+    "message": "Volver a los ajustes"
+  },
+  "backToPassword": {
+    "message": "Volver a la página de la contraseña"
+  },
+  "cancel": {
+    "message": "Cancelar"
+  },
+  "close": {
+    "message": "Cerrar"
+  },
+  "save": {
+    "message": "Guardar"
+  },
+  "saving": {
+    "message": "Guardando…"
+  },
+  "add": {
+    "message": "Añadir"
+  },
+  "edit": {
+    "message": "Editar"
+  },
+  "remove": {
+    "message": "Eliminar"
+  },
+  "continue": {
+    "message": "Continuar"
+  },
+  "checking": {
+    "message": "Comprobando…"
+  },
+  "notNow": {
+    "message": "Ahora no"
+  },
+  "showPassword": {
+    "message": "Mostrar la contraseña"
+  },
+  "hidePassword": {
+    "message": "Ocultar la contraseña"
+  },
+  "unnamedAccount": {
+    "message": "Cuenta sin nombre"
+  },
+  "codeCount_one": {
+    "message": "$1 código"
+  },
+  "codeCount_other": {
+    "message": "$1 códigos"
+  },
+  "accountCount_one": {
+    "message": "$1 cuenta"
+  },
+  "accountCount_other": {
+    "message": "$1 cuentas"
+  },
+  "errorTitle": {
+    "message": "Algo ha salido mal"
+  },
+  "wrongPassword": {
+    "message": "Contraseña incorrecta. Inténtalo de nuevo."
+  },
+  "passwordMismatch": {
+    "message": "Las contraseñas no coinciden."
+  },
+  "passwordTooShort": {
+    "message": "La contraseña necesita al menos $1 caracteres."
+  },
+  "duplicateAccount": {
+    "message": "Este código ya está en tu lista como «$1»."
+  },
+  "storageFull": {
+    "message": "El almacenamiento de sincronización de Firefox está lleno."
+  },
+  "clipboardFailed": {
+    "message": "No se ha podido copiar. Inténtalo de nuevo."
+  },
+  "newCodeIn": {
+    "message": "Nuevo código en $1 s"
+  },
+  "loading": {
+    "message": "Abriendo Authenticator…"
+  },
+  "authOpening": {
+    "message": "Abriendo tu caja fuerte…"
+  },
+  "unlockTitle": {
+    "message": "Desbloquea tus códigos"
+  },
+  "authDescription": {
+    "message": "Introduce tu contraseña para abrir tu caja fuerte cifrada."
+  },
+  "unlock": {
+    "message": "Desbloquear"
+  },
+  "unlocking": {
+    "message": "Desbloqueando…"
+  },
+  "showReadOnly": {
+    "message": "Mostrar los códigos en solo lectura"
+  },
+  "forgotPassword": {
+    "message": "¿Has olvidado la contraseña?"
+  },
+  "restoreCopy": {
+    "message": "Restaurar la copia de este ordenador"
+  },
+  "unlockSessionFailed": {
+    "message": "No se ha podido guardar la sesión de desbloqueo. Inténtalo de nuevo."
+  },
+  "newerVault": {
+    "message": "Firefox Sync tiene una caja fuerte guardada por una versión más reciente de Authenticator. Actualiza la extensión para abrirla."
+  },
+  "wrongPasswordOrDamaged": {
+    "message": "Contraseña incorrecta o caja fuerte dañada. Inténtalo de nuevo."
+  },
+  "explainNewer": {
+    "message": "Una versión más reciente de Authenticator guardó tu caja fuerte. Actualiza la extensión para abrirla. Hasta entonces puedes ver tus códigos en solo lectura."
+  },
+  "explainChanged": {
+    "message": "Esta contraseña abrió tu caja fuerte en este ordenador, pero la caja fuerte de Firefox Sync ha cambiado desde entonces: puede que su contraseña se haya cambiado en otro ordenador, o que esté dañada. Puedes ver tus códigos en solo lectura."
+  },
+  "explainMissing": {
+    "message": "Esta contraseña abrió tu caja fuerte en este ordenador, pero la caja fuerte ya no está completa en Firefox Sync. Puedes ver tus códigos en solo lectura."
+  },
+  "explainUnreadable": {
+    "message": "Tu caja fuerte de Firefox Sync está dañada. Esta contraseña la abrió en este ordenador: puedes ver tus códigos en solo lectura."
+  },
+  "explainOther_one": {
+    "message": "Esta contraseña no abre la caja fuerte principal de Firefox Sync, sino otra caja fuerte, creada el $2, con $1 código. Puedes ver sus códigos en solo lectura."
+  },
+  "explainOther_other": {
+    "message": "Esta contraseña no abre la caja fuerte principal de Firefox Sync, sino otra caja fuerte, creada el $2, con $1 códigos. Puedes ver sus códigos en solo lectura."
+  },
+  "readCodesFailed": {
+    "message": "No se han podido leer los códigos. Inténtalo de nuevo."
+  },
+  "clearProgressFailed": {
+    "message": "No se ha podido borrar el progreso de este procedimiento. Cierra Firefox para borrarlo."
+  },
+  "clearUnlockFailed": {
+    "message": "No se ha podido borrar el desbloqueo recordado. Cierra Firefox para borrarlo."
+  },
+  "storageFailed": {
+    "message": "No se ha podido acceder al almacenamiento local. Recarga la extensión e inténtalo de nuevo."
+  },
+  "vaultBack": {
+    "message": "Tu caja fuerte vuelve a estar en Firefox Sync. Introduce su contraseña para abrirla."
+  },
+  "searchAccounts": {
+    "message": "Buscar cuentas"
+  },
+  "searchPlaceholder": {
+    "message": "Buscar…"
+  },
+  "clearSearch": {
+    "message": "Borrar la búsqueda"
+  },
+  "noAccountsFound": {
+    "message": "No se ha encontrado ninguna cuenta."
+  },
+  "noCodes": {
+    "message": "Aún no hay códigos."
+  },
+  "addFirst": {
+    "message": "Añade tu primer código para empezar."
+  },
+  "addACode": {
+    "message": "Añadir un código"
+  },
+  "scanQr": {
+    "message": "Escanear un código QR"
+  },
+  "enterSetupKey": {
+    "message": "Introducir una clave de configuración"
+  },
+  "oneTimeCode": {
+    "message": "Código de un solo uso"
+  },
+  "generatingCode": {
+    "message": "Generando el código…"
+  },
+  "copyCodeOf": {
+    "message": "$1: copiar el código"
+  },
+  "codeCopied": {
+    "message": "Código copiado"
+  },
+  "nextCodeFor": {
+    "message": "Generar el siguiente código de $1"
+  },
+  "codeError": {
+    "message": "Error"
+  },
+  "codeUnavailable": {
+    "message": "Código no disponible. Vuelve a abrir la ventana emergente."
+  },
+  "nextCounterFailed": {
+    "message": "No se ha podido guardar el siguiente contador. Inténtalo de nuevo."
+  },
+  "orderFailed": {
+    "message": "No se ha podido guardar el nuevo orden. Inténtalo de nuevo."
+  },
+  "openAddWindowFailed": {
+    "message": "No se ha podido abrir la ventana Añadir código. Inténtalo de nuevo."
+  },
+  "editCode": {
+    "message": "Editar el código"
+  },
+  "codeName": {
+    "message": "Nombre del código"
+  },
+  "nameRequired": {
+    "message": "Introduce un nombre para el código."
+  },
+  "renameFailed": {
+    "message": "No se ha podido guardar el nombre. Inténtalo de nuevo."
+  },
+  "removeTitle": {
+    "message": "¿Eliminar $1?"
+  },
+  "removeMessage": {
+    "message": "Si eliminas esta cuenta de Authenticator, dejarás de recibir códigos para iniciar sesión de forma segura. Asegúrate de actualizar los ajustes de esa cuenta para reflejar este cambio."
+  },
+  "removeFailed": {
+    "message": "No se ha podido eliminar la cuenta. Inténtalo de nuevo."
+  },
+  "addCode": {
+    "message": "Añadir código"
+  },
+  "scannedCode": {
+    "message": "Código escaneado"
+  },
+  "importFromQr": {
+    "message": "Importar desde QR"
+  },
+  "importQrImage": {
+    "message": "Importar imagen QR"
+  },
+  "qrStatus": {
+    "message": "Elige una imagen QR o pega aquí una captura de pantalla."
+  },
+  "accounts": {
+    "message": "Cuentas"
+  },
+  "orManual": {
+    "message": "o introduce una clave a mano"
+  },
+  "namePlaceholder": {
+    "message": "p. ej. Cuenta de prueba"
+  },
+  "yourKey": {
+    "message": "Tu clave"
+  },
+  "keyType": {
+    "message": "Tipo de clave"
+  },
+  "timeBased": {
+    "message": "Basada en el tiempo"
+  },
+  "counterBased": {
+    "message": "Basada en un contador"
+  },
+  "hintTotp": {
+    "message": "El código cambia cada 30 segundos."
+  },
+  "hintHotp": {
+    "message": "El código cambia cuando pides el siguiente."
+  },
+  "scanTypeTotp": {
+    "message": "Basada en el tiempo. El código cambia cada 30 segundos."
+  },
+  "scanTypeHotp": {
+    "message": "Basada en un contador. El código cambia cuando pides el siguiente."
+  },
+  "invalidKey": {
+    "message": "Clave no válida. Introduce una clave Base32 (letras A–Z y cifras 2–7), no un código de seis cifras."
+  },
+  "keyTooShort": {
+    "message": "La clave es demasiado corta. Comprueba que la has copiado entera."
+  },
+  "saveFailed": {
+    "message": "No se han podido guardar los códigos. No se ha añadido ninguno. Inténtalo de nuevo."
+  },
+  "exportPart": {
+    "message": "QR $1 de $2: esta imagen contiene solo una parte de la exportación. Importa las demás imágenes por separado."
+  },
+  "alreadyInList": {
+    "message": "Ya está en tu lista."
+  },
+  "listedTwiceInExport": {
+    "message": "Aparece dos veces en esta exportación."
+  },
+  "codeAlreadyAdded": {
+    "message": "Código ya añadido"
+  },
+  "alreadyAdded": {
+    "message": "Este código ya está en tu lista como «$1». No hace falta añadirlo otra vez."
+  },
+  "cantAddTitle": {
+    "message": "No se puede añadir este código"
+  },
+  "scanStartFailed": {
+    "message": "No se ha podido iniciar el escaneo. Inténtalo de nuevo."
+  },
+  "imageType": {
+    "message": "Elige una imagen PNG, JPEG, WebP, GIF o BMP."
+  },
+  "imageTooBig": {
+    "message": "Elige una imagen de menos de 10 MB."
+  },
+  "imageTooLarge": {
+    "message": "La imagen es demasiado grande. Recórtala alrededor del código QR."
+  },
+  "imageUnreadable": {
+    "message": "No se ha podido leer la imagen. Prueba con una captura de pantalla PNG o JPEG."
+  },
+  "qrNotFound": {
+    "message": "No se ha encontrado ningún código QR legible. Prueba con una imagen más nítida y recortada alrededor del código."
+  },
+  "qrInvalid": {
+    "message": "Código QR de autenticación no válido."
+  },
+  "qrNotAccount": {
+    "message": "Este código QR no es una cuenta de autenticación."
+  },
+  "qrUnsupported": {
+    "message": "Este código QR no es una cuenta de autenticación compatible."
+  },
+  "qrDuplicateParameters": {
+    "message": "El código QR contiene parámetros duplicados."
+  },
+  "qrUnsupportedCode": {
+    "message": "Solo se admiten SHA-1, códigos de seis cifras y un periodo TOTP de 30 segundos."
+  },
+  "qrInvalidName": {
+    "message": "El código QR tiene un nombre de cuenta no válido."
+  },
+  "qrConflictingProviders": {
+    "message": "El código QR contiene proveedores de cuenta contradictorios."
+  },
+  "qrNameLength": {
+    "message": "El nombre de la cuenta debe tener entre 1 y $1 caracteres."
+  },
+  "qrInvalidSecret": {
+    "message": "El código QR contiene una clave secreta no válida."
+  },
+  "qrInvalidCounter": {
+    "message": "El código QR contiene un contador HOTP no válido."
+  },
+  "exportInvalid": {
+    "message": "Exportación de Google Authenticator no válida."
+  },
+  "exportDamagedAccount": {
+    "message": "Esta cuenta está dañada en la exportación."
+  },
+  "exportInvalidName": {
+    "message": "El nombre de la cuenta no es un texto válido."
+  },
+  "exportInvalidData": {
+    "message": "La exportación contiene datos Base64 no válidos. Prueba con una imagen QR nueva."
+  },
+  "exportIncomplete": {
+    "message": "Los datos de la exportación están incompletos. Prueba con una imagen QR más nítida."
+  },
+  "exportVersion": {
+    "message": "La versión $1 de la exportación de Google aún no es compatible."
+  },
+  "exportPages": {
+    "message": "La exportación de Google tiene información de página QR no válida."
+  },
+  "exportEmpty": {
+    "message": "No se ha encontrado ninguna cuenta en la exportación de Google."
+  },
+  "exportTooMany": {
+    "message": "Demasiadas cuentas en esta imagen QR."
+  },
+  "exportUnsupportedCode": {
+    "message": "Solo se admiten SHA-1 y códigos de seis cifras."
+  },
+  "exportUnsupportedType": {
+    "message": "Tipo de cuenta no compatible."
+  },
+  "exportMissingName": {
+    "message": "Falta el nombre de la cuenta."
+  },
+  "scanGrant": {
+    "message": "Haz clic en el icono de Authenticator mientras la página con el código QR está abierta y vuelve a pulsar Escanear un código QR."
+  },
+  "scanUnscannable": {
+    "message": "Esta página no se puede escanear. Haz una captura de pantalla del código QR y pégala aquí."
+  },
+  "scanFailed": {
+    "message": "No se ha podido escanear esta página. Inténtalo de nuevo."
+  },
+  "overlayLabel": {
+    "message": "Códigos QR de esta página"
+  },
+  "overlayHint": {
+    "message": "Haz clic en un código QR para importarlo · Esc para cancelar"
+  },
+  "overlayNone": {
+    "message": "No se ve ningún código QR entero · Desplázate hasta que aparezca o pulsa Esc"
+  },
+  "overlayFound_one": {
+    "message": "$1 código QR encontrado. Haz clic en él o pulsa Intro para importarlo, o pulsa Escape para cancelar."
+  },
+  "overlayFound_other": {
+    "message": "$1 códigos QR encontrados. Haz clic en uno para importarlo, o pulsa Escape para cancelar."
+  },
+  "autoLock": {
+    "message": "Bloquear automáticamente"
+  },
+  "autoLockClose": {
+    "message": "Al cerrar la ventana emergente"
+  },
+  "autoLock1": {
+    "message": "Después de 1 minuto"
+  },
+  "autoLock5": {
+    "message": "Después de 5 minutos"
+  },
+  "autoLock30": {
+    "message": "Después de 30 minutos"
+  },
+  "autoLockHour": {
+    "message": "Después de 1 hora"
+  },
+  "autoLockNever": {
+    "message": "Nunca"
+  },
+  "autoLockDescription": {
+    "message": "El tiempo empieza a contar cuando cierras la ventana emergente o dejas de usar una ventana de Authenticator abierta. Con Al cerrar la ventana emergente, una ventana abierta se bloquea tras 1 minuto sin uso. Nunca mantiene la caja fuerte desbloqueada hasta que se cierre Firefox o elijas Bloquear ahora."
+  },
+  "vault": {
+    "message": "Caja fuerte"
+  },
+  "changePassword": {
+    "message": "Cambiar la contraseña"
+  },
+  "newRecoveryKey": {
+    "message": "Nueva clave de recuperación"
+  },
+  "anotherVault": {
+    "message": "Otra caja fuerte"
+  },
+  "lockNow": {
+    "message": "Bloquear ahora"
+  },
+  "settingFailed": {
+    "message": "No se ha podido actualizar el ajuste de desbloqueo. Inténtalo de nuevo."
+  },
+  "changePasswordPrompt": {
+    "message": "Introduce tu contraseña para elegir una nueva."
+  },
+  "changePasswordFailed": {
+    "message": "No se ha podido cambiar la contraseña. Inténtalo de nuevo."
+  },
+  "newPasswordTitle": {
+    "message": "Elige una contraseña nueva"
+  },
+  "newPasswordIntro": {
+    "message": "Funciona enseguida en todos tus ordenadores. Tu clave de recuperación no cambia. No reutilices la contraseña de tu cuenta de Firefox."
+  },
+  "newPassword": {
+    "message": "Contraseña nueva"
+  },
+  "confirmNewPassword": {
+    "message": "Confirmar la contraseña nueva"
+  },
+  "confirmPassword": {
+    "message": "Confirmar la contraseña"
+  },
+  "passwordQuality": {
+    "message": "Medidor de calidad de la contraseña"
+  },
+  "suggestPassword": {
+    "message": "Sugerir una contraseña"
+  },
+  "resetTitle": {
+    "message": "Restablece tu contraseña"
+  },
+  "resetDescription": {
+    "message": "Introduce la clave de recuperación que guardaste al crear tu caja fuerte."
+  },
+  "resetPassword": {
+    "message": "Restablecer la contraseña"
+  },
+  "resetFailed": {
+    "message": "No se ha podido restablecer la contraseña. Inténtalo de nuevo."
+  },
+  "notAKey": {
+    "message": "Esto no es una clave de recuperación: tiene 32 letras y cifras."
+  },
+  "wrongKey": {
+    "message": "Esta clave de recuperación no abre esta caja fuerte. Compruébala e inténtalo de nuevo."
+  },
+  "newKeyPrompt": {
+    "message": "Una clave nueva sustituirá a la que guardaste antes. Introduce tu contraseña para continuar."
+  },
+  "saveNewKeyTitle": {
+    "message": "Guarda tu nueva clave de recuperación"
+  },
+  "keyIntro": {
+    "message": "Si olvidas tu contraseña, esta clave es la única forma de recuperar tus códigos."
+  },
+  "keyHint": {
+    "message": "Imprímela o guárdala en un gestor de contraseñas. Cualquiera que tenga esta clave puede establecer una contraseña nueva."
+  },
+  "copyRecoveryKey": {
+    "message": "Copiar la clave de recuperación"
+  },
+  "savedNewKey": {
+    "message": "He guardado mi nueva clave de recuperación"
+  },
+  "savedKey": {
+    "message": "He guardado mi clave de recuperación"
+  },
+  "replaceKey": {
+    "message": "Sustituir la clave"
+  },
+  "replaceKeyFailed": {
+    "message": "No se ha podido sustituir la clave. Inténtalo de nuevo."
+  },
+  "setupTitle": {
+    "message": "Configura Authenticator"
+  },
+  "setupQuestion": {
+    "message": "¿Cómo quieres empezar?"
+  },
+  "createNewVault": {
+    "message": "Crear una caja fuerte nueva"
+  },
+  "firstComputer": {
+    "message": "Tu primer ordenador."
+  },
+  "useOnOther": {
+    "message": "Lo uso en otro ordenador"
+  },
+  "throughSync": {
+    "message": "Mediante Firefox Sync."
+  },
+  "keptCopyHint": {
+    "message": "Guardada cuando tu caja fuerte salió de Firefox Sync."
+  },
+  "choiceNotice": {
+    "message": "Tus códigos aún no han llegado. La sincronización puede tardar unos minutos: pulsa $1 también en tu otro ordenador."
+  },
+  "createPasswordTitle": {
+    "message": "Crea una contraseña"
+  },
+  "createPasswordIntro": {
+    "message": "Protege tus códigos en cada ordenador donde los uses. No reutilices la contraseña de tu cuenta de Firefox."
+  },
+  "saveKeyTitle": {
+    "message": "Guarda tu clave de recuperación"
+  },
+  "createVault": {
+    "message": "Crear la caja fuerte"
+  },
+  "vaultArrived": {
+    "message": "Mientras tanto ha llegado una caja fuerte de Firefox Sync. Vuelve atrás y desbloquéala."
+  },
+  "createFailed": {
+    "message": "No se ha podido crear la caja fuerte. Inténtalo de nuevo."
+  },
+  "getCodesTitle": {
+    "message": "Obtén tus códigos"
+  },
+  "getCodesIntro": {
+    "message": "Firefox Sync los trae desde tu otro ordenador."
+  },
+  "howto1": {
+    "message": "Abre $1 › $2."
+  },
+  "howto2": {
+    "message": "En la sección $1 $2, comprueba que aparece $3 $4. Si no, inicia sesión con la cuenta de tu otro ordenador."
+  },
+  "howto3": {
+    "message": "En $1, comprueba que aparece $2 $3."
+  },
+  "howto4": {
+    "message": "Pulsa $1 y vuelve a abrir $2 $3."
+  },
+  "firefoxMenu": {
+    "message": "Menú"
+  },
+  "firefoxSettings": {
+    "message": "Ajustes"
+  },
+  "firefoxSync": {
+    "message": "Sincronización"
+  },
+  "firefoxSyncOn": {
+    "message": "Sincronización ACTIVADA"
+  },
+  "firefoxSyncedData": {
+    "message": "Datos sincronizados entre dispositivos"
+  },
+  "firefoxAddons": {
+    "message": "Complementos"
+  },
+  "firefoxSyncNow": {
+    "message": "Sincronizar ahora"
+  },
+  "otherTitle": {
+    "message": "Códigos de otra caja fuerte"
+  },
+  "otherDescription_one": {
+    "message": "Uno de tus ordenadores creó una caja fuerte aparte con $1 código antes de conectarse a Firefox Sync."
+  },
+  "otherDescription_other": {
+    "message": "Uno de tus ordenadores creó una caja fuerte aparte con $1 códigos antes de conectarse a Firefox Sync."
+  },
+  "copyItsCodes": {
+    "message": "Copiar sus códigos"
+  },
+  "removeThatVault": {
+    "message": "Eliminar esa caja fuerte"
+  },
+  "removeVaultTitle": {
+    "message": "¿Eliminar la otra caja fuerte?"
+  },
+  "removeVault": {
+    "message": "Eliminar la caja fuerte"
+  },
+  "removeVaultCopied_one": {
+    "message": "Su $1 código se eliminará en todos tus ordenadores. En este ordenador: $2 copiados, $3 sin copiar, $4 ilegibles. Los códigos de tu caja fuerte no se ven afectados."
+  },
+  "removeVaultCopied_other": {
+    "message": "Sus $1 códigos se eliminarán en todos tus ordenadores. En este ordenador: $2 copiados, $3 sin copiar, $4 ilegibles. Los códigos de tu caja fuerte no se ven afectados."
+  },
+  "removeVaultNotCopied_one": {
+    "message": "Su $1 código no se ha copiado y se eliminará en todos tus ordenadores sin abrirse. Los códigos de tu caja fuerte no se ven afectados."
+  },
+  "removeVaultNotCopied_other": {
+    "message": "Sus $1 códigos no se han copiado y se eliminarán en todos tus ordenadores sin abrirse. Los códigos de tu caja fuerte no se ven afectados."
+  },
+  "removeVaultFailed": {
+    "message": "No se ha podido eliminar la caja fuerte. Inténtalo de nuevo."
+  },
+  "mergeOpenTitle": {
+    "message": "Abre la otra caja fuerte"
+  },
+  "mergePasswordPrompt": {
+    "message": "Introduce la contraseña que elegiste para ella en el otro ordenador."
+  },
+  "mergeKeyPrompt": {
+    "message": "Introduce la clave de recuperación que se guardó al crear la otra caja fuerte."
+  },
+  "passwordOfOther": {
+    "message": "Contraseña de la otra caja fuerte"
+  },
+  "keyOfOther": {
+    "message": "Clave de recuperación de la otra caja fuerte"
+  },
+  "useKeyInstead": {
+    "message": "Usar su clave de recuperación"
+  },
+  "usePasswordInstead": {
+    "message": "Usar su contraseña"
+  },
+  "vaultGone": {
+    "message": "Esa caja fuerte ya no existe."
+  },
+  "keyNotThatVault": {
+    "message": "Esta clave de recuperación no abre esa caja fuerte."
+  },
+  "mergeCodesIntro": {
+    "message": "Elige los códigos que quieres copiar a tu caja fuerte. La otra caja fuerte se queda como está: puedes eliminarla después."
+  },
+  "copyCodes_one": {
+    "message": "Copiar $1 código"
+  },
+  "copyCodes_other": {
+    "message": "Copiar $1 códigos"
+  },
+  "copyCodesNone": {
+    "message": "Copiar códigos"
+  },
+  "listedTwiceInVault": {
+    "message": "Aparece dos veces en esa caja fuerte."
+  },
+  "copyRaisesCounter": {
+    "message": "En tu lista como «$1» con un contador más bajo, que la copia aumenta."
+  },
+  "mergeDamaged_one": {
+    "message": "$1 código de la otra caja fuerte no se puede abrir. Se queda en ella."
+  },
+  "mergeDamaged_other": {
+    "message": "$1 códigos de la otra caja fuerte no se pueden abrir. Se quedan en ella."
+  },
+  "otherChanged": {
+    "message": "La otra caja fuerte ha cambiado mientras tanto. Revisa los códigos de nuevo."
+  },
+  "copyFailed": {
+    "message": "No se han podido copiar los códigos. Inténtalo de nuevo."
+  },
+  "duplicatesTitle": {
+    "message": "El mismo código añadido dos veces"
+  },
+  "duplicatesIntro": {
+    "message": "Añadiste esta clave en dos ordenadores antes de que se sincronizaran. Conserva uno; el otro se elimina en todas partes."
+  },
+  "keepThisOne": {
+    "message": "Conservar este"
+  },
+  "addedOn": {
+    "message": "Añadido el $1"
+  },
+  "removeEntryFailed": {
+    "message": "No se ha podido eliminar la otra entrada. Inténtalo de nuevo."
+  },
+  "damagedTitle": {
+    "message": "Algunos códigos no se pueden leer"
+  },
+  "damagedCodes_one": {
+    "message": "Un código de tu caja fuerte está dañado y no se puede mostrar. Los demás funcionan como siempre."
+  },
+  "damagedCodes_other": {
+    "message": "$1 códigos de tu caja fuerte están dañados y no se pueden mostrar. Los demás funcionan como siempre."
+  },
+  "readOnlyTitle": {
+    "message": "Códigos, solo lectura"
+  },
+  "recoverySourceTrusted": {
+    "message": "Leídos con la cabecera de la caja fuerte que este ordenador abrió por última vez con tu contraseña. No se escribe nada en Firefox Sync, y estos códigos no se pueden cambiar aquí."
+  },
+  "recoverySourceOther": {
+    "message": "Leídos de otra caja fuerte de Firefox Sync. No se escribe nada en Firefox Sync, y estos códigos no se pueden cambiar aquí."
+  },
+  "onlyInCopy": {
+    "message": "Solo en la copia de este ordenador"
+  },
+  "mayBeOutdated": {
+    "message": "Puede que estén desactualizados."
+  },
+  "hotpMayBeUsed": {
+    "message": "Basado en un contador: puede que este código ya se haya usado."
+  },
+  "copyCode": {
+    "message": "Copiar el código"
+  },
+  "copyKey": {
+    "message": "Copiar la clave"
+  },
+  "codeCopiedFor": {
+    "message": "Código de $1 copiado"
+  },
+  "keyCopiedFor": {
+    "message": "Clave de $1 copiada"
+  },
+  "codeCannotShow": {
+    "message": "Este código no se puede mostrar."
+  },
+  "unreadableNewer_one": {
+    "message": "$1 código guardado por una versión más reciente de Authenticator no se puede mostrar aquí."
+  },
+  "unreadableNewer_other": {
+    "message": "$1 códigos guardados por una versión más reciente de Authenticator no se pueden mostrar aquí."
+  },
+  "unreadableCodes_one": {
+    "message": "$1 código no se puede leer."
+  },
+  "unreadableCodes_other": {
+    "message": "$1 códigos no se pueden leer."
+  },
+  "restoreDescription": {
+    "message": "Este ordenador guardó una copia de tu caja fuerte cuando salió de Firefox Sync. Introduce la contraseña que tenía entonces."
+  },
+  "restoreDescriptionDated": {
+    "message": "Este ordenador guardó una copia de tu caja fuerte, tal como estaba el $1, cuando salió de Firefox Sync. Introduce la contraseña que tenía entonces."
+  },
+  "passwordOfCopy": {
+    "message": "Contraseña de la copia"
+  },
+  "keyOfCopy": {
+    "message": "Clave de recuperación de la copia"
+  },
+  "restoreWarning": {
+    "message": "Puede que sus códigos estén desactualizados. Si has cambiado la contraseña desde entonces, la antigua abre la copia y vuelve a funcionar cuando la restauras."
+  },
+  "copyGone": {
+    "message": "Esta copia ya no está aquí."
+  },
+  "keyNotCopy": {
+    "message": "Esta clave de recuperación no abre la copia."
+  },
+  "restoreCodesIntro": {
+    "message": "Elige los códigos que quieres devolver a Firefox Sync. Los códigos que ya tiene se quedan como están."
+  },
+  "restoreCodes_one": {
+    "message": "Restaurar $1 código"
+  },
+  "restoreCodes_other": {
+    "message": "Restaurar $1 códigos"
+  },
+  "restoreVault": {
+    "message": "Restaurar la caja fuerte"
+  },
+  "alreadyInSync": {
+    "message": "Ya está en Firefox Sync"
+  },
+  "copyDamaged_one": {
+    "message": "$1 código de la copia no se puede leer."
+  },
+  "copyDamaged_other": {
+    "message": "$1 códigos de la copia no se pueden leer."
+  },
+  "becomesMain": {
+    "message": "Vuelve a ser tu caja fuerte principal. Podrás añadir los códigos de la caja fuerte que ahora está en Firefox Sync después de desbloquear."
+  },
+  "vaultIsBack": {
+    "message": "Esta caja fuerte vuelve a estar en Firefox Sync. Vuelve atrás y desbloquéala."
+  },
+  "restoreFailed": {
+    "message": "No se ha podido restaurar la caja fuerte. Inténtalo de nuevo."
+  },
+  "deleteCopy": {
+    "message": "Borrar esta copia"
+  },
+  "deleteForGood": {
+    "message": "Borrarla definitivamente"
+  },
+  "deleteCopyFailed": {
+    "message": "No se ha podido borrar la copia. Inténtalo de nuevo."
+  }
+}

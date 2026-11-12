@@ -1,3 +1,4 @@
+import { t } from '../../shared/i18n.mjs';
 import { element } from './dom.mjs';
 import { formError, newPasswordProblem, onSubmit, pageAction } from './forms.mjs';
 import { keptOrNewKey, recoveryKeyView } from './recovery-key.mjs';
@@ -72,9 +73,7 @@ export function createSetup({ vault, views, store, onDone, onVaultArrived }) {
       return vault.create(password.value, key);
     }, (error) => {
       writing = false;
-      keyError.show(error.reason === 'exists'
-        ? 'A vault arrived from Firefox Sync meanwhile. Go back and unlock it instead.'
-        : 'Could not create the vault. Please try again.');
+      keyError.show(error.reason === 'exists' ? t('vaultArrived') : t('createFailed'));
     });
     create.disabled = !saved.checked;
     if (records) {

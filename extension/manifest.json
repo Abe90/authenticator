@@ -2,7 +2,8 @@
   "manifest_version": 3,
   "name": "Authenticator",
   "version": "0.6.0",
-  "description": "TOTP and HOTP authenticator. Codes come from an encrypted vault that Firefox Sync can carry between your computers; no data is collected.",
+  "default_locale": "en",
+  "description": "__MSG_extensionDescription__",
   "developer": {
     "name": "Cimotto",
     "url": "https://github.com/Abe90/authenticator"

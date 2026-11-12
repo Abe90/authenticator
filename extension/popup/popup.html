@@ -10,256 +10,256 @@
     <header>
       <div id="auth-header" class="intro" hidden>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
-        <h1 id="auth-title">Opening your vault…</h1>
-        <p id="auth-description">Enter your password to open your encrypted vault.</p>
+        <h1 id="auth-title" data-i18n="authOpening"></h1>
+        <p id="auth-description" data-i18n="authDescription"></p>
       </div>
       <div class="search-field" hidden>
         <span class="icon icon-search"></span>
-        <input id="search" type="text" role="searchbox" aria-label="Search accounts" placeholder="Search…" autocomplete="off" spellcheck="false">
+        <input id="search" type="text" role="searchbox" data-i18n-aria-label="searchAccounts" data-i18n-placeholder="searchPlaceholder" autocomplete="off" spellcheck="false">
       </div>
-      <button id="settings" class="icon-button" type="button" aria-label="Settings" aria-expanded="false" aria-controls="settings-panel" hidden>
+      <button id="settings" class="icon-button" type="button" data-i18n-aria-label="settings" aria-expanded="false" aria-controls="settings-panel" hidden>
         <span class="icon icon-settings settings-icon"></span>
         <span class="icon icon-close clear-icon"></span>
       </button>
       <div id="add-header" class="page-header" hidden>
         <img src="../assets/icons/add.svg" width="24" height="24" alt="">
-        <h1 id="add-title">Add code</h1>
+        <h1 id="add-title" data-i18n="addCode"></h1>
       </div>
       <div id="settings-header" class="page-header" hidden>
-        <button id="settings-back" class="back icon-button" type="button" aria-label="Back to codes"><span class="icon icon-back"></span></button>
-        <h1 id="settings-title">Settings</h1>
+        <button id="settings-back" class="back icon-button" type="button" data-i18n-aria-label="backToCodes"><span class="icon icon-back"></span></button>
+        <h1 id="settings-title" data-i18n="settings"></h1>
       </div>
       <div id="scan-header" class="page-header" hidden>
-        <button id="scan-back" class="back icon-button" type="button" aria-label="Back to codes"><span class="icon icon-back"></span></button>
-        <h1 id="scan-title">Scanned code</h1>
+        <button id="scan-back" class="back icon-button" type="button" data-i18n-aria-label="backToCodes"><span class="icon icon-back"></span></button>
+        <h1 id="scan-title" data-i18n="scannedCode"></h1>
       </div>
       <div id="recovery-header" class="page-header" hidden>
-        <button id="recovery-back" class="back icon-button" type="button" aria-label="Back to the password page"><span class="icon icon-back"></span></button>
-        <h1 id="recovery-title">Codes, read-only</h1>
+        <button id="recovery-back" class="back icon-button" type="button" data-i18n-aria-label="backToPassword"><span class="icon icon-back"></span></button>
+        <h1 id="recovery-title" data-i18n="readOnlyTitle"></h1>
       </div>
       <div id="notice-header" class="page-header" hidden>
-        <button id="notice-back" class="back icon-button" type="button" aria-label="Back to codes"><span class="icon icon-back"></span></button>
+        <button id="notice-back" class="back icon-button" type="button" data-i18n-aria-label="backToCodes"><span class="icon icon-back"></span></button>
         <h1 id="notice-title"></h1>
       </div>
       <div id="edit-header" class="page-header" hidden>
-        <button id="edit-back" class="back icon-button" type="button" aria-label="Back to codes"><span class="icon icon-back"></span></button>
-        <h1 id="edit-title">Edit code</h1>
+        <button id="edit-back" class="back icon-button" type="button" data-i18n-aria-label="backToCodes"><span class="icon icon-back"></span></button>
+        <h1 id="edit-title" data-i18n="editCode"></h1>
       </div>
       <div id="remove-header" class="page-header" hidden>
-        <button id="remove-back" class="back icon-button" type="button" aria-label="Back to codes"><span class="icon icon-back"></span></button>
+        <button id="remove-back" class="back icon-button" type="button" data-i18n-aria-label="backToCodes"><span class="icon icon-back"></span></button>
         <h1 id="remove-title"></h1>
       </div>
       <div id="verify-header" class="intro" hidden>
-        <button id="verify-back" class="back icon-button" type="button" aria-label="Back to settings"><span class="icon icon-back"></span></button>
+        <button id="verify-back" class="back icon-button" type="button" data-i18n-aria-label="backToSettings"><span class="icon icon-back"></span></button>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
         <h1 id="verify-title"></h1>
         <p id="verify-description"></p>
       </div>
       <div id="password-header" class="intro" hidden>
-        <button id="password-back" class="back icon-button" type="button" aria-label="Back to settings"><span class="icon icon-back"></span></button>
+        <button id="password-back" class="back icon-button" type="button" data-i18n-aria-label="backToSettings"><span class="icon icon-back"></span></button>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
-        <h1 id="password-title">Choose a new password</h1>
-        <p>It works at once on all your computers. Your recovery key does not change. Don’t reuse your Firefox account password.</p>
+        <h1 id="password-title" data-i18n="newPasswordTitle"></h1>
+        <p data-i18n="newPasswordIntro"></p>
       </div>
       <div id="reset-header" class="intro" hidden>
-        <button id="reset-back" class="back icon-button" type="button" aria-label="Back to the password page"><span class="icon icon-back"></span></button>
+        <button id="reset-back" class="back icon-button" type="button" data-i18n-aria-label="backToPassword"><span class="icon icon-back"></span></button>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
-        <h1 id="reset-title">Reset your password</h1>
-        <p id="reset-description">Enter the recovery key you saved when you created your vault.</p>
+        <h1 id="reset-title" data-i18n="resetTitle"></h1>
+        <p id="reset-description" data-i18n="resetDescription"></p>
       </div>
       <div id="setup-header" class="intro" hidden>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
-        <h1 id="setup-title">Set up Authenticator</h1>
-        <p>How do you want to start?</p>
+        <h1 id="setup-title" data-i18n="setupTitle"></h1>
+        <p data-i18n="setupQuestion"></p>
       </div>
       <div id="setup-password-header" class="intro" hidden>
-        <button id="setup-password-back" class="back icon-button" type="button" aria-label="Back"><span class="icon icon-back"></span></button>
+        <button id="setup-password-back" class="back icon-button" type="button" data-i18n-aria-label="back"><span class="icon icon-back"></span></button>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
-        <h1 id="setup-password-title">Create a password</h1>
-        <p>It protects your codes on every computer where you use them. Don’t reuse your Firefox account password.</p>
+        <h1 id="setup-password-title" data-i18n="createPasswordTitle"></h1>
+        <p data-i18n="createPasswordIntro"></p>
       </div>
       <div id="setup-key-header" class="intro" hidden>
-        <button id="setup-key-back" class="back icon-button" type="button" aria-label="Back"><span class="icon icon-back"></span></button>
+        <button id="setup-key-back" class="back icon-button" type="button" data-i18n-aria-label="back"><span class="icon icon-back"></span></button>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
-        <h1 id="setup-key-title">Save your recovery key</h1>
-        <p>If you forget your password, this key is the only way back to your codes.</p>
+        <h1 id="setup-key-title" data-i18n="saveKeyTitle"></h1>
+        <p data-i18n="keyIntro"></p>
       </div>
       <div id="get-codes-header" class="intro" hidden>
-        <button id="get-codes-back" class="back icon-button" type="button" aria-label="Back"><span class="icon icon-back"></span></button>
+        <button id="get-codes-back" class="back icon-button" type="button" data-i18n-aria-label="back"><span class="icon icon-back"></span></button>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
-        <h1 id="get-codes-title">Get your codes</h1>
-        <p>Firefox Sync brings them from your other computer.</p>
+        <h1 id="get-codes-title" data-i18n="getCodesTitle"></h1>
+        <p data-i18n="getCodesIntro"></p>
       </div>
       <div id="merge-open-header" class="intro" hidden>
-        <button id="merge-open-back" class="back icon-button" type="button" aria-label="Back"><span class="icon icon-back"></span></button>
+        <button id="merge-open-back" class="back icon-button" type="button" data-i18n-aria-label="back"><span class="icon icon-back"></span></button>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
-        <h1 id="merge-open-title">Open the other vault</h1>
-        <p id="merge-description">Enter the password you chose for it on the other computer.</p>
+        <h1 id="merge-open-title" data-i18n="mergeOpenTitle"></h1>
+        <p id="merge-description" data-i18n="mergePasswordPrompt"></p>
       </div>
       <div id="merge-codes-header" class="intro" hidden>
-        <button id="merge-codes-back" class="back icon-button" type="button" aria-label="Back"><span class="icon icon-back"></span></button>
+        <button id="merge-codes-back" class="back icon-button" type="button" data-i18n-aria-label="back"><span class="icon icon-back"></span></button>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
         <h1 id="merge-codes-title"></h1>
-        <p>Choose the codes to copy into your vault. The other vault stays as it is: you can remove it afterwards.</p>
+        <p data-i18n="mergeCodesIntro"></p>
       </div>
       <div id="restore-open-header" class="intro" hidden>
-        <button id="restore-open-back" class="back icon-button" type="button" aria-label="Back"><span class="icon icon-back"></span></button>
+        <button id="restore-open-back" class="back icon-button" type="button" data-i18n-aria-label="back"><span class="icon icon-back"></span></button>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
-        <h1 id="restore-open-title">Restore this computer’s copy</h1>
+        <h1 id="restore-open-title" data-i18n="restoreCopy"></h1>
         <p id="restore-description"></p>
       </div>
       <div id="restore-codes-header" class="intro" hidden>
-        <button id="restore-codes-back" class="back icon-button" type="button" aria-label="Back"><span class="icon icon-back"></span></button>
+        <button id="restore-codes-back" class="back icon-button" type="button" data-i18n-aria-label="back"><span class="icon icon-back"></span></button>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
         <h1 id="restore-codes-title"></h1>
-        <p>Choose the codes to put back in Firefox Sync. The codes it already has stay as they are.</p>
+        <p data-i18n="restoreCodesIntro"></p>
       </div>
       <div id="new-key-header" class="intro" hidden>
-        <button id="new-key-back" class="back icon-button" type="button" aria-label="Back to settings"><span class="icon icon-back"></span></button>
+        <button id="new-key-back" class="back icon-button" type="button" data-i18n-aria-label="backToSettings"><span class="icon icon-back"></span></button>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
-        <h1 id="new-key-title">Save your new recovery key</h1>
-        <p>If you forget your password, this key is the only way back to your codes.</p>
+        <h1 id="new-key-title" data-i18n="saveNewKeyTitle"></h1>
+        <p data-i18n="keyIntro"></p>
       </div>
       <div id="other-header" class="intro" hidden>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
-        <h1 id="other-title">Codes from another vault</h1>
+        <h1 id="other-title" data-i18n="otherTitle"></h1>
         <p id="other-description"></p>
       </div>
       <div id="remove-vault-header" class="page-header" hidden>
-        <button id="remove-vault-back" class="back icon-button" type="button" aria-label="Back"><span class="icon icon-back"></span></button>
-        <h1 id="remove-vault-title">Remove the other vault?</h1>
+        <button id="remove-vault-back" class="back icon-button" type="button" data-i18n-aria-label="back"><span class="icon icon-back"></span></button>
+        <h1 id="remove-vault-title" data-i18n="removeVaultTitle"></h1>
       </div>
       <div id="duplicates-header" class="intro" hidden>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
-        <h1 id="duplicates-title">Same code added twice</h1>
-        <p>You added this key on two computers before they synced. Keep one; the other is removed everywhere.</p>
+        <h1 id="duplicates-title" data-i18n="duplicatesTitle"></h1>
+        <p data-i18n="duplicatesIntro"></p>
       </div>
     </header>
-    <p id="initial-loading" role="status">Opening Authenticator…</p>
+    <p id="initial-loading" role="status" data-i18n="loading"></p>
     <form id="auth-form" hidden autocomplete="off" class="auth-form" aria-labelledby="auth-title">
       <div class="auth-fields">
-        <label class="visually-hidden" for="vault-password">Password</label>
-        <span class="password-field"><input id="vault-password" class="secret field large" type="text" placeholder="Password" autocomplete="off" spellcheck="false" autocapitalize="off" disabled aria-describedby="auth-description auth-error"><button class="reveal icon-button" type="button" aria-label="Show password" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
+        <label class="visually-hidden" for="vault-password" data-i18n="password"></label>
+        <span class="password-field"><input id="vault-password" class="secret field large" type="text" data-i18n-placeholder="password" autocomplete="off" spellcheck="false" autocapitalize="off" disabled aria-describedby="auth-description auth-error"><button class="reveal icon-button" type="button" data-i18n-aria-label="showPassword" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
         <p id="auth-error" class="error centered" role="alert" hidden></p>
-        <button id="auth-recover" class="text-link" type="button" hidden>Show codes read-only</button>
-        <button id="forgot-password" class="text-link" type="button">Forgot password?</button>
-        <button id="restore-copy" class="text-link" type="button" hidden>Restore this computer’s copy</button>
+        <button id="auth-recover" class="text-link" type="button" hidden data-i18n="showReadOnly"></button>
+        <button id="forgot-password" class="text-link" type="button" data-i18n="forgotPassword"></button>
+        <button id="restore-copy" class="text-link" type="button" hidden data-i18n="restoreCopy"></button>
       </div>
-      <button id="auth-submit" class="primary wide" type="submit" disabled><span class="icon icon-firefox-unlock"></span>Unlock</button>
+      <button id="auth-submit" class="primary wide" type="submit" disabled><span class="icon icon-firefox-unlock"></span><span data-i18n="unlock"></span></button>
     </form>
     <section id="settings-panel" class="page" hidden aria-labelledby="settings-title">
-      <label for="auto-lock">Lock automatically</label>
+      <label for="auto-lock" data-i18n="autoLock"></label>
       <span class="select-field">
         <select id="auto-lock" class="field" aria-describedby="auto-lock-description">
-          <option value="close">When the popup closes</option>
-          <option value="1">After 1 minute</option>
-          <option value="5" selected>After 5 minutes</option>
-          <option value="30">After 30 minutes</option>
-          <option value="60">After 1 hour</option>
-          <option value="never">Never</option>
+          <option value="close" data-i18n="autoLockClose"></option>
+          <option value="1" data-i18n="autoLock1"></option>
+          <option value="5" selected data-i18n="autoLock5"></option>
+          <option value="30" data-i18n="autoLock30"></option>
+          <option value="60" data-i18n="autoLockHour"></option>
+          <option value="never" data-i18n="autoLockNever"></option>
         </select>
         <span class="icon icon-firefox-arrow-down"></span>
       </span>
-      <p id="auto-lock-description" class="setting-description">The timer starts when you close the popup or stop using an open Authenticator window. With When the popup closes, an open window locks after 1 minute without use. Never keeps the vault unlocked until Firefox closes or you select Lock now.</p>
-      <h2 class="settings-section">Vault</h2>
-      <button id="change-password" class="setting-link" type="button">Change password<span class="icon icon-chevron"></span></button>
-      <button id="new-recovery-key" class="setting-link" type="button">New recovery key<span class="icon icon-chevron"></span></button>
-      <button id="other-vaults" class="setting-link" type="button" hidden>Another vault<span class="icon icon-chevron"></span></button>
-      <button id="lock-vault" class="secondary" type="button"><span class="icon icon-firefox-lock"></span>Lock now</button>
+      <p id="auto-lock-description" class="setting-description" data-i18n="autoLockDescription"></p>
+      <h2 class="settings-section" data-i18n="vault"></h2>
+      <button id="change-password" class="setting-link" type="button"><span data-i18n="changePassword"></span><span class="icon icon-chevron"></span></button>
+      <button id="new-recovery-key" class="setting-link" type="button"><span data-i18n="newRecoveryKey"></span><span class="icon icon-chevron"></span></button>
+      <button id="other-vaults" class="setting-link" type="button" hidden><span data-i18n="anotherVault"></span><span class="icon icon-chevron"></span></button>
+      <button id="lock-vault" class="secondary" type="button"><span class="icon icon-firefox-lock"></span><span data-i18n="lockNow"></span></button>
     </section>
     <form id="scan-confirm" class="page" hidden autocomplete="off" aria-labelledby="scan-title">
       <div id="scan-single">
-        <label for="scan-name">Code name</label>
+        <label for="scan-name" data-i18n="codeName"></label>
         <input id="scan-name" class="field" autocomplete="off" required maxlength="100" spellcheck="false" aria-describedby="scan-type scan-error">
         <p id="scan-type" class="hint"></p>
       </div>
       <section id="scan-migration" hidden aria-labelledby="scan-accounts-title">
-        <h2 id="scan-accounts-title" class="add-section-title">Accounts</h2>
+        <h2 id="scan-accounts-title" class="add-section-title" data-i18n="accounts"></h2>
         <p id="scan-summary" class="hint" hidden></p>
         <div id="scan-accounts"></div>
       </section>
       <p id="scan-error" class="error" role="alert" hidden></p>
       <div class="form-actions">
-        <button id="scan-cancel" class="secondary" type="button">Cancel</button>
-        <button id="scan-save" class="primary" type="submit">Add</button>
+        <button id="scan-cancel" class="secondary" type="button" data-i18n="cancel"></button>
+        <button id="scan-save" class="primary" type="submit" data-i18n="add"></button>
       </div>
     </form>
     <section id="recovery-panel" class="page" hidden aria-labelledby="recovery-title">
       <p id="recovery-source" class="hint"></p>
       <div id="recovery-accounts"></div>
-      <h2 id="recovery-older-title" class="recovery-section" hidden>Only in this computer’s copy</h2>
-      <p id="recovery-older-hint" class="hint" hidden>They may be out of date.</p>
+      <h2 id="recovery-older-title" class="recovery-section" hidden data-i18n="onlyInCopy"></h2>
+      <p id="recovery-older-hint" class="hint" hidden data-i18n="mayBeOutdated"></p>
       <div id="recovery-older" hidden></div>
       <p id="recovery-unreadable" class="hint" hidden></p>
       <p id="recovery-status" class="hint" role="status" aria-live="polite"></p>
       <div class="form-actions">
-        <button id="recovery-close" class="secondary" type="button">Close</button>
+        <button id="recovery-close" class="secondary" type="button" data-i18n="close"></button>
       </div>
     </section>
     <section id="notice-panel" class="page" hidden aria-labelledby="notice-title">
       <p id="notice-message" class="page-message" role="alert"></p>
       <div class="form-actions">
-        <button id="notice-close" class="secondary" type="button">Close</button>
+        <button id="notice-close" class="secondary" type="button" data-i18n="close"></button>
       </div>
     </section>
     <form id="edit-form" class="page" hidden autocomplete="off" novalidate aria-labelledby="edit-title">
-      <label for="edit-name">Code name</label>
+      <label for="edit-name" data-i18n="codeName"></label>
       <input id="edit-name" class="field" name="name" autocomplete="off" maxlength="100" spellcheck="false" aria-describedby="edit-error">
       <p id="edit-error" class="error" role="alert" hidden></p>
       <div class="form-actions">
-        <button id="edit-cancel" class="secondary" type="button">Cancel</button>
-        <button id="edit-save" class="primary" type="submit">Save</button>
+        <button id="edit-cancel" class="secondary" type="button" data-i18n="cancel"></button>
+        <button id="edit-save" class="primary" type="submit" data-i18n="save"></button>
       </div>
     </form>
     <section id="remove-panel" class="page" hidden aria-labelledby="remove-title">
-      <p id="remove-message" class="page-message">When you remove this account from Authenticator, you won’t get codes to help you sign in securely any more. Make sure that you update your settings for this account to reflect this change.</p>
+      <p id="remove-message" class="page-message" data-i18n="removeMessage"></p>
       <p id="remove-error" class="error" role="alert" hidden></p>
       <div class="form-actions">
-        <button id="remove-cancel" class="secondary" type="button">Cancel</button>
-        <button id="remove-confirm" class="primary" type="button">Remove</button>
+        <button id="remove-cancel" class="secondary" type="button" data-i18n="cancel"></button>
+        <button id="remove-confirm" class="primary" type="button" data-i18n="remove"></button>
       </div>
     </section>
     <form id="verify-form" class="auth-form" hidden autocomplete="off" aria-labelledby="verify-title">
       <div class="auth-fields">
-        <label class="visually-hidden" for="verify-password">Password</label>
-        <span class="password-field"><input id="verify-password" class="secret field large" type="text" placeholder="Password" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="verify-description verify-error"><button class="reveal icon-button" type="button" aria-label="Show password" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
+        <label class="visually-hidden" for="verify-password" data-i18n="password"></label>
+        <span class="password-field"><input id="verify-password" class="secret field large" type="text" data-i18n-placeholder="password" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="verify-description verify-error"><button class="reveal icon-button" type="button" data-i18n-aria-label="showPassword" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
         <p id="verify-error" class="error centered" role="alert" hidden></p>
       </div>
-      <button id="verify-submit" class="primary wide" type="submit">Continue</button>
+      <button id="verify-submit" class="primary wide" type="submit" data-i18n="continue"></button>
     </form>
     <form id="password-form" class="auth-form" hidden autocomplete="off" novalidate aria-labelledby="password-title">
       <div class="auth-fields">
-        <label class="visually-hidden" for="password-new">New password</label>
-        <span class="password-field"><input id="password-new" class="secret field large" type="text" placeholder="New password" autocomplete="off" spellcheck="false" autocapitalize="off"><button class="reveal icon-button" type="button" aria-label="Show password" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
-        <label class="visually-hidden" for="password-confirm">Confirm new password</label>
-        <span class="password-field"><input id="password-confirm" class="secret field large" type="text" placeholder="Confirm new password" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="password-error"><button class="reveal icon-button" type="button" aria-label="Show password" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
+        <label class="visually-hidden" for="password-new" data-i18n="newPassword"></label>
+        <span class="password-field"><input id="password-new" class="secret field large" type="text" data-i18n-placeholder="newPassword" autocomplete="off" spellcheck="false" autocapitalize="off"><button class="reveal icon-button" type="button" data-i18n-aria-label="showPassword" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
+        <label class="visually-hidden" for="password-confirm" data-i18n="confirmNewPassword"></label>
+        <span class="password-field"><input id="password-confirm" class="secret field large" type="text" data-i18n-placeholder="confirmNewPassword" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="password-error"><button class="reveal icon-button" type="button" data-i18n-aria-label="showPassword" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
         <div class="password-quality">
-          <label for="password-quality">Password quality meter</label>
+          <label for="password-quality" data-i18n="passwordQuality"></label>
           <progress id="password-quality" class="password-meter" max="100" value="0" data-password="password-new"></progress>
         </div>
-        <button class="text-link suggest" type="button" data-suggest="password-new" data-confirm="password-confirm">Suggest a password</button>
+        <button class="text-link suggest" type="button" data-suggest="password-new" data-confirm="password-confirm" data-i18n="suggestPassword"></button>
         <p id="password-error" class="error centered" role="alert" hidden></p>
       </div>
-      <button id="password-save" class="primary wide" type="submit">Change password</button>
+      <button id="password-save" class="primary wide" type="submit" data-i18n="changePassword"></button>
     </form>
     <form id="reset-form" class="auth-form" hidden autocomplete="off" aria-labelledby="reset-title">
       <div class="auth-fields">
-        <label class="visually-hidden" for="reset-key">Recovery key</label>
-        <input id="reset-key" class="key-input field large" type="text" placeholder="Recovery key" autocomplete="off" spellcheck="false" aria-describedby="reset-description reset-key-error">
+        <label class="visually-hidden" for="reset-key" data-i18n="recoveryKey"></label>
+        <input id="reset-key" class="key-input field large" type="text" data-i18n-placeholder="recoveryKey" autocomplete="off" spellcheck="false" aria-describedby="reset-description reset-key-error">
         <p id="reset-key-error" class="error centered" role="alert" hidden></p>
       </div>
-      <button id="reset-submit" class="primary wide" type="submit">Continue</button>
+      <button id="reset-submit" class="primary wide" type="submit" data-i18n="continue"></button>
     </form>
     <form id="merge-open-form" class="auth-form" hidden autocomplete="off" aria-labelledby="merge-open-title">
       <div class="auth-fields">
-        <label class="visually-hidden" for="merge-password">Password of the other vault</label>
-        <span class="password-field"><input id="merge-password" class="secret field large" type="text" placeholder="Password" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="merge-description merge-open-error"><button class="reveal icon-button" type="button" aria-label="Show password" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
-        <label class="visually-hidden" for="merge-key">Recovery key of the other vault</label>
-        <input id="merge-key" class="key-input field large" type="text" placeholder="Recovery key" autocomplete="off" spellcheck="false" aria-describedby="merge-description merge-open-error" hidden>
+        <label class="visually-hidden" for="merge-password" data-i18n="passwordOfOther"></label>
+        <span class="password-field"><input id="merge-password" class="secret field large" type="text" data-i18n-placeholder="password" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="merge-description merge-open-error"><button class="reveal icon-button" type="button" data-i18n-aria-label="showPassword" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
+        <label class="visually-hidden" for="merge-key" data-i18n="keyOfOther"></label>
+        <input id="merge-key" class="key-input field large" type="text" data-i18n-placeholder="recoveryKey" autocomplete="off" spellcheck="false" aria-describedby="merge-description merge-open-error" hidden>
         <p id="merge-open-error" class="error centered" role="alert" hidden></p>
-        <button id="merge-use-key" class="text-link" type="button">Use its recovery key instead</button>
+        <button id="merge-use-key" class="text-link" type="button" data-i18n="useKeyInstead"></button>
       </div>
-      <button id="merge-continue" class="primary wide" type="submit">Continue</button>
+      <button id="merge-continue" class="primary wide" type="submit" data-i18n="continue"></button>
     </form>
     <form id="merge-codes-form" class="auth-form" hidden aria-labelledby="merge-codes-title">
       <div>
@@ -271,15 +271,15 @@
     </form>
     <form id="restore-open-form" class="auth-form" hidden autocomplete="off" aria-labelledby="restore-open-title">
       <div class="auth-fields">
-        <label class="visually-hidden" for="restore-password">Password of the copy</label>
-        <span class="password-field"><input id="restore-password" class="secret field large" type="text" placeholder="Password" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="restore-description restore-warning restore-open-error"><button class="reveal icon-button" type="button" aria-label="Show password" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
-        <label class="visually-hidden" for="restore-key">Recovery key of the copy</label>
-        <input id="restore-key" class="key-input field large" type="text" placeholder="Recovery key" autocomplete="off" spellcheck="false" aria-describedby="restore-description restore-warning restore-open-error" hidden>
+        <label class="visually-hidden" for="restore-password" data-i18n="passwordOfCopy"></label>
+        <span class="password-field"><input id="restore-password" class="secret field large" type="text" data-i18n-placeholder="password" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="restore-description restore-warning restore-open-error"><button class="reveal icon-button" type="button" data-i18n-aria-label="showPassword" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
+        <label class="visually-hidden" for="restore-key" data-i18n="keyOfCopy"></label>
+        <input id="restore-key" class="key-input field large" type="text" data-i18n-placeholder="recoveryKey" autocomplete="off" spellcheck="false" aria-describedby="restore-description restore-warning restore-open-error" hidden>
         <p id="restore-open-error" class="error centered" role="alert" hidden></p>
-        <button id="restore-use-key" class="text-link" type="button">Use its recovery key instead</button>
-        <p id="restore-warning" class="warning">Its codes may be out of date. If you changed your password since, the old one opens the copy, and works again once you restore it.</p>
+        <button id="restore-use-key" class="text-link" type="button" data-i18n="useKeyInstead"></button>
+        <p id="restore-warning" class="warning" data-i18n="restoreWarning"></p>
       </div>
-      <button id="restore-continue" class="primary wide" type="submit">Continue</button>
+      <button id="restore-continue" class="primary wide" type="submit" data-i18n="continue"></button>
     </form>
     <form id="restore-codes-form" class="auth-form" hidden aria-labelledby="restore-codes-title">
       <div>
@@ -288,156 +288,156 @@
         <p id="restore-codes-error" class="error centered" role="alert" hidden></p>
       </div>
       <button id="restore-submit" class="primary wide" type="submit"></button>
-      <button id="restore-discard" class="text-link danger" type="button">Delete this copy</button>
+      <button id="restore-discard" class="text-link danger" type="button" data-i18n="deleteCopy"></button>
     </form>
     <form id="new-key-form" class="auth-form" hidden aria-labelledby="new-key-title">
       <div>
         <div class="key-box">
-          <output id="replacement-key" class="key" aria-label="New recovery key"></output>
-          <button id="copy-new-key" class="icon-button" type="button" aria-label="Copy recovery key"><span class="icon icon-copy"></span></button>
+          <output id="replacement-key" class="key" data-i18n-aria-label="newRecoveryKey"></output>
+          <button id="copy-new-key" class="icon-button" type="button" data-i18n-aria-label="copyRecoveryKey"><span class="icon icon-copy"></span></button>
         </div>
-        <p class="key-hint">Print it, or keep it in a password manager. Anyone with this key can set a new password.</p>
-        <label class="check-row"><input id="new-key-saved" type="checkbox">I saved my new recovery key</label>
+        <p class="key-hint" data-i18n="keyHint"></p>
+        <label class="check-row"><input id="new-key-saved" type="checkbox"><span data-i18n="savedNewKey"></span></label>
         <p id="new-key-error" class="error centered" role="alert" hidden></p>
       </div>
-      <button id="replace-key" class="primary wide" type="submit" disabled>Replace key</button>
+      <button id="replace-key" class="primary wide" type="submit" disabled data-i18n="replaceKey"></button>
     </form>
     <section id="other-panel" class="page interstitial" hidden aria-labelledby="other-title">
       <div class="interstitial-actions">
-        <button id="other-add" class="primary wide" type="button">Copy its codes</button>
-        <button id="other-later" class="secondary wide" type="button">Not now</button>
-        <button id="other-remove" class="text-link danger" type="button">Remove that vault</button>
+        <button id="other-add" class="primary wide" type="button" data-i18n="copyItsCodes"></button>
+        <button id="other-later" class="secondary wide" type="button" data-i18n="notNow"></button>
+        <button id="other-remove" class="text-link danger" type="button" data-i18n="removeThatVault"></button>
       </div>
     </section>
     <section id="remove-vault-panel" class="page" hidden aria-labelledby="remove-vault-title">
       <p id="remove-vault-message" class="page-message"></p>
       <p id="remove-vault-error" class="error" role="alert" hidden></p>
       <div class="form-actions">
-        <button id="remove-vault-cancel" class="secondary" type="button">Cancel</button>
-        <button id="remove-vault-confirm" class="primary" type="button">Remove vault</button>
+        <button id="remove-vault-cancel" class="secondary" type="button" data-i18n="cancel"></button>
+        <button id="remove-vault-confirm" class="primary" type="button" data-i18n="removeVault"></button>
       </div>
     </section>
     <form id="duplicates-panel" class="page interstitial" hidden aria-labelledby="duplicates-title">
       <div id="duplicates-choices" class="choices" role="radiogroup" aria-labelledby="duplicates-title"></div>
       <p id="duplicates-error" class="error" role="alert" hidden></p>
       <div class="interstitial-actions">
-        <button id="duplicates-keep" class="primary wide" type="submit">Keep this one</button>
-        <button id="duplicates-later" class="text-link" type="button">Not now</button>
+        <button id="duplicates-keep" class="primary wide" type="submit" data-i18n="keepThisOne"></button>
+        <button id="duplicates-later" class="text-link" type="button" data-i18n="notNow"></button>
       </div>
     </form>
     <section id="get-codes-panel" class="interstitial" hidden aria-labelledby="get-codes-title">
       <ol class="howto">
-        <li><span>Open <span class="icon icon-firefox-menu" role="img" aria-label="Menu"></span> › <strong>Settings</strong>.</span></li>
-        <li><span>In the <span class="icon icon-firefox-sync"></span> <strong>Sync</strong> card, check that <span class="icon icon-firefox-check"></span> <strong>Syncing is ON</strong>. If not, sign in with the account of your other computer.</span></li>
-        <li><span>Under <strong>Data synced across devices</strong>, check that <span class="icon icon-firefox-addons"></span> <strong>Add-ons</strong> is there.</span></li>
-        <li><span>Press <strong>Sync now</strong>, then open <img src="../assets/icons/logo-32.png" width="16" height="16" alt=""> <strong>Authenticator</strong> again.</span></li>
+        <li><span data-i18n-slots="howto1"><span class="icon icon-firefox-menu" role="img" data-i18n-aria-label="firefoxMenu"></span><strong data-i18n="firefoxSettings"></strong></span></li>
+        <li><span data-i18n-slots="howto2"><span class="icon icon-firefox-sync"></span><strong data-i18n="firefoxSync"></strong><span class="icon icon-firefox-check"></span><strong data-i18n="firefoxSyncOn"></strong></span></li>
+        <li><span data-i18n-slots="howto3"><strong data-i18n="firefoxSyncedData"></strong><span class="icon icon-firefox-addons"></span><strong data-i18n="firefoxAddons"></strong></span></li>
+        <li><span data-i18n-slots="howto4"><strong data-i18n="firefoxSyncNow"></strong><img src="../assets/icons/logo-32.png" width="16" height="16" alt=""><strong>Authenticator</strong></span></li>
       </ol>
     </section>
     <section id="setup-choice" class="interstitial" hidden aria-labelledby="setup-title">
       <div class="choices">
         <button id="choose-new" class="choice" type="button">
           <span class="choice-icon"><img src="../assets/icons/add.svg" width="22" height="22" alt=""></span>
-          <span class="choice-text"><span class="choice-title">Create a new vault</span><span class="choice-hint">Your first computer.</span></span>
+          <span class="choice-text"><span class="choice-title" data-i18n="createNewVault"></span><span class="choice-hint" data-i18n="firstComputer"></span></span>
           <span class="icon icon-chevron"></span>
         </button>
         <button id="choose-other" class="choice" type="button">
           <span class="choice-icon"><span class="icon icon-computer"></span></span>
-          <span class="choice-text"><span class="choice-title">I use it on another computer</span><span class="choice-hint">Through Firefox Sync.</span></span>
+          <span class="choice-text"><span class="choice-title" data-i18n="useOnOther"></span><span class="choice-hint" data-i18n="throughSync"></span></span>
           <span class="icon icon-chevron"></span>
         </button>
         <button id="choose-copy" class="choice" type="button" hidden>
           <span class="choice-icon"><span class="icon icon-computer"></span></span>
-          <span class="choice-text"><span class="choice-title">Restore this computer’s copy</span><span class="choice-hint">Kept when your vault left Firefox Sync.</span></span>
+          <span class="choice-text"><span class="choice-title" data-i18n="restoreCopy"></span><span class="choice-hint" data-i18n="keptCopyHint"></span></span>
           <span class="icon icon-chevron"></span>
         </button>
-        <p id="choice-notice" class="setup-note" hidden>Your codes have not arrived yet. Sync can take a few minutes: press <strong>Sync now</strong> on your other computer too.</p>
+        <p id="choice-notice" class="setup-note" hidden data-i18n-slots="choiceNotice"><strong data-i18n="firefoxSyncNow"></strong></p>
       </div>
     </section>
     <form id="setup-password-form" class="auth-form" hidden autocomplete="off" aria-labelledby="setup-password-title">
       <div class="auth-fields">
-        <label class="visually-hidden" for="new-password">Password</label>
-        <span class="password-field"><input id="new-password" class="secret field large" type="text" placeholder="Password" autocomplete="off" spellcheck="false" autocapitalize="off"><button class="reveal icon-button" type="button" aria-label="Show password" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
-        <label class="visually-hidden" for="new-confirm">Confirm password</label>
-        <span class="password-field"><input id="new-confirm" class="secret field large" type="text" placeholder="Confirm password" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="setup-password-error"><button class="reveal icon-button" type="button" aria-label="Show password" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
+        <label class="visually-hidden" for="new-password" data-i18n="password"></label>
+        <span class="password-field"><input id="new-password" class="secret field large" type="text" data-i18n-placeholder="password" autocomplete="off" spellcheck="false" autocapitalize="off"><button class="reveal icon-button" type="button" data-i18n-aria-label="showPassword" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
+        <label class="visually-hidden" for="new-confirm" data-i18n="confirmPassword"></label>
+        <span class="password-field"><input id="new-confirm" class="secret field large" type="text" data-i18n-placeholder="confirmPassword" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="setup-password-error"><button class="reveal icon-button" type="button" data-i18n-aria-label="showPassword" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
         <div class="password-quality">
-          <label for="setup-password-quality">Password quality meter</label>
+          <label for="setup-password-quality" data-i18n="passwordQuality"></label>
           <progress id="setup-password-quality" class="password-meter" max="100" value="0" data-password="new-password"></progress>
         </div>
-        <button class="text-link suggest" type="button" data-suggest="new-password" data-confirm="new-confirm">Suggest a password</button>
+        <button class="text-link suggest" type="button" data-suggest="new-password" data-confirm="new-confirm" data-i18n="suggestPassword"></button>
         <p id="setup-password-error" class="error centered" role="alert" hidden></p>
       </div>
-      <button id="setup-password-next" class="primary wide" type="submit">Continue</button>
+      <button id="setup-password-next" class="primary wide" type="submit" data-i18n="continue"></button>
     </form>
     <form id="setup-key-form" class="auth-form" hidden aria-labelledby="setup-key-title">
       <div>
         <div class="key-box">
-          <output id="recovery-key" class="key" aria-label="Recovery key"></output>
-          <button id="copy-key" class="icon-button" type="button" aria-label="Copy recovery key"><span class="icon icon-copy"></span></button>
+          <output id="recovery-key" class="key" data-i18n-aria-label="recoveryKey"></output>
+          <button id="copy-key" class="icon-button" type="button" data-i18n-aria-label="copyRecoveryKey"><span class="icon icon-copy"></span></button>
         </div>
-        <p class="key-hint">Print it, or keep it in a password manager. Anyone with this key can set a new password.</p>
-        <label class="check-row"><input id="key-saved" type="checkbox">I saved my recovery key</label>
+        <p class="key-hint" data-i18n="keyHint"></p>
+        <label class="check-row"><input id="key-saved" type="checkbox"><span data-i18n="savedKey"></span></label>
         <p id="key-error" class="error centered" role="alert" hidden></p>
       </div>
-      <button id="create-vault" class="primary wide" type="submit" disabled>Create vault</button>
+      <button id="create-vault" class="primary wide" type="submit" disabled data-i18n="createVault"></button>
     </form>
     <form id="account-form" hidden autocomplete="off" aria-labelledby="add-title">
       <section class="qr-import-section" aria-labelledby="qr-import-title">
-        <h2 id="qr-import-title" class="add-section-title">Import from QR</h2>
-        <button id="import-qr" class="secondary" type="button"><span class="icon icon-qr"></span>Import QR image</button>
+        <h2 id="qr-import-title" class="add-section-title" data-i18n="importFromQr"></h2>
+        <button id="import-qr" class="secondary" type="button"><span class="icon icon-qr"></span><span data-i18n="importQrImage"></span></button>
         <input id="qr-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/bmp" hidden>
-        <p id="qr-status" class="hint" role="status">Choose a QR image or paste a screenshot here.</p>
+        <p id="qr-status" class="hint" role="status" data-i18n="qrStatus"></p>
       </section>
       <section id="migration-preview" hidden aria-labelledby="detected-codes-title">
-        <h2 id="detected-codes-title" class="add-section-title">Accounts</h2>
+        <h2 id="detected-codes-title" class="add-section-title" data-i18n="accounts"></h2>
         <p id="migration-summary" hidden></p>
         <div id="migration-accounts"></div>
       </section>
       <div id="manual-account-fields">
-        <div class="add-method-divider"><span>or enter a key manually</span></div>
-        <label for="account-name">Code name</label>
-        <input id="account-name" class="field" name="name" autocomplete="off" required maxlength="100" placeholder="e.g. Test account">
-        <label for="account-secret">Your key</label>
+        <div class="add-method-divider"><span data-i18n="orManual"></span></div>
+        <label for="account-name" data-i18n="codeName"></label>
+        <input id="account-name" class="field" name="name" autocomplete="off" required maxlength="100" data-i18n-placeholder="namePlaceholder">
+        <label for="account-secret" data-i18n="yourKey"></label>
         <input id="account-secret" class="field" name="otp-secret" type="text" required maxlength="512" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" data-lpignore="true" data-1p-ignore aria-describedby="form-hint form-error">
-        <label for="key-type">Type of key</label>
+        <label for="key-type" data-i18n="keyType"></label>
         <select id="key-type" class="field" name="type">
-          <option value="totp">Time based</option>
-          <option value="hotp">Counter based</option>
+          <option value="totp" data-i18n="timeBased"></option>
+          <option value="hotp" data-i18n="counterBased"></option>
         </select>
-        <p id="form-hint" class="hint">The code changes every 30 seconds.</p>
+        <p id="form-hint" class="hint" data-i18n="hintTotp"></p>
       </div>
       <p id="form-error" class="error" role="alert" hidden></p>
       <div class="form-actions">
-        <button id="cancel" class="secondary" type="button">Cancel</button>
-        <button id="account-save" class="primary" type="submit">Add</button>
+        <button id="cancel" class="secondary" type="button" data-i18n="cancel"></button>
+        <button id="account-save" class="primary" type="submit" data-i18n="add"></button>
       </div>
     </form>
     <main hidden>
-      <article class="account" aria-label="Demo account">
+      <article class="account">
         <div>
-          <h2>Demo account</h2>
-          <div class="code-area"><output id="code" aria-label="One-time code">--- ---</output></div>
+          <h2></h2>
+          <div class="code-area"><output id="code" data-i18n-aria-label="oneTimeCode">--- ---</output></div>
         </div>
-        <svg id="timer" viewBox="0 0 32 32" role="img" aria-label="Generating code…">
+        <svg id="timer" viewBox="0 0 32 32" role="img" data-i18n-aria-label="generatingCode">
           <circle class="timer-track" cx="16" cy="16" r="14"></circle>
           <path id="timer-sector" d=""></path>
         </svg>
       </article>
     </main>
     <div id="search-empty" hidden>
-      <p id="search-empty-message" hidden role="status">No accounts found.</p>
-      <div id="empty-state"><img src="../assets/icons/add.svg" width="32" height="32" alt=""><p class="empty-title">No codes yet.</p><p>Add your first code to get started.</p></div>
+      <p id="search-empty-message" hidden role="status" data-i18n="noAccountsFound"></p>
+      <div id="empty-state"><img src="../assets/icons/add.svg" width="32" height="32" alt=""><p class="empty-title" data-i18n="noCodes"></p><p data-i18n="addFirst"></p></div>
     </div>
     <div id="list-actions" hidden>
-      <div id="add-menu" role="menu" aria-label="Add a code" hidden>
-        <button id="scan" class="add-menu-item" type="button" role="menuitem" tabindex="-1"><span class="add-menu-label">Scan a QR code</span><span class="add-menu-icon"><span class="icon icon-qr"></span></span></button>
-        <button id="add-code" class="add-menu-item" type="button" role="menuitem" tabindex="-1"><span class="add-menu-label">Enter a setup key</span><span class="add-menu-icon"><span class="icon icon-keyboard"></span></span></button>
+      <div id="add-menu" role="menu" data-i18n-aria-label="addACode" hidden>
+        <button id="scan" class="add-menu-item" type="button" role="menuitem" tabindex="-1"><span class="add-menu-label" data-i18n="scanQr"></span><span class="add-menu-icon"><span class="icon icon-qr"></span></span></button>
+        <button id="add-code" class="add-menu-item" type="button" role="menuitem" tabindex="-1"><span class="add-menu-label" data-i18n="enterSetupKey"></span><span class="add-menu-icon"><span class="icon icon-keyboard"></span></span></button>
       </div>
-      <button id="add" type="button" aria-label="Add a code" aria-haspopup="menu" aria-expanded="false" aria-controls="add-menu"><img src="../assets/icons/add.svg" width="24" height="24" alt=""><span class="icon icon-close"></span></button>
+      <button id="add" type="button" data-i18n-aria-label="addACode" aria-haspopup="menu" aria-expanded="false" aria-controls="add-menu"><img src="../assets/icons/add.svg" width="24" height="24" alt=""><span class="icon icon-close"></span></button>
     </div>
     <p id="toast" role="status" aria-live="polite" hidden></p>
     <div id="account-menu" role="menu" hidden>
-      <button id="menu-edit" type="button" role="menuitem" tabindex="-1">Edit</button>
-      <button id="menu-remove" type="button" role="menuitem" tabindex="-1">Remove</button>
+      <button id="menu-edit" type="button" role="menuitem" tabindex="-1" data-i18n="edit"></button>
+      <button id="menu-remove" type="button" role="menuitem" tabindex="-1" data-i18n="remove"></button>
     </div>
     <script type="module" src="popup.mjs"></script>
   </body>

@@ -1,4 +1,4 @@
-import { plural } from './messages.mjs';
+import { plural, t } from '../../shared/i18n.mjs';
 
 // The account list of a Google export, in the Add code window or in the scan confirmation of the popup.
 export function createMigrationPreview({ preview, accounts, title, summary, onSelection }) {
@@ -14,16 +14,14 @@ export function createMigrationPreview({ preview, accounts, title, summary, onSe
     preview.hidden = true;
   }
 
-  // reasons[i], when set, says why account i cannot be added (see duplicateReasons in core/duplicates.mjs).
+  // reasons[i], when set, is why account i cannot be added (see duplicateReasons in core/duplicates.mjs); an account
+  // the export damaged has its own error, as { key, values } for a message.
   function show(payload, reasons = []) {
     clear();
     const count = payload.accounts.length;
-    title.textContent = plural(count, 'Account');
+    title.textContent = plural('accountCount', count);
     summary.hidden = payload.batchSize <= 1;
-    summary.textContent = payload.batchSize > 1
-      ? `QR ${payload.batchIndex + 1} of ${payload.batchSize}: this image contains only part of the export. `
-        + 'Import the other images separately.'
-      : '';
+    summary.textContent = payload.batchSize > 1 ? t('exportPart', payload.batchIndex + 1, payload.batchSize) : '';
     choices = payload.accounts.map((entry, index) => {
       const reason = reasons[index] ?? null;
       const record = reason ? null : entry.record;
@@ -37,7 +35,8 @@ export function createMigrationPreview({ preview, accounts, title, summary, onSe
       text.textContent = entry.name;
       if (entry.error || reason) {
         const note = document.createElement('small');
-        note.textContent = entry.error || reason;
+        if (entry.error) note.textContent = t(entry.error.key, ...entry.error.values);
+        else note.textContent = reason === 'repeated' ? t('listedTwiceInExport') : t('alreadyInList');
         note.classList.toggle('duplicate', Boolean(reason));
         text.append(note);
       }

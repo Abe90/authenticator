@@ -1,6 +1,7 @@
 import { element } from './dom.mjs';
 import { formError, onSubmit, pageAction } from './forms.mjs';
-import { WRONG_PASSWORD, failureText, plural } from './messages.mjs';
+import { WRONG_PASSWORD, failureText } from './messages.mjs';
+import { plural, t } from '../../shared/i18n.mjs';
 import { copyChoices } from '../../core/duplicates.mjs';
 
 // The codes of another vault, made on a computer before it was connected to Firefox Sync, in two pages like the
@@ -38,16 +39,16 @@ export function createMerge({ vault, views, store, receipts, onDone, onExit }) {
     .map(({ record }) => record);
   function count() {
     const chosen = selected().length;
-    add.textContent = chosen ? `Copy ${plural(chosen, 'code')}` : 'Copy codes';
+    add.textContent = chosen ? plural('copyCodes', chosen) : t('copyCodesNone');
     add.disabled = !chosen;
   }
 
   async function render(read) {
     opened = read;
     const reasons = copyChoices(read.accounts, await vault.read());
-    title.textContent = plural(read.accounts.length, 'code');
+    title.textContent = plural('codeCount', read.accounts.length);
     choices = read.accounts.map((record, index) => {
-      const { skip, note } = reasons[index];
+      const { skip, raises } = reasons[index];
       const label = document.createElement('label');
       label.className = 'migration-account';
       const checkbox = document.createElement('input');
@@ -57,10 +58,11 @@ export function createMerge({ vault, views, store, receipts, onDone, onExit }) {
       checkbox.addEventListener('change', count);
       const text = document.createElement('span');
       text.textContent = record.name;
-      if (skip || note) {
+      if (skip || raises) {
         const small = document.createElement('small');
         small.className = 'duplicate';
-        small.textContent = skip ?? note;
+        if (skip) small.textContent = skip === 'repeated' ? t('listedTwiceInVault') : t('alreadyInList');
+        else small.textContent = t('copyRaisesCounter', raises);
         text.append(small);
       }
       label.append(checkbox, text);
@@ -68,7 +70,7 @@ export function createMerge({ vault, views, store, receipts, onDone, onExit }) {
     });
     list.replaceChildren(...choices.map(({ label }) => label));
     damagedNote.hidden = !read.damaged;
-    damagedNote.textContent = `${plural(read.damaged, 'code')} of the other vault can’t be opened. They stay in it.`;
+    damagedNote.textContent = plural('mergeDamaged', read.damaged);
     count();
   }
 
@@ -78,10 +80,8 @@ export function createMerge({ vault, views, store, receipts, onDone, onExit }) {
     openForm.reset();
     password.closest('.password-field').hidden = withKey;
     keyInput.hidden = !withKey;
-    description.textContent = withKey
-      ? 'Enter the recovery key that was saved when the other vault was created.'
-      : 'Enter the password you chose for it on the other computer.';
-    useKey.textContent = withKey ? 'Use its password instead' : 'Use its recovery key instead';
+    description.textContent = withKey ? t('mergeKeyPrompt') : t('mergePasswordPrompt');
+    useKey.textContent = withKey ? t('usePasswordInstead') : t('useKeyInstead');
     openError.clear();
   }
 
@@ -105,8 +105,8 @@ export function createMerge({ vault, views, store, receipts, onDone, onExit }) {
     const read = await action.run(openButton, () => (withKey
       ? vault.openOtherWithRecoveryKey(vaultId, keyInput.value)
       : vault.openOther(vaultId, password.value)), (error) => {
-      if (error.reason === 'not-found') openError.show('That vault is no longer there.');
-      else openError.show(withKey ? 'This recovery key does not open that vault.' : WRONG_PASSWORD, secret());
+      if (error.reason === 'not-found') openError.show(t('vaultGone'));
+      else openError.show(withKey ? t('keyNotThatVault') : WRONG_PASSWORD, secret());
       secret().focus();
     });
     if (!read || current !== revision) return;
@@ -132,9 +132,7 @@ export function createMerge({ vault, views, store, receipts, onDone, onExit }) {
       return true;
     }, (error) => {
       changed = error.reason === 'changed';
-      codesError.show(changed
-        ? 'The other vault changed meanwhile. Check the codes again.'
-        : failureText(error, 'Could not copy the codes. Please try again.'));
+      codesError.show(changed ? t('otherChanged') : failureText(error, t('copyFailed')));
     });
     if (changed && current === revision) {
       const read = await opened.reload().catch(() => null);

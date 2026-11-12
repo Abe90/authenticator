@@ -10,7 +10,9 @@ export const MIN_PASSWORD_LENGTH = 4;
 // count older accounts with them as damaged.
 const HIDDEN = /[\p{Cc}\u202A-\u202E\u2066-\u2069\u200E\u200F\u061C\u200B-\u200D\u2060\uFEFF]/gu;
 export const cleanName = (text) => String(text).replace(/\s+/g, ' ').replace(HIDDEN, '').replace(/ {2,}/g, ' ').trim();
-export const shownName = (name) => cleanName(name) || 'Unnamed account';
+// The name of an account without one, in the language of the extension; in English outside Firefox.
+export const unnamedAccount = () => globalThis.browser?.i18n?.getMessage('unnamedAccount') || 'Unnamed account';
+export const shownName = (name) => cleanName(name) || unnamedAccount();
 
 export const isAccountName = (name) => typeof name === 'string' && name.trim() !== '' && name.length <= MAX_NAME_LENGTH;
 

@@ -7,11 +7,14 @@
 //   and every packaged file is loaded, apart from licenses and notices. References are followed
 //   from the manifest (popup, background scripts, icons) through HTML attributes, CSS url(),
 //   module imports, worker URLs, asset paths in scripts and page scripts injected with
-//   scripting.executeScript.
+//   scripting.executeScript. A manifest with default_locale loads every _locales/*/messages.json.
+// - Every message the extension asks for is in every language, with the same $1, $2… as in English, and every
+//   message is asked for. Keys are read from t('key'), plural('key') (key_one and key_other), UserError('key'),
+//   getMessage('key'), data-i18n attributes and __MSG_key__ in the manifest.
 //
 // Usage: node tools/check.mjs
 import { execFileSync, spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { basename, dirname, extname, join, resolve } from 'node:path';
 import { EXTENSION, ROOT, byPath, isFile, name, runtimeFiles } from './package.mjs';
 
@@ -79,6 +82,7 @@ function loadedFiles() {
     ...Object.values(manifest.icons), ...Object.values(manifest.action.default_icon)].map((file) => join(EXTENSION, file));
   const page = pending[0];
   const loaded = new Set([join(EXTENSION, 'manifest.json')]);
+  if (manifest.default_locale) pending.push(...localeFiles());
   while (pending.length) {
     const path = pending.pop();
     if (loaded.has(path)) continue;
@@ -94,6 +98,44 @@ function loadedFiles() {
     }
   }
   return loaded;
+}
+
+function localeFiles() {
+  return readdirSync(join(EXTENSION, '_locales')).map((locale) => join(EXTENSION, '_locales', locale, 'messages.json'));
+}
+
+const KEYS = [/\b(?:t|UserError|getMessage)\('(\w+)'/g, /\bdata-i18n(?:-[a-z-]+)?="(\w+)"/g, /__MSG_(\w+)__/g];
+const PLURAL_KEYS = /\bplural\('(\w+)'/g;
+const places = (message) => [...new Set(message.match(/\$\d/g))].sort().join(' ');
+
+function checkMessages(loaded) {
+  const used = new Set();
+  for (const path of loaded) {
+    if (!['.mjs', '.js', '.html', '.json'].includes(extname(path)) || !isFile(path)) continue;
+    if (name(path).startsWith('extension/_locales/')) continue;
+    const text = readFileSync(path, 'utf8');
+    for (const pattern of KEYS) for (const [, key] of text.matchAll(pattern)) used.add(key);
+    for (const [, key] of text.matchAll(PLURAL_KEYS)) used.add(`${key}_one`).add(`${key}_other`);
+  }
+  const english = JSON.parse(readFileSync(join(EXTENSION, '_locales', 'en', 'messages.json'), 'utf8'));
+  for (const path of localeFiles()) {
+    if (!isFile(path)) continue;
+    const messages = JSON.parse(readFileSync(path, 'utf8'));
+    const lower = new Set();
+    for (const [key, { message }] of Object.entries(messages)) {
+      // Firefox reads keys without regard to case.
+      if (lower.has(key.toLowerCase())) problems.push(`${name(path)}: ${key} differs from another key only by case`);
+      lower.add(key.toLowerCase());
+      if (!used.has(key)) problems.push(`${name(path)}: ${key} is never used`);
+      if (!message) problems.push(`${name(path)}: ${key} is empty`);
+      if (english[key] && places(message ?? '') !== places(english[key].message)) {
+        problems.push(`${name(path)}: ${key} does not have the $1, $2… of English`);
+      }
+    }
+    for (const key of [...used].sort()) {
+      if (!(key in messages)) problems.push(`${name(path)}: ${key} is missing`);
+    }
+  }
 }
 
 function checkPackage(loaded) {
@@ -114,7 +156,9 @@ for (const path of files) {
   }
 }
 checkSyntax(files.filter((path) => extname(path) === '.mjs' || name(path).startsWith('extension/content/')));
-checkPackage(loadedFiles());
+const loaded = loadedFiles();
+checkPackage(loaded);
+checkMessages(loaded);
 for (const problem of problems) console.log(problem);
 console.log(problems.length ? `${problems.length} problems` : 'ok');
 process.exitCode = problems.length ? 1 : 0;

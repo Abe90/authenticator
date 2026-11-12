@@ -1,13 +1,10 @@
 import { element, message } from './dom.mjs';
 import { pageAction } from './forms.mjs';
-import { plural } from './messages.mjs';
+import { plural, t } from '../../shared/i18n.mjs';
 import { AFTER_UNLOCK_KEY } from '../../core/storage-keys.mjs';
 import { duplicateGroups } from '../../core/duplicates.mjs';
 
 const added = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' });
-const damagedMessage = (count) => (count === 1
-  ? 'One code in your vault is damaged and can’t be shown. The others work as usual.'
-  : `${count} codes in your vault are damaged and can’t be shown. The others work as usual.`);
 
 // Once after an unlock with a password or the recovery key, the toolbar popup looks in turn for another vault, a key
 // added on two computers, a password too weak for a new one and damaged accounts, and offers each on its page before
@@ -57,7 +54,7 @@ export function createAfterUnlock({
       } else if (vault.damaged && current === revision) {
         // From the list, so that Close returns there.
         await onDone();
-        notice.show('Some codes can’t be read', damagedMessage(vault.damaged));
+        notice.show(t('damagedTitle'), plural('damagedCodes', vault.damaged));
         return;
       }
     }
@@ -65,9 +62,7 @@ export function createAfterUnlock({
   }
 
   async function showOtherPage() {
-    const codes = plural(other.codes, 'code');
-    otherDescription.textContent = `One of your computers made a separate vault with ${codes} before it was `
-      + 'connected to Firefox Sync.';
+    otherDescription.textContent = plural('otherDescription', other.codes);
     await views.navigate('other');
   }
 
@@ -104,7 +99,7 @@ export function createAfterUnlock({
       name.textContent = account.name;
       const date = document.createElement('span');
       date.className = 'choice-hint';
-      date.textContent = `Added ${added.format(account.added)}`;
+      date.textContent = t('addedOn', added.format(account.added));
       text.append(name, date);
       const radio = document.createElement('input');
       radio.type = 'radio';
@@ -125,7 +120,7 @@ export function createAfterUnlock({
       await vault.keepDuplicate(id);
       groups.shift();
       return true;
-    }, () => message(duplicatesError, 'Could not remove the other entry. Please try again.'));
+    }, () => message(duplicatesError, t('removeEntryFailed')));
     if (!kept) return;
     if (groups.length) await showGroup();
     else next();
@@ -137,7 +132,7 @@ export function createAfterUnlock({
       message(removeError);
       await vault.removeOther(other.id);
       return true;
-    }, () => message(removeError, 'Could not remove the vault. Please try again.'));
+    }, () => message(removeError, t('removeVaultFailed')));
     if (removed) next();
   }
 
@@ -146,15 +141,11 @@ export function createAfterUnlock({
   // The second step of removing it says what it still holds that was not copied here.
   element('#other-remove').addEventListener('click', async () => {
     if (action.busy || !other) return;
-    const codes = plural(other.codes, 'code');
     const ids = await vault.read().then((accounts) => accounts.map((account) => account.id), () => []);
     const receipt = await receipts.current(other, vault.vaultId, ids).catch(() => null);
     removeMessage.textContent = receipt
-      ? `Its ${codes} will be deleted on all your computers. On this computer you copied ${receipt.added.length}; `
-        + `${receipt.skipped} were not copied and ${receipt.unreadable} can’t be opened. The codes in your vault are `
-        + 'not affected.'
-      : `Its ${codes} have not been copied, and will be deleted on all your computers without being opened. The codes `
-        + 'in your vault are not affected.';
+      ? plural('removeVaultCopied', other.codes, receipt.added.length, receipt.skipped, receipt.unreadable)
+      : plural('removeVaultNotCopied', other.codes);
     message(removeError);
     views.navigate('remove-vault');
   });

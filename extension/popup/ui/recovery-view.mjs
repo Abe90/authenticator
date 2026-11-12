@@ -1,6 +1,6 @@
 import { TOTP_PERIOD, createHotpGenerator, totpStep } from '../../core/totp.mjs';
 import { element } from './dom.mjs';
-import { plural } from './messages.mjs';
+import { plural, t } from '../../shared/i18n.mjs';
 
 // The trusted input that keeps the page open, as for an unlock (shared/open-windows.mjs).
 const INPUT_EVENTS = ['keydown', 'pointerdown', 'pointermove', 'wheel'];
@@ -29,7 +29,7 @@ export function createRecoveryView({ recovery, views, minutes, onExit }) {
       await navigator.clipboard.writeText(text);
       status.textContent = done;
     } catch {
-      status.textContent = 'Copy failed. Please try again.';
+      status.textContent = t('clipboardFailed');
     }
   }
 
@@ -43,20 +43,20 @@ export function createRecoveryView({ recovery, views, minutes, onExit }) {
     code.className = 'recovery-code';
     const note = document.createElement('span');
     note.className = 'recovery-note';
-    if (account.type === 'hotp') note.textContent = 'Counter-based: this code may already have been used.';
+    if (account.type === 'hotp') note.textContent = t('hotpMayBeUsed');
     const copyCode = document.createElement('button');
     copyCode.type = 'button';
     copyCode.className = 'text-link';
-    copyCode.textContent = 'Copy code';
+    copyCode.textContent = t('copyCode');
     copyCode.addEventListener('click', () => {
       const value = code.textContent.replace(/\s/g, '');
-      if (/^\d{6}$/.test(value)) copy(value, `Code for ${account.name} copied`);
+      if (/^\d{6}$/.test(value)) copy(value, t('codeCopiedFor', account.name));
     });
     const copyKey = document.createElement('button');
     copyKey.type = 'button';
     copyKey.className = 'text-link';
-    copyKey.textContent = 'Copy key';
-    copyKey.addEventListener('click', () => copy(account.secret, `Key for ${account.name} copied`));
+    copyKey.textContent = t('copyKey');
+    copyKey.addEventListener('click', () => copy(account.secret, t('keyCopiedFor', account.name)));
     node.append(name, code, note, copyCode, copyKey);
     return { account, code, note, generate: null, shown: null };
   }
@@ -74,10 +74,10 @@ export function createRecoveryView({ recovery, views, minutes, onExit }) {
           entry.code.textContent = `${value.slice(0, 3)} ${value.slice(3)}`;
           entry.shown = step;
         }
-        if (account.type !== 'hotp') entry.note.textContent = `New code in ${TOTP_PERIOD - seconds % TOTP_PERIOD} s`;
+        if (account.type !== 'hotp') entry.note.textContent = t('newCodeIn', TOTP_PERIOD - seconds % TOTP_PERIOD);
       } catch {
         entry.code.textContent = '--- ---';
-        entry.note.textContent = 'This code cannot be shown.';
+        entry.note.textContent = t('codeCannotShow');
       }
     }
   }
@@ -120,18 +120,15 @@ export function createRecoveryView({ recovery, views, minutes, onExit }) {
       active = true;
       const limit = await minutes();
       idleMs = limit === null ? null : limit * 60_000;
-      source.textContent = `${found.trusted
-        ? 'Read with the vault header this computer last opened with your password.'
-        : 'Read from another vault in Firefox Sync.'} Nothing is written to Firefox Sync, and these codes cannot be `
-        + 'changed here.';
+      source.textContent = found.trusted ? t('recoverySourceTrusted') : t('recoverySourceOther');
       rows = render(list, read.accounts);
       const old = render(older, read.older);
       rows.push(...old);
       for (const node of [olderTitle, olderHint, older]) node.hidden = !old.length;
       unreadable.hidden = !read.unreadable;
       unreadable.textContent = read.newer
-        ? `${plural(read.unreadable, 'code')} saved by a newer version of Authenticator cannot be shown here.`
-        : `${plural(read.unreadable, 'code')} cannot be read.`;
+        ? plural('unreadableNewer', read.unreadable)
+        : plural('unreadableCodes', read.unreadable);
       await tick();
       ticker = setInterval(tick, 1000);
       idle();

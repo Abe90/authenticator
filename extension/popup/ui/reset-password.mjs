@@ -1,8 +1,6 @@
+import { t } from '../../shared/i18n.mjs';
 import { element } from './dom.mjs';
 import { createPasswordEntry } from './password-entry.mjs';
-
-const NOT_A_KEY = 'This is not a recovery key: it has 32 letters and digits.';
-const WRONG_KEY = 'This recovery key does not open this vault. Check it and try again.';
 
 // Forgot password, in two pages like Change password: the recovery key, on a page like the password page and checked
 // on its own once typing pauses, then the new password page, whose Reset password is the only step that changes the
@@ -16,23 +14,23 @@ export function createReset({ vault, views, store, newPassword, blocked, onDone,
     input,
     submit: element('#reset-submit'),
     error: element('#reset-key-error'),
-    label: 'Continue',
-    busyLabel: 'Checking…',
+    label: t('continue'),
+    busyLabel: t('checking'),
     active,
     blocked,
     async attempt(key, { automatic, stale, fail }) {
       try {
         await vault.checkRecoveryKey(key);
       } catch (error) {
-        if (!automatic) fail(error.reason === 'not-recovery-key' ? NOT_A_KEY : WRONG_KEY, input);
+        if (!automatic) fail(error.reason === 'not-recovery-key' ? t('notAKey') : t('wrongKey'), input);
         return;
       }
       if (stale() || !active()) return;
       newPassword.start({
-        label: 'Reset password',
-        backLabel: 'Back to the password page',
+        label: t('resetPassword'),
+        backLabel: t('backToPassword'),
         save: (password) => vault.resetPassword(key, password),
-        failure: 'Could not reset the password. Please try again.',
+        failure: t('resetFailed'),
         done: (records) => store.leave(onDone, records),
         back: exit,
       });

@@ -1,5 +1,6 @@
 import { parseQrAccount } from '../core/migration.mjs';
 import { SCAN_TARGET_KEY } from '../core/storage-keys.mjs';
+import { UserError } from '../core/user-error.mjs';
 import { FULL_SIDE, createQrDecoder, imageData, wholeRect } from '../shared/qr-decoder.mjs';
 import { cornersRect, cropRect, isOtpPayload, overlaps } from './scan-geometry.mjs';
 
@@ -12,12 +13,6 @@ const CONNECT_TIMEOUT_MS = 5000;
 // Longest side, in pixels, at which the crop around one page element is decoded.
 const CROP_SIDE = 1024;
 
-export const SCAN_MESSAGES = {
-  grant: 'Click the Authenticator icon while the page with the QR code is open, then press Scan page again.',
-  unscannable: 'This page cannot be scanned. Take a screenshot of the QR code and paste it here instead.',
-  failed: 'Could not scan this page. Please try again.',
-};
-
 async function loadCapture(api, windowId) {
   const url = await api.tabs.captureVisibleTab(windowId, { format: 'png' });
   return createImageBitmap(await (await fetch(url)).blob());
@@ -28,11 +23,11 @@ const DEFAULTS = { loadCapture, imageData, createDecoder: createQrDecoder, parse
 async function findTarget(api) {
   const { [SCAN_TARGET_KEY]: target } = await api.storage.session.get(SCAN_TARGET_KEY);
   if (!Number.isSafeInteger(target?.tabId) || !Number.isSafeInteger(target?.windowId)) {
-    throw new Error(SCAN_MESSAGES.grant);
+    throw new UserError('scanGrant');
   }
   let tab;
-  try { tab = await api.tabs.get(target.tabId); } catch { throw new Error(SCAN_MESSAGES.grant); }
-  if (!tab.active || tab.windowId !== target.windowId) throw new Error(SCAN_MESSAGES.grant);
+  try { tab = await api.tabs.get(target.tabId); } catch { throw new UserError('scanGrant'); }
+  if (!tab.active || tab.windowId !== target.windowId) throw new UserError('scanGrant');
   return { tabId: target.tabId, windowId: target.windowId };
 }
 
@@ -51,7 +46,7 @@ export function readCandidates(message) {
   return { innerWidth: viewport.innerWidth, items: rects };
 }
 
-// Resolves to the picked record, or null when cancelled; rejects with a message for the user. onInput(time) runs for
+// Resolves to the picked record, or null when cancelled; rejects with a UserError for the user. onInput(time) runs for
 // the user's input on the page.
 export async function scanPage({ api = browser, signal, onInput, ...overrides } = {}) {
   const deps = { ...DEFAULTS, ...overrides };
@@ -82,7 +77,7 @@ export async function scanPage({ api = browser, signal, onInput, ...overrides } 
 
   async function withCapture(use) {
     let bitmap;
-    try { bitmap = await deps.loadCapture(api, target.windowId); } catch { throw new Error(SCAN_MESSAGES.grant); }
+    try { bitmap = await deps.loadCapture(api, target.windowId); } catch { throw new UserError('scanGrant'); }
     try { return await use(bitmap); } finally { bitmap.close(); }
   }
 
@@ -175,7 +170,7 @@ export async function scanPage({ api = browser, signal, onInput, ...overrides } 
   async function scanWithoutPage() {
     const code = await withCapture((bitmap) => decode(bitmap, wholeRect(bitmap), FULL_SIDE));
     if (!active()) return null;
-    if (!code) throw new Error(SCAN_MESSAGES.unscannable);
+    if (!code) throw new UserError('scanUnscannable');
     return deps.parse(code.data);
   }
 
@@ -194,7 +189,7 @@ export async function scanPage({ api = browser, signal, onInput, ...overrides } 
         throw error;
       }
     }
-    timer = setTimeout(() => { if (!port) finish(null, new Error(SCAN_MESSAGES.failed)); }, CONNECT_TIMEOUT_MS);
+    timer = setTimeout(() => { if (!port) finish(null, new UserError('scanFailed')); }, CONNECT_TIMEOUT_MS);
     return await outcome;
   } finally {
     clearTimeout(timer);

@@ -1,6 +1,7 @@
-import { DuplicateAccountError, duplicateReasons, findDuplicate } from '../../core/duplicates.mjs';
+import { duplicateReasons, findDuplicate } from '../../core/duplicates.mjs';
 import { cleanName } from '../../core/limits.mjs';
-import { NAME_REQUIRED, changeHint, saveFailure, storedAccounts } from './account-input.mjs';
+import { t } from '../../shared/i18n.mjs';
+import { NAME_REQUIRED, saveFailure, storedAccounts } from './account-input.mjs';
 import { element, message } from './dom.mjs';
 import { createMigrationPreview } from './migration-preview.mjs';
 
@@ -32,14 +33,13 @@ export function createScanConfirm({ vault, notice, active, onSaved, onCancel }) 
     if (current !== revision) return null;
     const existing = next.kind === 'migration' ? null : findDuplicate(accounts, next);
     if (existing) {
-      notice.fill('Code already added',
-        `${new DuplicateAccountError(existing.name).message} You don’t need to add it again.`, 'list');
+      notice.fill(t('codeAlreadyAdded'), t('alreadyAdded', existing.name), 'list');
       return 'notice';
     }
     record = next;
     message(error);
     save.disabled = false;
-    save.textContent = 'Add';
+    save.textContent = t('add');
     // A hidden required field would stop the form from being submitted; a disabled one is not checked.
     name.disabled = isExport();
     if (isExport()) {
@@ -50,7 +50,7 @@ export function createScanConfirm({ vault, notice, active, onSaved, onCancel }) 
     preview.clear();
     single.hidden = false;
     name.value = next.name;
-    kind.textContent = `${next.type === 'hotp' ? 'Counter based' : 'Time based'}. ${changeHint(next.type)}`;
+    kind.textContent = next.type === 'hotp' ? t('scanTypeHotp') : t('scanTypeTotp');
     return 'scan';
   }
 
@@ -83,7 +83,7 @@ export function createScanConfirm({ vault, notice, active, onSaved, onCancel }) 
     const current = revision;
     saving = true;
     save.disabled = true;
-    save.textContent = 'Saving…';
+    save.textContent = t('saving');
     message(error);
     try {
       const saved = await vault.addMany(records);
@@ -96,7 +96,7 @@ export function createScanConfirm({ vault, notice, active, onSaved, onCancel }) 
       if (current === revision) message(error, saveFailure(failure));
     } finally {
       saving = false;
-      save.textContent = 'Add';
+      save.textContent = t('add');
       if (current === revision) save.disabled = isExport() && !preview.selected().length;
     }
   }

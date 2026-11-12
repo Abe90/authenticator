@@ -1,3 +1,4 @@
+import { t } from '../../shared/i18n.mjs';
 import { element } from './dom.mjs';
 import { formError, onSubmit, pageAction } from './forms.mjs';
 import { failureText } from './messages.mjs';
@@ -51,7 +52,7 @@ export function createNewRecoveryKey({ vault, store, onDone }) {
     const replaced = await action.run(replace, async () => {
       await vault.replaceRecoveryKey(password, key);
       return true;
-    }, (failure) => error.show(failureText(failure, 'Could not replace the key. Please try again.')));
+    }, (failure) => error.show(failureText(failure, t('replaceKeyFailed'))));
     if (replaced) await store.leave(onDone);
   });
 

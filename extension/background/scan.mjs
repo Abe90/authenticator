@@ -1,6 +1,7 @@
 import { SCAN_TARGET_KEY } from '../core/storage-keys.mjs';
 import { findAddCodeWindow, openAddCodeWindow } from '../shared/add-window.mjs';
-import { SCAN_MESSAGES, scanPage } from './page-scan.mjs';
+import { errorText, t } from '../shared/i18n.mjs';
+import { scanPage } from './page-scan.mjs';
 import { autoLock } from './open-windows.mjs';
 
 // Scan page runs here, since the toolbar popup closes when the page is clicked. The picked record stays in memory,
@@ -38,7 +39,7 @@ async function scan(holder) {
     });
     if (record) outcome = { record };
   } catch (error) {
-    outcome = { error: error.message || SCAN_MESSAGES.failed };
+    outcome = { error: errorText(error, t('scanFailed')) };
   }
   // A newer scan took over the page and the windows.
   if (running !== controller) {

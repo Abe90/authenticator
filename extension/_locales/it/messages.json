@@ -1,0 +1,851 @@
+{
+  "locale": {
+    "message": "it"
+  },
+  "extensionDescription": {
+    "message": "Autenticatore TOTP e HOTP. I codici vengono da una cassaforte cifrata che Firefox Sync può portare da un computer all’altro; nessun dato viene raccolto."
+  },
+  "settings": {
+    "message": "Impostazioni"
+  },
+  "password": {
+    "message": "Password"
+  },
+  "recoveryKey": {
+    "message": "Chiave di recupero"
+  },
+  "back": {
+    "message": "Indietro"
+  },
+  "backToCodes": {
+    "message": "Torna ai codici"
+  },
+  "backToSettings": {
+    "message": "Torna alle impostazioni"
+  },
+  "backToPassword": {
+    "message": "Torna alla pagina della password"
+  },
+  "cancel": {
+    "message": "Annulla"
+  },
+  "close": {
+    "message": "Chiudi"
+  },
+  "save": {
+    "message": "Salva"
+  },
+  "saving": {
+    "message": "Salvataggio…"
+  },
+  "add": {
+    "message": "Aggiungi"
+  },
+  "edit": {
+    "message": "Modifica"
+  },
+  "remove": {
+    "message": "Rimuovi"
+  },
+  "continue": {
+    "message": "Continua"
+  },
+  "checking": {
+    "message": "Verifica…"
+  },
+  "notNow": {
+    "message": "Non ora"
+  },
+  "showPassword": {
+    "message": "Mostra la password"
+  },
+  "hidePassword": {
+    "message": "Nascondi la password"
+  },
+  "unnamedAccount": {
+    "message": "Account senza nome"
+  },
+  "codeCount_one": {
+    "message": "$1 codice"
+  },
+  "codeCount_other": {
+    "message": "$1 codici"
+  },
+  "accountCount_one": {
+    "message": "$1 account"
+  },
+  "accountCount_other": {
+    "message": "$1 account"
+  },
+  "errorTitle": {
+    "message": "Qualcosa è andato storto"
+  },
+  "wrongPassword": {
+    "message": "Password errata. Riprova."
+  },
+  "passwordMismatch": {
+    "message": "Le password non coincidono."
+  },
+  "passwordTooShort": {
+    "message": "La password deve avere almeno $1 caratteri."
+  },
+  "duplicateAccount": {
+    "message": "Questo codice è già nel tuo elenco come “$1”."
+  },
+  "storageFull": {
+    "message": "Lo spazio di sincronizzazione di Firefox è pieno."
+  },
+  "clipboardFailed": {
+    "message": "Copia non riuscita. Riprova."
+  },
+  "newCodeIn": {
+    "message": "Nuovo codice tra $1 s"
+  },
+  "loading": {
+    "message": "Apertura di Authenticator…"
+  },
+  "authOpening": {
+    "message": "Apertura della cassaforte…"
+  },
+  "unlockTitle": {
+    "message": "Sblocca i tuoi codici"
+  },
+  "authDescription": {
+    "message": "Inserisci la password per aprire la tua cassaforte cifrata."
+  },
+  "unlock": {
+    "message": "Sblocca"
+  },
+  "unlocking": {
+    "message": "Sblocco…"
+  },
+  "showReadOnly": {
+    "message": "Mostra i codici in sola lettura"
+  },
+  "forgotPassword": {
+    "message": "Password dimenticata?"
+  },
+  "restoreCopy": {
+    "message": "Ripristina la copia di questo computer"
+  },
+  "unlockSessionFailed": {
+    "message": "Impossibile salvare la sessione di sblocco. Riprova."
+  },
+  "newerVault": {
+    "message": "Firefox Sync contiene una cassaforte salvata da una versione più recente di Authenticator. Aggiorna l’estensione per aprirla."
+  },
+  "wrongPasswordOrDamaged": {
+    "message": "Password errata o cassaforte danneggiata. Riprova."
+  },
+  "explainNewer": {
+    "message": "Una versione più recente di Authenticator ha salvato la tua cassaforte. Aggiorna l’estensione per aprirla. Nel frattempo puoi vedere i tuoi codici in sola lettura."
+  },
+  "explainChanged": {
+    "message": "Questa password ha aperto la tua cassaforte su questo computer, ma la cassaforte in Firefox Sync da allora è cambiata: la sua password potrebbe essere stata cambiata su un altro computer, oppure è danneggiata. Puoi vedere i tuoi codici in sola lettura."
+  },
+  "explainMissing": {
+    "message": "Questa password ha aperto la tua cassaforte su questo computer, ma la cassaforte non è più completa in Firefox Sync. Puoi vedere i tuoi codici in sola lettura."
+  },
+  "explainUnreadable": {
+    "message": "La tua cassaforte in Firefox Sync è danneggiata. Questa password l’ha aperta su questo computer: puoi vedere i tuoi codici in sola lettura."
+  },
+  "explainOther_one": {
+    "message": "Questa password non apre la cassaforte principale in Firefox Sync, ma un’altra cassaforte, creata il $2, con $1 codice. Puoi vedere i suoi codici in sola lettura."
+  },
+  "explainOther_other": {
+    "message": "Questa password non apre la cassaforte principale in Firefox Sync, ma un’altra cassaforte, creata il $2, con $1 codici. Puoi vedere i suoi codici in sola lettura."
+  },
+  "readCodesFailed": {
+    "message": "Impossibile leggere i codici. Riprova."
+  },
+  "clearProgressFailed": {
+    "message": "Impossibile cancellare l’avanzamento di questa procedura. Chiudi Firefox per cancellarlo."
+  },
+  "clearUnlockFailed": {
+    "message": "Impossibile cancellare lo sblocco memorizzato. Chiudi Firefox per cancellarlo."
+  },
+  "storageFailed": {
+    "message": "Impossibile accedere all’archivio locale. Ricarica l’estensione e riprova."
+  },
+  "vaultBack": {
+    "message": "La tua cassaforte è di nuovo in Firefox Sync. Inserisci la sua password per aprirla."
+  },
+  "searchAccounts": {
+    "message": "Cerca account"
+  },
+  "searchPlaceholder": {
+    "message": "Cerca…"
+  },
+  "clearSearch": {
+    "message": "Cancella la ricerca"
+  },
+  "noAccountsFound": {
+    "message": "Nessun account trovato."
+  },
+  "noCodes": {
+    "message": "Ancora nessun codice."
+  },
+  "addFirst": {
+    "message": "Aggiungi il tuo primo codice per iniziare."
+  },
+  "addACode": {
+    "message": "Aggiungi un codice"
+  },
+  "scanQr": {
+    "message": "Scansiona un codice QR"
+  },
+  "enterSetupKey": {
+    "message": "Inserisci una chiave di configurazione"
+  },
+  "oneTimeCode": {
+    "message": "Codice monouso"
+  },
+  "generatingCode": {
+    "message": "Generazione del codice…"
+  },
+  "copyCodeOf": {
+    "message": "$1: copia il codice"
+  },
+  "codeCopied": {
+    "message": "Codice copiato"
+  },
+  "nextCodeFor": {
+    "message": "Genera il prossimo codice per $1"
+  },
+  "codeError": {
+    "message": "Errore"
+  },
+  "codeUnavailable": {
+    "message": "Codice non disponibile. Riapri il popup."
+  },
+  "nextCounterFailed": {
+    "message": "Impossibile salvare il contatore successivo. Riprova."
+  },
+  "orderFailed": {
+    "message": "Impossibile salvare il nuovo ordine. Riprova."
+  },
+  "openAddWindowFailed": {
+    "message": "Impossibile aprire la finestra Aggiungi codice. Riprova."
+  },
+  "editCode": {
+    "message": "Modifica codice"
+  },
+  "codeName": {
+    "message": "Nome del codice"
+  },
+  "nameRequired": {
+    "message": "Inserisci un nome per il codice."
+  },
+  "renameFailed": {
+    "message": "Impossibile salvare il nome. Riprova."
+  },
+  "removeTitle": {
+    "message": "Rimuovere $1?"
+  },
+  "removeMessage": {
+    "message": "Se rimuovi questo account da Authenticator, non riceverai più i codici per accedere in modo sicuro. Ricordati di aggiornare le impostazioni di quell’account di conseguenza."
+  },
+  "removeFailed": {
+    "message": "Impossibile rimuovere l’account. Riprova."
+  },
+  "addCode": {
+    "message": "Aggiungi codice"
+  },
+  "scannedCode": {
+    "message": "Codice scansionato"
+  },
+  "importFromQr": {
+    "message": "Importa da QR"
+  },
+  "importQrImage": {
+    "message": "Importa immagine QR"
+  },
+  "qrStatus": {
+    "message": "Scegli un’immagine QR o incolla qui uno screenshot."
+  },
+  "accounts": {
+    "message": "Account"
+  },
+  "orManual": {
+    "message": "oppure inserisci una chiave a mano"
+  },
+  "namePlaceholder": {
+    "message": "es. Account di prova"
+  },
+  "yourKey": {
+    "message": "La tua chiave"
+  },
+  "keyType": {
+    "message": "Tipo di chiave"
+  },
+  "timeBased": {
+    "message": "Basata sul tempo"
+  },
+  "counterBased": {
+    "message": "Basata su contatore"
+  },
+  "hintTotp": {
+    "message": "Il codice cambia ogni 30 secondi."
+  },
+  "hintHotp": {
+    "message": "Il codice cambia quando richiedi il successivo."
+  },
+  "scanTypeTotp": {
+    "message": "Basata sul tempo. Il codice cambia ogni 30 secondi."
+  },
+  "scanTypeHotp": {
+    "message": "Basata su contatore. Il codice cambia quando richiedi il successivo."
+  },
+  "invalidKey": {
+    "message": "Chiave non valida. Inserisci una chiave Base32 (lettere A–Z e cifre 2–7), non un codice a sei cifre."
+  },
+  "keyTooShort": {
+    "message": "La chiave è troppo corta. Controlla di averla copiata tutta."
+  },
+  "saveFailed": {
+    "message": "Impossibile salvare i codici. Nessun codice è stato aggiunto. Riprova."
+  },
+  "exportPart": {
+    "message": "QR $1 di $2: questa immagine contiene solo una parte dell’esportazione. Importa le altre immagini separatamente."
+  },
+  "alreadyInList": {
+    "message": "Già nel tuo elenco."
+  },
+  "listedTwiceInExport": {
+    "message": "Presente due volte in questa esportazione."
+  },
+  "codeAlreadyAdded": {
+    "message": "Codice già aggiunto"
+  },
+  "alreadyAdded": {
+    "message": "Questo codice è già nel tuo elenco come “$1”. Non serve aggiungerlo di nuovo."
+  },
+  "cantAddTitle": {
+    "message": "Impossibile aggiungere questo codice"
+  },
+  "scanStartFailed": {
+    "message": "Impossibile avviare la scansione. Riprova."
+  },
+  "imageType": {
+    "message": "Scegli un’immagine PNG, JPEG, WebP, GIF o BMP."
+  },
+  "imageTooBig": {
+    "message": "Scegli un’immagine più piccola di 10 MB."
+  },
+  "imageTooLarge": {
+    "message": "L’immagine è troppo grande. Ritagliala intorno al codice QR."
+  },
+  "imageUnreadable": {
+    "message": "Impossibile leggere l’immagine. Prova con uno screenshot PNG o JPEG."
+  },
+  "qrNotFound": {
+    "message": "Nessun codice QR leggibile trovato. Prova con un’immagine più nitida, ritagliata intorno al codice."
+  },
+  "qrInvalid": {
+    "message": "Codice QR di autenticazione non valido."
+  },
+  "qrNotAccount": {
+    "message": "Questo codice QR non è un account di autenticazione."
+  },
+  "qrUnsupported": {
+    "message": "Questo codice QR non è un account di autenticazione supportato."
+  },
+  "qrDuplicateParameters": {
+    "message": "Il codice QR contiene parametri duplicati."
+  },
+  "qrUnsupportedCode": {
+    "message": "Sono supportati solo SHA-1, codici a sei cifre e un periodo TOTP di 30 secondi."
+  },
+  "qrInvalidName": {
+    "message": "Il codice QR ha un nome di account non valido."
+  },
+  "qrConflictingProviders": {
+    "message": "Il codice QR contiene fornitori dell’account in conflitto."
+  },
+  "qrNameLength": {
+    "message": "Il nome dell’account deve contenere da 1 a $1 caratteri."
+  },
+  "qrInvalidSecret": {
+    "message": "Il codice QR contiene una chiave segreta non valida."
+  },
+  "qrInvalidCounter": {
+    "message": "Il codice QR contiene un contatore HOTP non valido."
+  },
+  "exportInvalid": {
+    "message": "Esportazione di Google Authenticator non valida."
+  },
+  "exportDamagedAccount": {
+    "message": "Questo account è danneggiato nell’esportazione."
+  },
+  "exportInvalidName": {
+    "message": "Il nome dell’account non è un testo valido."
+  },
+  "exportInvalidData": {
+    "message": "L’esportazione contiene dati Base64 non validi. Prova con una nuova immagine QR."
+  },
+  "exportIncomplete": {
+    "message": "I dati dell’esportazione sono incompleti. Prova con un’immagine QR più nitida."
+  },
+  "exportVersion": {
+    "message": "La versione $1 dell’esportazione Google non è ancora supportata."
+  },
+  "exportPages": {
+    "message": "L’esportazione Google ha informazioni di pagina QR non valide."
+  },
+  "exportEmpty": {
+    "message": "Nessun account trovato nell’esportazione Google."
+  },
+  "exportTooMany": {
+    "message": "Troppi account in questa immagine QR."
+  },
+  "exportUnsupportedCode": {
+    "message": "Sono supportati solo SHA-1 e codici a sei cifre."
+  },
+  "exportUnsupportedType": {
+    "message": "Tipo di account non supportato."
+  },
+  "exportMissingName": {
+    "message": "Nome dell’account mancante."
+  },
+  "scanGrant": {
+    "message": "Fai clic sull’icona di Authenticator mentre la pagina con il codice QR è aperta, poi premi di nuovo Scansiona un codice QR."
+  },
+  "scanUnscannable": {
+    "message": "Questa pagina non può essere scansionata. Fai uno screenshot del codice QR e incollalo qui."
+  },
+  "scanFailed": {
+    "message": "Impossibile scansionare questa pagina. Riprova."
+  },
+  "overlayLabel": {
+    "message": "Codici QR in questa pagina"
+  },
+  "overlayHint": {
+    "message": "Fai clic su un codice QR per importarlo · Esc per annullare"
+  },
+  "overlayNone": {
+    "message": "Nessun codice QR intero visibile · Scorri finché non compare o premi Esc"
+  },
+  "overlayFound_one": {
+    "message": "$1 codice QR trovato. Fai clic sul codice o premi Invio per importarlo, oppure premi Esc per annullare."
+  },
+  "overlayFound_other": {
+    "message": "$1 codici QR trovati. Fai clic su uno per importarlo, oppure premi Esc per annullare."
+  },
+  "autoLock": {
+    "message": "Blocca automaticamente"
+  },
+  "autoLockClose": {
+    "message": "Alla chiusura del popup"
+  },
+  "autoLock1": {
+    "message": "Dopo 1 minuto"
+  },
+  "autoLock5": {
+    "message": "Dopo 5 minuti"
+  },
+  "autoLock30": {
+    "message": "Dopo 30 minuti"
+  },
+  "autoLockHour": {
+    "message": "Dopo 1 ora"
+  },
+  "autoLockNever": {
+    "message": "Mai"
+  },
+  "autoLockDescription": {
+    "message": "Il tempo parte quando chiudi il popup o smetti di usare una finestra di Authenticator aperta. Con Alla chiusura del popup, una finestra aperta si blocca dopo 1 minuto di inattività. Mai tiene la cassaforte sbloccata finché Firefox non si chiude o non scegli Blocca ora."
+  },
+  "vault": {
+    "message": "Cassaforte"
+  },
+  "changePassword": {
+    "message": "Cambia password"
+  },
+  "newRecoveryKey": {
+    "message": "Nuova chiave di recupero"
+  },
+  "anotherVault": {
+    "message": "Un’altra cassaforte"
+  },
+  "lockNow": {
+    "message": "Blocca ora"
+  },
+  "settingFailed": {
+    "message": "Impossibile aggiornare l’impostazione di sblocco. Riprova."
+  },
+  "changePasswordPrompt": {
+    "message": "Inserisci la password per sceglierne una nuova."
+  },
+  "changePasswordFailed": {
+    "message": "Impossibile cambiare la password. Riprova."
+  },
+  "newPasswordTitle": {
+    "message": "Scegli una nuova password"
+  },
+  "newPasswordIntro": {
+    "message": "Vale subito su tutti i tuoi computer. La chiave di recupero non cambia. Non riutilizzare la password del tuo account Firefox."
+  },
+  "newPassword": {
+    "message": "Nuova password"
+  },
+  "confirmNewPassword": {
+    "message": "Conferma la nuova password"
+  },
+  "confirmPassword": {
+    "message": "Conferma la password"
+  },
+  "passwordQuality": {
+    "message": "Indicatore di qualità della password"
+  },
+  "suggestPassword": {
+    "message": "Suggerisci una password"
+  },
+  "resetTitle": {
+    "message": "Reimposta la password"
+  },
+  "resetDescription": {
+    "message": "Inserisci la chiave di recupero che hai salvato quando hai creato la cassaforte."
+  },
+  "resetPassword": {
+    "message": "Reimposta password"
+  },
+  "resetFailed": {
+    "message": "Impossibile reimpostare la password. Riprova."
+  },
+  "notAKey": {
+    "message": "Questa non è una chiave di recupero: ha 32 lettere e cifre."
+  },
+  "wrongKey": {
+    "message": "Questa chiave di recupero non apre questa cassaforte. Controllala e riprova."
+  },
+  "newKeyPrompt": {
+    "message": "Una nuova chiave sostituirà quella che avevi salvato. Inserisci la password per continuare."
+  },
+  "saveNewKeyTitle": {
+    "message": "Salva la nuova chiave di recupero"
+  },
+  "keyIntro": {
+    "message": "Se dimentichi la password, questa chiave è l’unico modo per riavere i tuoi codici."
+  },
+  "keyHint": {
+    "message": "Stampala o conservala in un gestore di password. Chiunque abbia questa chiave può impostare una nuova password."
+  },
+  "copyRecoveryKey": {
+    "message": "Copia la chiave di recupero"
+  },
+  "savedNewKey": {
+    "message": "Ho salvato la nuova chiave di recupero"
+  },
+  "savedKey": {
+    "message": "Ho salvato la chiave di recupero"
+  },
+  "replaceKey": {
+    "message": "Sostituisci chiave"
+  },
+  "replaceKeyFailed": {
+    "message": "Impossibile sostituire la chiave. Riprova."
+  },
+  "setupTitle": {
+    "message": "Configura Authenticator"
+  },
+  "setupQuestion": {
+    "message": "Come vuoi iniziare?"
+  },
+  "createNewVault": {
+    "message": "Crea una nuova cassaforte"
+  },
+  "firstComputer": {
+    "message": "Il tuo primo computer."
+  },
+  "useOnOther": {
+    "message": "Lo uso su un altro computer"
+  },
+  "throughSync": {
+    "message": "Tramite Firefox Sync."
+  },
+  "keptCopyHint": {
+    "message": "Conservata quando la cassaforte ha lasciato Firefox Sync."
+  },
+  "choiceNotice": {
+    "message": "I tuoi codici non sono ancora arrivati. La sincronizzazione può richiedere qualche minuto: premi $1 anche sull’altro computer."
+  },
+  "createPasswordTitle": {
+    "message": "Crea una password"
+  },
+  "createPasswordIntro": {
+    "message": "Protegge i tuoi codici su ogni computer in cui li usi. Non riutilizzare la password del tuo account Firefox."
+  },
+  "saveKeyTitle": {
+    "message": "Salva la chiave di recupero"
+  },
+  "createVault": {
+    "message": "Crea cassaforte"
+  },
+  "vaultArrived": {
+    "message": "Nel frattempo è arrivata una cassaforte da Firefox Sync. Torna indietro e sblocca quella."
+  },
+  "createFailed": {
+    "message": "Impossibile creare la cassaforte. Riprova."
+  },
+  "getCodesTitle": {
+    "message": "Ricevi i tuoi codici"
+  },
+  "getCodesIntro": {
+    "message": "Firefox Sync li porta dal tuo altro computer."
+  },
+  "howto1": {
+    "message": "Apri $1 › $2."
+  },
+  "howto2": {
+    "message": "Nella sezione $1 $2, controlla che compaia $3 $4. Altrimenti accedi con l’account del tuo altro computer."
+  },
+  "howto3": {
+    "message": "Sotto $1, controlla che ci sia $2 $3."
+  },
+  "howto4": {
+    "message": "Premi $1, poi riapri $2 $3."
+  },
+  "firefoxMenu": {
+    "message": "Menu"
+  },
+  "firefoxSettings": {
+    "message": "Impostazioni"
+  },
+  "firefoxSync": {
+    "message": "Sincronizzazione"
+  },
+  "firefoxSyncOn": {
+    "message": "La sincronizzazione è ATTIVA"
+  },
+  "firefoxSyncedData": {
+    "message": "Dati sincronizzati tra dispositivi"
+  },
+  "firefoxAddons": {
+    "message": "Componenti aggiuntivi"
+  },
+  "firefoxSyncNow": {
+    "message": "Sincronizza adesso"
+  },
+  "otherTitle": {
+    "message": "Codici di un’altra cassaforte"
+  },
+  "otherDescription_one": {
+    "message": "Uno dei tuoi computer ha creato una cassaforte separata con $1 codice prima di essere collegato a Firefox Sync."
+  },
+  "otherDescription_other": {
+    "message": "Uno dei tuoi computer ha creato una cassaforte separata con $1 codici prima di essere collegato a Firefox Sync."
+  },
+  "copyItsCodes": {
+    "message": "Copia i suoi codici"
+  },
+  "removeThatVault": {
+    "message": "Rimuovi quella cassaforte"
+  },
+  "removeVaultTitle": {
+    "message": "Rimuovere l’altra cassaforte?"
+  },
+  "removeVault": {
+    "message": "Rimuovi cassaforte"
+  },
+  "removeVaultCopied_one": {
+    "message": "Il suo $1 codice sarà eliminato su tutti i tuoi computer. Su questo computer: $2 copiati, $3 non copiati, $4 illeggibili. I codici della tua cassaforte non vengono toccati."
+  },
+  "removeVaultCopied_other": {
+    "message": "I suoi $1 codici saranno eliminati su tutti i tuoi computer. Su questo computer: $2 copiati, $3 non copiati, $4 illeggibili. I codici della tua cassaforte non vengono toccati."
+  },
+  "removeVaultNotCopied_one": {
+    "message": "Il suo $1 codice non è stato copiato e sarà eliminato su tutti i tuoi computer senza essere aperto. I codici della tua cassaforte non vengono toccati."
+  },
+  "removeVaultNotCopied_other": {
+    "message": "I suoi $1 codici non sono stati copiati e saranno eliminati su tutti i tuoi computer senza essere aperti. I codici della tua cassaforte non vengono toccati."
+  },
+  "removeVaultFailed": {
+    "message": "Impossibile rimuovere la cassaforte. Riprova."
+  },
+  "mergeOpenTitle": {
+    "message": "Apri l’altra cassaforte"
+  },
+  "mergePasswordPrompt": {
+    "message": "Inserisci la password che avevi scelto per lei sull’altro computer."
+  },
+  "mergeKeyPrompt": {
+    "message": "Inserisci la chiave di recupero salvata quando è stata creata l’altra cassaforte."
+  },
+  "passwordOfOther": {
+    "message": "Password dell’altra cassaforte"
+  },
+  "keyOfOther": {
+    "message": "Chiave di recupero dell’altra cassaforte"
+  },
+  "useKeyInstead": {
+    "message": "Usa invece la sua chiave di recupero"
+  },
+  "usePasswordInstead": {
+    "message": "Usa invece la sua password"
+  },
+  "vaultGone": {
+    "message": "Quella cassaforte non c’è più."
+  },
+  "keyNotThatVault": {
+    "message": "Questa chiave di recupero non apre quella cassaforte."
+  },
+  "mergeCodesIntro": {
+    "message": "Scegli i codici da copiare nella tua cassaforte. L’altra cassaforte resta com’è: potrai rimuoverla dopo."
+  },
+  "copyCodes_one": {
+    "message": "Copia $1 codice"
+  },
+  "copyCodes_other": {
+    "message": "Copia $1 codici"
+  },
+  "copyCodesNone": {
+    "message": "Copia codici"
+  },
+  "listedTwiceInVault": {
+    "message": "Presente due volte in quella cassaforte."
+  },
+  "copyRaisesCounter": {
+    "message": "Nel tuo elenco come “$1” con un contatore più basso, che la copia alza."
+  },
+  "mergeDamaged_one": {
+    "message": "$1 codice dell’altra cassaforte non può essere aperto. Resta lì."
+  },
+  "mergeDamaged_other": {
+    "message": "$1 codici dell’altra cassaforte non possono essere aperti. Restano lì."
+  },
+  "otherChanged": {
+    "message": "Nel frattempo l’altra cassaforte è cambiata. Controlla di nuovo i codici."
+  },
+  "copyFailed": {
+    "message": "Impossibile copiare i codici. Riprova."
+  },
+  "duplicatesTitle": {
+    "message": "Stesso codice aggiunto due volte"
+  },
+  "duplicatesIntro": {
+    "message": "Hai aggiunto questa chiave su due computer prima che si sincronizzassero. Tienine uno; l’altro viene rimosso ovunque."
+  },
+  "keepThisOne": {
+    "message": "Tieni questo"
+  },
+  "addedOn": {
+    "message": "Aggiunto il $1"
+  },
+  "removeEntryFailed": {
+    "message": "Impossibile rimuovere l’altra voce. Riprova."
+  },
+  "damagedTitle": {
+    "message": "Alcuni codici non si possono leggere"
+  },
+  "damagedCodes_one": {
+    "message": "Un codice della tua cassaforte è danneggiato e non può essere mostrato. Gli altri funzionano come sempre."
+  },
+  "damagedCodes_other": {
+    "message": "$1 codici della tua cassaforte sono danneggiati e non possono essere mostrati. Gli altri funzionano come sempre."
+  },
+  "readOnlyTitle": {
+    "message": "Codici, sola lettura"
+  },
+  "recoverySourceTrusted": {
+    "message": "Letti con l’intestazione della cassaforte che questo computer ha aperto per ultima con la tua password. Niente viene scritto in Firefox Sync, e questi codici non si possono modificare qui."
+  },
+  "recoverySourceOther": {
+    "message": "Letti da un’altra cassaforte in Firefox Sync. Niente viene scritto in Firefox Sync, e questi codici non si possono modificare qui."
+  },
+  "onlyInCopy": {
+    "message": "Solo nella copia di questo computer"
+  },
+  "mayBeOutdated": {
+    "message": "Potrebbero non essere aggiornati."
+  },
+  "hotpMayBeUsed": {
+    "message": "Basato su contatore: questo codice potrebbe essere già stato usato."
+  },
+  "copyCode": {
+    "message": "Copia codice"
+  },
+  "copyKey": {
+    "message": "Copia chiave"
+  },
+  "codeCopiedFor": {
+    "message": "Codice di $1 copiato"
+  },
+  "keyCopiedFor": {
+    "message": "Chiave di $1 copiata"
+  },
+  "codeCannotShow": {
+    "message": "Questo codice non può essere mostrato."
+  },
+  "unreadableNewer_one": {
+    "message": "$1 codice salvato da una versione più recente di Authenticator non può essere mostrato qui."
+  },
+  "unreadableNewer_other": {
+    "message": "$1 codici salvati da una versione più recente di Authenticator non possono essere mostrati qui."
+  },
+  "unreadableCodes_one": {
+    "message": "$1 codice non può essere letto."
+  },
+  "unreadableCodes_other": {
+    "message": "$1 codici non possono essere letti."
+  },
+  "restoreDescription": {
+    "message": "Questo computer ha conservato una copia della tua cassaforte quando ha lasciato Firefox Sync. Inserisci la password che aveva allora."
+  },
+  "restoreDescriptionDated": {
+    "message": "Questo computer ha conservato una copia della tua cassaforte, com’era il $1, quando ha lasciato Firefox Sync. Inserisci la password che aveva allora."
+  },
+  "passwordOfCopy": {
+    "message": "Password della copia"
+  },
+  "keyOfCopy": {
+    "message": "Chiave di recupero della copia"
+  },
+  "restoreWarning": {
+    "message": "I suoi codici potrebbero non essere aggiornati. Se da allora hai cambiato password, è quella vecchia ad aprire la copia, e torna valida una volta ripristinata."
+  },
+  "copyGone": {
+    "message": "Questa copia non c’è più."
+  },
+  "keyNotCopy": {
+    "message": "Questa chiave di recupero non apre la copia."
+  },
+  "restoreCodesIntro": {
+    "message": "Scegli i codici da rimettere in Firefox Sync. I codici che ci sono già restano come sono."
+  },
+  "restoreCodes_one": {
+    "message": "Ripristina $1 codice"
+  },
+  "restoreCodes_other": {
+    "message": "Ripristina $1 codici"
+  },
+  "restoreVault": {
+    "message": "Ripristina la cassaforte"
+  },
+  "alreadyInSync": {
+    "message": "Già in Firefox Sync"
+  },
+  "copyDamaged_one": {
+    "message": "$1 codice della copia non può essere letto."
+  },
+  "copyDamaged_other": {
+    "message": "$1 codici della copia non possono essere letti."
+  },
+  "becomesMain": {
+    "message": "Torna a essere la tua cassaforte principale. Potrai aggiungere i codici della cassaforte ora in Firefox Sync dopo lo sblocco."
+  },
+  "vaultIsBack": {
+    "message": "Questa cassaforte è di nuovo in Firefox Sync. Torna indietro e sbloccala."
+  },
+  "restoreFailed": {
+    "message": "Impossibile ripristinare la cassaforte. Riprova."
+  },
+  "deleteCopy": {
+    "message": "Elimina questa copia"
+  },
+  "deleteForGood": {
+    "message": "Eliminala definitivamente"
+  },
+  "deleteCopyFailed": {
+    "message": "Impossibile eliminare la copia. Riprova."
+  }
+}

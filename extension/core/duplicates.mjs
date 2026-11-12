@@ -19,40 +19,41 @@ export function duplicateGroups(accounts) {
 
 export class DuplicateAccountError extends Error {
   constructor(existing) {
-    super(`This code is already in your list as “${existing}”.`);
+    super('Duplicate account');
     this.name = 'DuplicateAccountError';
     this.existing = existing;
   }
 }
 
-// For each export entry: null, or why it cannot be added (already stored, or listed twice in the export).
+// For each export entry: null, or why it cannot be added: 'stored' already, or 'repeated' in the export.
 export function duplicateReasons(entries, accounts) {
   const stored = new Set(accounts.map(accountKey));
   const seen = new Set();
   return entries.map((entry) => {
     if (!entry.record) return null;
     const key = accountKey(entry.record);
-    if (stored.has(key)) return 'Already in your list.';
-    if (seen.has(key)) return 'Listed twice in this export.';
+    if (stored.has(key)) return 'stored';
+    if (seen.has(key)) return 'repeated';
     seen.add(key);
     return null;
   });
 }
 
-// For each record read from another vault: { skip, note }. A key already stored is skipped, unless it is an HOTP
-// account with a higher counter, which the copy raises (vault.mjs copyRecords): its codes up to there may be used.
+// For each record read from another vault: { skip, raises }. skip is null, 'stored' for a key already stored or
+// 'repeated' for one listed twice in that vault. A stored HOTP account with a lower counter is not skipped: the copy
+// raises its counter (vault.mjs copyRecords), since its codes up to there may be used, and raises is its name.
 export function copyChoices(records, accounts) {
   const stored = new Map(accounts.map((account) => [accountKey(account), account]));
   const seen = new Set();
   return records.map((record) => {
     const key = accountKey(record);
-    if (seen.has(key)) return { skip: 'Listed twice in that vault.', note: null };
+    if (seen.has(key)) return { skip: 'repeated', raises: null };
     seen.add(key);
     const existing = stored.get(key);
-    if (!existing) return { skip: null, note: null };
+    if (!existing) return { skip: null, raises: null };
     if (record.type === 'hotp' && BigInt(record.counter) > BigInt(existing.counter)) {
-      return { skip: null, note: `In your list as “${existing.name}” with a lower counter, which the copy raises.` };
+      return { skip: null, raises: existing.name };
     }
-    return { skip: 'Already in your list.', note: null };
+    return { skip: 'stored', raises: null };
   });
 }

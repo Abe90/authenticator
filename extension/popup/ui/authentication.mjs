@@ -1,29 +1,16 @@
 import { element } from './dom.mjs';
 import { createPasswordEntry } from './password-entry.mjs';
-import { plural } from './messages.mjs';
+import { plural, t } from '../../shared/i18n.mjs';
 
 const day = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' });
 
 // What the password page says when the password opens a vault that it cannot unlock (core/recovery.mjs).
 function explain(found) {
-  if (found.newer) {
-    return 'A newer version of Authenticator saved your vault. Update the extension to open it. Until then you can '
-      + 'see your codes, read-only.';
-  }
-  if (found.reason === 'changed') {
-    return 'This password opened your vault on this computer, but the vault in Firefox Sync has changed since: its '
-      + 'password may have changed on another computer, or it is damaged. You can see your codes, read-only.';
-  }
-  if (found.reason === 'missing') {
-    return 'This password opened your vault on this computer, but the vault is no longer complete in Firefox Sync. '
-      + 'You can see your codes, read-only.';
-  }
-  if (found.reason === 'unreadable') {
-    return 'Your vault in Firefox Sync is damaged. This password opened it on this computer: you can see your codes, '
-      + 'read-only.';
-  }
-  return `This password does not open the main vault in Firefox Sync, but another vault, created on `
-    + `${day.format(found.created)}, with ${plural(found.codes, 'code')}. You can see its codes, read-only.`;
+  if (found.newer) return t('explainNewer');
+  if (found.reason === 'changed') return t('explainChanged');
+  if (found.reason === 'missing') return t('explainMissing');
+  if (found.reason === 'unreadable') return t('explainUnreadable');
+  return plural('explainOther', found.codes, day.format(found.created));
 }
 
 // The password page, which unlocks the vault; Forgot password? starts the reset with the recovery key (onForgot).
@@ -46,8 +33,8 @@ export function createAuthentication({ vault, recovery, active, blocked, remembe
     input: passwordInput,
     submit: element('#auth-submit'),
     error: element('#auth-error'),
-    label: 'Unlock',
-    busyLabel: 'Unlocking…',
+    label: t('unlock'),
+    busyLabel: t('unlocking'),
     active,
     blocked,
     async attempt(password, { automatic, stale, fail }) {
@@ -74,7 +61,7 @@ export function createAuthentication({ vault, recovery, active, blocked, remembe
           const { sessionId } = vault;
           vault.lock();
           vault.forget(sessionId).catch(() => {});
-          fail('Could not save the unlock session. Please try again.');
+          fail(t('unlockSessionFailed'));
         } else if (!automatic) {
           const opened = await recovery.find(password).catch(() => null);
           if (stale()) return;
@@ -82,9 +69,8 @@ export function createAuthentication({ vault, recovery, active, blocked, remembe
             offer(opened);
             fail(explain(opened), passwordInput);
           } else if (await recovery.newerVault().catch(() => false)) {
-            fail('Firefox Sync has a vault saved by a newer version of Authenticator. Update the extension to open '
-              + 'it.', passwordInput);
-          } else fail('Incorrect password or damaged vault. Please try again.', passwordInput);
+            fail(t('newerVault'), passwordInput);
+          } else fail(t('wrongPasswordOrDamaged'), passwordInput);
         }
       }
     },
@@ -104,8 +90,8 @@ export function createAuthentication({ vault, recovery, active, blocked, remembe
     configure() {
       offer(null);
       entry.reset();
-      element('#auth-title').textContent = 'Unlock your codes';
-      element('#auth-description').textContent = 'Enter your password to open your encrypted vault.';
+      element('#auth-title').textContent = t('unlockTitle');
+      element('#auth-description').textContent = t('authDescription');
     },
     cancel() {
       offer(null);

@@ -1,3 +1,4 @@
+import { t } from '../../shared/i18n.mjs';
 import { element } from './dom.mjs';
 import { WRONG_PASSWORD } from './messages.mjs';
 import { createPasswordEntry } from './password-entry.mjs';
@@ -13,8 +14,8 @@ export function createPasswordCheck({ vault, active, blocked }) {
     input,
     submit: element('#verify-submit'),
     error: element('#verify-error'),
-    label: 'Continue',
-    busyLabel: 'Checking…',
+    label: t('continue'),
+    busyLabel: t('checking'),
     active,
     blocked,
     async attempt(password, { automatic, stale, fail }) {

@@ -1,3 +1,4 @@
+import { t } from '../../shared/i18n.mjs';
 import { element } from './dom.mjs';
 
 // Password fields are text fields masked by CSS (.secret), never type="password": Firefox's password manager would
@@ -12,7 +13,7 @@ export function setUpPasswordFields(root = document) {
     const show = (visible) => {
       input.classList.toggle('revealed', visible);
       button.setAttribute('aria-pressed', String(visible));
-      button.setAttribute('aria-label', visible ? 'Hide password' : 'Show password');
+      button.setAttribute('aria-label', visible ? t('hidePassword') : t('showPassword'));
       icon.className = `icon ${visible ? 'icon-eye-off' : 'icon-eye'}`;
     };
     button.addEventListener('click', () => show(!input.classList.contains('revealed')));

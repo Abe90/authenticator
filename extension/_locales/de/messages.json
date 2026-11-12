@@ -1,0 +1,851 @@
+{
+  "locale": {
+    "message": "de"
+  },
+  "extensionDescription": {
+    "message": "TOTP- und HOTP-Authenticator. Die Codes kommen aus einem verschlüsselten Tresor, den Firefox Sync zwischen Ihren Computern übertragen kann; es werden keine Daten erhoben."
+  },
+  "settings": {
+    "message": "Einstellungen"
+  },
+  "password": {
+    "message": "Passwort"
+  },
+  "recoveryKey": {
+    "message": "Wiederherstellungsschlüssel"
+  },
+  "back": {
+    "message": "Zurück"
+  },
+  "backToCodes": {
+    "message": "Zurück zu den Codes"
+  },
+  "backToSettings": {
+    "message": "Zurück zu den Einstellungen"
+  },
+  "backToPassword": {
+    "message": "Zurück zur Passwortseite"
+  },
+  "cancel": {
+    "message": "Abbrechen"
+  },
+  "close": {
+    "message": "Schließen"
+  },
+  "save": {
+    "message": "Speichern"
+  },
+  "saving": {
+    "message": "Wird gespeichert…"
+  },
+  "add": {
+    "message": "Hinzufügen"
+  },
+  "edit": {
+    "message": "Bearbeiten"
+  },
+  "remove": {
+    "message": "Entfernen"
+  },
+  "continue": {
+    "message": "Weiter"
+  },
+  "checking": {
+    "message": "Wird geprüft…"
+  },
+  "notNow": {
+    "message": "Nicht jetzt"
+  },
+  "showPassword": {
+    "message": "Passwort anzeigen"
+  },
+  "hidePassword": {
+    "message": "Passwort verbergen"
+  },
+  "unnamedAccount": {
+    "message": "Unbenanntes Konto"
+  },
+  "codeCount_one": {
+    "message": "$1 Code"
+  },
+  "codeCount_other": {
+    "message": "$1 Codes"
+  },
+  "accountCount_one": {
+    "message": "$1 Konto"
+  },
+  "accountCount_other": {
+    "message": "$1 Konten"
+  },
+  "errorTitle": {
+    "message": "Etwas ist schiefgegangen"
+  },
+  "wrongPassword": {
+    "message": "Falsches Passwort. Bitte versuchen Sie es erneut."
+  },
+  "passwordMismatch": {
+    "message": "Die Passwörter stimmen nicht überein."
+  },
+  "passwordTooShort": {
+    "message": "Das Passwort braucht mindestens $1 Zeichen."
+  },
+  "duplicateAccount": {
+    "message": "Dieser Code steht bereits als „$1“ in Ihrer Liste."
+  },
+  "storageFull": {
+    "message": "Der Sync-Speicher von Firefox ist voll."
+  },
+  "clipboardFailed": {
+    "message": "Kopieren fehlgeschlagen. Bitte versuchen Sie es erneut."
+  },
+  "newCodeIn": {
+    "message": "Neuer Code in $1 s"
+  },
+  "loading": {
+    "message": "Authenticator wird geöffnet…"
+  },
+  "authOpening": {
+    "message": "Ihr Tresor wird geöffnet…"
+  },
+  "unlockTitle": {
+    "message": "Codes entsperren"
+  },
+  "authDescription": {
+    "message": "Geben Sie Ihr Passwort ein, um Ihren verschlüsselten Tresor zu öffnen."
+  },
+  "unlock": {
+    "message": "Entsperren"
+  },
+  "unlocking": {
+    "message": "Wird entsperrt…"
+  },
+  "showReadOnly": {
+    "message": "Codes schreibgeschützt anzeigen"
+  },
+  "forgotPassword": {
+    "message": "Passwort vergessen?"
+  },
+  "restoreCopy": {
+    "message": "Kopie dieses Computers wiederherstellen"
+  },
+  "unlockSessionFailed": {
+    "message": "Die Entsperrsitzung konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
+  },
+  "newerVault": {
+    "message": "Firefox Sync enthält einen Tresor, den eine neuere Version von Authenticator gespeichert hat. Aktualisieren Sie die Erweiterung, um ihn zu öffnen."
+  },
+  "wrongPasswordOrDamaged": {
+    "message": "Falsches Passwort oder beschädigter Tresor. Bitte versuchen Sie es erneut."
+  },
+  "explainNewer": {
+    "message": "Eine neuere Version von Authenticator hat Ihren Tresor gespeichert. Aktualisieren Sie die Erweiterung, um ihn zu öffnen. Bis dahin können Sie Ihre Codes schreibgeschützt ansehen."
+  },
+  "explainChanged": {
+    "message": "Dieses Passwort hat Ihren Tresor auf diesem Computer geöffnet, aber der Tresor in Firefox Sync hat sich seitdem geändert: Sein Passwort wurde vielleicht auf einem anderen Computer geändert, oder er ist beschädigt. Sie können Ihre Codes schreibgeschützt ansehen."
+  },
+  "explainMissing": {
+    "message": "Dieses Passwort hat Ihren Tresor auf diesem Computer geöffnet, aber der Tresor ist in Firefox Sync nicht mehr vollständig. Sie können Ihre Codes schreibgeschützt ansehen."
+  },
+  "explainUnreadable": {
+    "message": "Ihr Tresor in Firefox Sync ist beschädigt. Dieses Passwort hat ihn auf diesem Computer geöffnet: Sie können Ihre Codes schreibgeschützt ansehen."
+  },
+  "explainOther_one": {
+    "message": "Dieses Passwort öffnet nicht den Haupttresor in Firefox Sync, sondern einen anderen Tresor, erstellt am $2, mit $1 Code. Sie können seine Codes schreibgeschützt ansehen."
+  },
+  "explainOther_other": {
+    "message": "Dieses Passwort öffnet nicht den Haupttresor in Firefox Sync, sondern einen anderen Tresor, erstellt am $2, mit $1 Codes. Sie können seine Codes schreibgeschützt ansehen."
+  },
+  "readCodesFailed": {
+    "message": "Die Codes konnten nicht gelesen werden. Bitte versuchen Sie es erneut."
+  },
+  "clearProgressFailed": {
+    "message": "Der Fortschritt dieses Vorgangs konnte nicht gelöscht werden. Schließen Sie Firefox, um ihn zu löschen."
+  },
+  "clearUnlockFailed": {
+    "message": "Die gemerkte Entsperrung konnte nicht gelöscht werden. Schließen Sie Firefox, um sie zu löschen."
+  },
+  "storageFailed": {
+    "message": "Auf den lokalen Speicher konnte nicht zugegriffen werden. Laden Sie die Erweiterung neu und versuchen Sie es erneut."
+  },
+  "vaultBack": {
+    "message": "Ihr Tresor ist wieder in Firefox Sync. Geben Sie sein Passwort ein, um ihn zu öffnen."
+  },
+  "searchAccounts": {
+    "message": "Konten durchsuchen"
+  },
+  "searchPlaceholder": {
+    "message": "Suchen…"
+  },
+  "clearSearch": {
+    "message": "Suche löschen"
+  },
+  "noAccountsFound": {
+    "message": "Keine Konten gefunden."
+  },
+  "noCodes": {
+    "message": "Noch keine Codes."
+  },
+  "addFirst": {
+    "message": "Fügen Sie Ihren ersten Code hinzu, um loszulegen."
+  },
+  "addACode": {
+    "message": "Code hinzufügen"
+  },
+  "scanQr": {
+    "message": "QR-Code scannen"
+  },
+  "enterSetupKey": {
+    "message": "Einrichtungsschlüssel eingeben"
+  },
+  "oneTimeCode": {
+    "message": "Einmalcode"
+  },
+  "generatingCode": {
+    "message": "Code wird erzeugt…"
+  },
+  "copyCodeOf": {
+    "message": "$1: Code kopieren"
+  },
+  "codeCopied": {
+    "message": "Code kopiert"
+  },
+  "nextCodeFor": {
+    "message": "Nächsten Code für $1 erzeugen"
+  },
+  "codeError": {
+    "message": "Fehler"
+  },
+  "codeUnavailable": {
+    "message": "Code nicht verfügbar. Öffnen Sie das Popup erneut."
+  },
+  "nextCounterFailed": {
+    "message": "Der nächste Zähler konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
+  },
+  "orderFailed": {
+    "message": "Die neue Reihenfolge konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
+  },
+  "openAddWindowFailed": {
+    "message": "Das Fenster „Code hinzufügen“ konnte nicht geöffnet werden. Bitte versuchen Sie es erneut."
+  },
+  "editCode": {
+    "message": "Code bearbeiten"
+  },
+  "codeName": {
+    "message": "Name des Codes"
+  },
+  "nameRequired": {
+    "message": "Geben Sie einen Namen für den Code ein."
+  },
+  "renameFailed": {
+    "message": "Der Name konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
+  },
+  "removeTitle": {
+    "message": "$1 entfernen?"
+  },
+  "removeMessage": {
+    "message": "Wenn Sie dieses Konto aus Authenticator entfernen, erhalten Sie keine Codes mehr für die sichere Anmeldung. Passen Sie die Einstellungen dieses Kontos entsprechend an."
+  },
+  "removeFailed": {
+    "message": "Das Konto konnte nicht entfernt werden. Bitte versuchen Sie es erneut."
+  },
+  "addCode": {
+    "message": "Code hinzufügen"
+  },
+  "scannedCode": {
+    "message": "Gescannter Code"
+  },
+  "importFromQr": {
+    "message": "Aus QR importieren"
+  },
+  "importQrImage": {
+    "message": "QR-Bild importieren"
+  },
+  "qrStatus": {
+    "message": "Wählen Sie ein QR-Bild aus oder fügen Sie hier einen Screenshot ein."
+  },
+  "accounts": {
+    "message": "Konten"
+  },
+  "orManual": {
+    "message": "oder Schlüssel manuell eingeben"
+  },
+  "namePlaceholder": {
+    "message": "z. B. Testkonto"
+  },
+  "yourKey": {
+    "message": "Ihr Schlüssel"
+  },
+  "keyType": {
+    "message": "Art des Schlüssels"
+  },
+  "timeBased": {
+    "message": "Zeitbasiert"
+  },
+  "counterBased": {
+    "message": "Zählerbasiert"
+  },
+  "hintTotp": {
+    "message": "Der Code ändert sich alle 30 Sekunden."
+  },
+  "hintHotp": {
+    "message": "Der Code ändert sich, wenn Sie den nächsten anfordern."
+  },
+  "scanTypeTotp": {
+    "message": "Zeitbasiert. Der Code ändert sich alle 30 Sekunden."
+  },
+  "scanTypeHotp": {
+    "message": "Zählerbasiert. Der Code ändert sich, wenn Sie den nächsten anfordern."
+  },
+  "invalidKey": {
+    "message": "Ungültiger Schlüssel. Geben Sie einen Base32-Schlüssel ein (Buchstaben A–Z und Ziffern 2–7), keinen sechsstelligen Code."
+  },
+  "keyTooShort": {
+    "message": "Der Schlüssel ist zu kurz. Prüfen Sie, ob Sie ihn vollständig kopiert haben."
+  },
+  "saveFailed": {
+    "message": "Die Codes konnten nicht gespeichert werden. Es wurden keine Codes hinzugefügt. Bitte versuchen Sie es erneut."
+  },
+  "exportPart": {
+    "message": "QR $1 von $2: Dieses Bild enthält nur einen Teil des Exports. Importieren Sie die anderen Bilder einzeln."
+  },
+  "alreadyInList": {
+    "message": "Bereits in Ihrer Liste."
+  },
+  "listedTwiceInExport": {
+    "message": "Zweimal in diesem Export enthalten."
+  },
+  "codeAlreadyAdded": {
+    "message": "Code bereits hinzugefügt"
+  },
+  "alreadyAdded": {
+    "message": "Dieser Code steht bereits als „$1“ in Ihrer Liste. Sie müssen ihn nicht erneut hinzufügen."
+  },
+  "cantAddTitle": {
+    "message": "Dieser Code kann nicht hinzugefügt werden"
+  },
+  "scanStartFailed": {
+    "message": "Der Scan konnte nicht gestartet werden. Bitte versuchen Sie es erneut."
+  },
+  "imageType": {
+    "message": "Wählen Sie ein PNG-, JPEG-, WebP-, GIF- oder BMP-Bild."
+  },
+  "imageTooBig": {
+    "message": "Wählen Sie ein Bild, das kleiner als 10 MB ist."
+  },
+  "imageTooLarge": {
+    "message": "Das Bild ist zu groß. Schneiden Sie es um den QR-Code herum zu."
+  },
+  "imageUnreadable": {
+    "message": "Das Bild konnte nicht gelesen werden. Versuchen Sie es mit einem PNG- oder JPEG-Screenshot."
+  },
+  "qrNotFound": {
+    "message": "Kein lesbarer QR-Code gefunden. Versuchen Sie es mit einem schärferen Bild, das um den Code herum zugeschnitten ist."
+  },
+  "qrInvalid": {
+    "message": "Ungültiger Authenticator-QR-Code."
+  },
+  "qrNotAccount": {
+    "message": "Dieser QR-Code ist kein Authenticator-Konto."
+  },
+  "qrUnsupported": {
+    "message": "Dieser QR-Code ist kein unterstütztes Authenticator-Konto."
+  },
+  "qrDuplicateParameters": {
+    "message": "Der QR-Code enthält doppelte Parameter."
+  },
+  "qrUnsupportedCode": {
+    "message": "Nur SHA-1, sechsstellige Codes und ein TOTP-Intervall von 30 Sekunden werden unterstützt."
+  },
+  "qrInvalidName": {
+    "message": "Der QR-Code enthält einen ungültigen Kontonamen."
+  },
+  "qrConflictingProviders": {
+    "message": "Der QR-Code enthält widersprüchliche Kontoanbieter."
+  },
+  "qrNameLength": {
+    "message": "Der Kontoname muss 1 bis $1 Zeichen enthalten."
+  },
+  "qrInvalidSecret": {
+    "message": "Der QR-Code enthält einen ungültigen geheimen Schlüssel."
+  },
+  "qrInvalidCounter": {
+    "message": "Der QR-Code enthält einen ungültigen HOTP-Zähler."
+  },
+  "exportInvalid": {
+    "message": "Ungültiger Google-Authenticator-Export."
+  },
+  "exportDamagedAccount": {
+    "message": "Dieses Konto ist im Export beschädigt."
+  },
+  "exportInvalidName": {
+    "message": "Der Kontoname ist kein gültiger Text."
+  },
+  "exportInvalidData": {
+    "message": "Der Export enthält ungültige Base64-Daten. Versuchen Sie es mit einem neuen QR-Bild."
+  },
+  "exportIncomplete": {
+    "message": "Die Exportdaten sind unvollständig. Versuchen Sie es mit einem schärferen QR-Bild."
+  },
+  "exportVersion": {
+    "message": "Die Version $1 des Google-Exports wird noch nicht unterstützt."
+  },
+  "exportPages": {
+    "message": "Der Google-Export enthält ungültige QR-Seitenangaben."
+  },
+  "exportEmpty": {
+    "message": "Keine Konten im Google-Export gefunden."
+  },
+  "exportTooMany": {
+    "message": "Zu viele Konten in diesem QR-Bild."
+  },
+  "exportUnsupportedCode": {
+    "message": "Nur SHA-1 und sechsstellige Codes werden unterstützt."
+  },
+  "exportUnsupportedType": {
+    "message": "Nicht unterstützter Kontotyp."
+  },
+  "exportMissingName": {
+    "message": "Kontoname fehlt."
+  },
+  "scanGrant": {
+    "message": "Klicken Sie auf das Authenticator-Symbol, während die Seite mit dem QR-Code geöffnet ist, und wählen Sie dann erneut „QR-Code scannen“."
+  },
+  "scanUnscannable": {
+    "message": "Diese Seite kann nicht gescannt werden. Machen Sie stattdessen einen Screenshot des QR-Codes und fügen Sie ihn hier ein."
+  },
+  "scanFailed": {
+    "message": "Diese Seite konnte nicht gescannt werden. Bitte versuchen Sie es erneut."
+  },
+  "overlayLabel": {
+    "message": "QR-Codes auf dieser Seite"
+  },
+  "overlayHint": {
+    "message": "Klicken Sie auf einen QR-Code, um ihn zu importieren · Esc zum Abbrechen"
+  },
+  "overlayNone": {
+    "message": "Kein vollständiger QR-Code sichtbar · Scrollen Sie, bis er erscheint, oder drücken Sie Esc"
+  },
+  "overlayFound_one": {
+    "message": "$1 QR-Code gefunden. Klicken Sie darauf oder drücken Sie die Eingabetaste, um ihn zu importieren, oder Escape zum Abbrechen."
+  },
+  "overlayFound_other": {
+    "message": "$1 QR-Codes gefunden. Klicken Sie auf einen, um ihn zu importieren, oder drücken Sie Escape zum Abbrechen."
+  },
+  "autoLock": {
+    "message": "Automatisch sperren"
+  },
+  "autoLockClose": {
+    "message": "Wenn das Popup geschlossen wird"
+  },
+  "autoLock1": {
+    "message": "Nach 1 Minute"
+  },
+  "autoLock5": {
+    "message": "Nach 5 Minuten"
+  },
+  "autoLock30": {
+    "message": "Nach 30 Minuten"
+  },
+  "autoLockHour": {
+    "message": "Nach 1 Stunde"
+  },
+  "autoLockNever": {
+    "message": "Nie"
+  },
+  "autoLockDescription": {
+    "message": "Die Zeit läuft, sobald Sie das Popup schließen oder ein geöffnetes Authenticator-Fenster nicht mehr verwenden. Mit „Wenn das Popup geschlossen wird“ wird ein geöffnetes Fenster nach 1 Minute ohne Verwendung gesperrt. „Nie“ lässt den Tresor entsperrt, bis Firefox geschlossen wird oder Sie „Jetzt sperren“ wählen."
+  },
+  "vault": {
+    "message": "Tresor"
+  },
+  "changePassword": {
+    "message": "Passwort ändern"
+  },
+  "newRecoveryKey": {
+    "message": "Neuer Wiederherstellungsschlüssel"
+  },
+  "anotherVault": {
+    "message": "Ein anderer Tresor"
+  },
+  "lockNow": {
+    "message": "Jetzt sperren"
+  },
+  "settingFailed": {
+    "message": "Die Entsperreinstellung konnte nicht geändert werden. Bitte versuchen Sie es erneut."
+  },
+  "changePasswordPrompt": {
+    "message": "Geben Sie Ihr Passwort ein, um ein neues zu wählen."
+  },
+  "changePasswordFailed": {
+    "message": "Das Passwort konnte nicht geändert werden. Bitte versuchen Sie es erneut."
+  },
+  "newPasswordTitle": {
+    "message": "Neues Passwort wählen"
+  },
+  "newPasswordIntro": {
+    "message": "Es gilt sofort auf allen Ihren Computern. Ihr Wiederherstellungsschlüssel ändert sich nicht. Verwenden Sie nicht das Passwort Ihres Firefox-Kontos."
+  },
+  "newPassword": {
+    "message": "Neues Passwort"
+  },
+  "confirmNewPassword": {
+    "message": "Neues Passwort bestätigen"
+  },
+  "confirmPassword": {
+    "message": "Passwort bestätigen"
+  },
+  "passwordQuality": {
+    "message": "Passwort-Qualitätsmessung"
+  },
+  "suggestPassword": {
+    "message": "Passwort vorschlagen"
+  },
+  "resetTitle": {
+    "message": "Passwort zurücksetzen"
+  },
+  "resetDescription": {
+    "message": "Geben Sie den Wiederherstellungsschlüssel ein, den Sie beim Erstellen Ihres Tresors gesichert haben."
+  },
+  "resetPassword": {
+    "message": "Passwort zurücksetzen"
+  },
+  "resetFailed": {
+    "message": "Das Passwort konnte nicht zurückgesetzt werden. Bitte versuchen Sie es erneut."
+  },
+  "notAKey": {
+    "message": "Das ist kein Wiederherstellungsschlüssel: Er besteht aus 32 Buchstaben und Ziffern."
+  },
+  "wrongKey": {
+    "message": "Dieser Wiederherstellungsschlüssel öffnet diesen Tresor nicht. Prüfen Sie ihn und versuchen Sie es erneut."
+  },
+  "newKeyPrompt": {
+    "message": "Ein neuer Schlüssel ersetzt den, den Sie zuvor gesichert haben. Geben Sie Ihr Passwort ein, um fortzufahren."
+  },
+  "saveNewKeyTitle": {
+    "message": "Neuen Wiederherstellungsschlüssel sichern"
+  },
+  "keyIntro": {
+    "message": "Wenn Sie Ihr Passwort vergessen, ist dieser Schlüssel der einzige Weg zurück zu Ihren Codes."
+  },
+  "keyHint": {
+    "message": "Drucken Sie ihn aus oder bewahren Sie ihn in einem Passwortmanager auf. Wer diesen Schlüssel hat, kann ein neues Passwort festlegen."
+  },
+  "copyRecoveryKey": {
+    "message": "Wiederherstellungsschlüssel kopieren"
+  },
+  "savedNewKey": {
+    "message": "Ich habe meinen neuen Wiederherstellungsschlüssel gesichert"
+  },
+  "savedKey": {
+    "message": "Ich habe meinen Wiederherstellungsschlüssel gesichert"
+  },
+  "replaceKey": {
+    "message": "Schlüssel ersetzen"
+  },
+  "replaceKeyFailed": {
+    "message": "Der Schlüssel konnte nicht ersetzt werden. Bitte versuchen Sie es erneut."
+  },
+  "setupTitle": {
+    "message": "Authenticator einrichten"
+  },
+  "setupQuestion": {
+    "message": "Wie möchten Sie beginnen?"
+  },
+  "createNewVault": {
+    "message": "Neuen Tresor erstellen"
+  },
+  "firstComputer": {
+    "message": "Ihr erster Computer."
+  },
+  "useOnOther": {
+    "message": "Ich verwende es auf einem anderen Computer"
+  },
+  "throughSync": {
+    "message": "Über Firefox Sync."
+  },
+  "keptCopyHint": {
+    "message": "Aufbewahrt, als Ihr Tresor Firefox Sync verließ."
+  },
+  "choiceNotice": {
+    "message": "Ihre Codes sind noch nicht angekommen. Die Synchronisation kann einige Minuten dauern: Wählen Sie auch auf Ihrem anderen Computer $1."
+  },
+  "createPasswordTitle": {
+    "message": "Passwort erstellen"
+  },
+  "createPasswordIntro": {
+    "message": "Es schützt Ihre Codes auf jedem Computer, auf dem Sie sie verwenden. Verwenden Sie nicht das Passwort Ihres Firefox-Kontos."
+  },
+  "saveKeyTitle": {
+    "message": "Wiederherstellungsschlüssel sichern"
+  },
+  "createVault": {
+    "message": "Tresor erstellen"
+  },
+  "vaultArrived": {
+    "message": "Inzwischen ist ein Tresor aus Firefox Sync angekommen. Gehen Sie zurück und entsperren Sie stattdessen diesen."
+  },
+  "createFailed": {
+    "message": "Der Tresor konnte nicht erstellt werden. Bitte versuchen Sie es erneut."
+  },
+  "getCodesTitle": {
+    "message": "Ihre Codes holen"
+  },
+  "getCodesIntro": {
+    "message": "Firefox Sync bringt sie von Ihrem anderen Computer."
+  },
+  "howto1": {
+    "message": "Öffnen Sie $1 › $2."
+  },
+  "howto2": {
+    "message": "Prüfen Sie im Abschnitt $1 $2, ob $3 $4 angezeigt wird. Falls nicht, melden Sie sich mit dem Konto Ihres anderen Computers an."
+  },
+  "howto3": {
+    "message": "Prüfen Sie unter $1, ob $2 $3 aufgeführt ist."
+  },
+  "howto4": {
+    "message": "Wählen Sie $1 und öffnen Sie dann $2 $3 erneut."
+  },
+  "firefoxMenu": {
+    "message": "Menü"
+  },
+  "firefoxSettings": {
+    "message": "Einstellungen"
+  },
+  "firefoxSync": {
+    "message": "Synchronisation"
+  },
+  "firefoxSyncOn": {
+    "message": "Die Synchronisation ist AKTIVIERT"
+  },
+  "firefoxSyncedData": {
+    "message": "Diese Daten werden zwischen den Geräten synchronisiert"
+  },
+  "firefoxAddons": {
+    "message": "Add-ons"
+  },
+  "firefoxSyncNow": {
+    "message": "Jetzt synchronisieren"
+  },
+  "otherTitle": {
+    "message": "Codes aus einem anderen Tresor"
+  },
+  "otherDescription_one": {
+    "message": "Einer Ihrer Computer hat einen eigenen Tresor mit $1 Code angelegt, bevor er mit Firefox Sync verbunden wurde."
+  },
+  "otherDescription_other": {
+    "message": "Einer Ihrer Computer hat einen eigenen Tresor mit $1 Codes angelegt, bevor er mit Firefox Sync verbunden wurde."
+  },
+  "copyItsCodes": {
+    "message": "Seine Codes kopieren"
+  },
+  "removeThatVault": {
+    "message": "Diesen Tresor entfernen"
+  },
+  "removeVaultTitle": {
+    "message": "Den anderen Tresor entfernen?"
+  },
+  "removeVault": {
+    "message": "Tresor entfernen"
+  },
+  "removeVaultCopied_one": {
+    "message": "Sein $1 Code wird auf allen Ihren Computern gelöscht. Auf diesem Computer: $2 kopiert, $3 nicht kopiert, $4 nicht lesbar. Die Codes in Ihrem Tresor sind nicht betroffen."
+  },
+  "removeVaultCopied_other": {
+    "message": "Seine $1 Codes werden auf allen Ihren Computern gelöscht. Auf diesem Computer: $2 kopiert, $3 nicht kopiert, $4 nicht lesbar. Die Codes in Ihrem Tresor sind nicht betroffen."
+  },
+  "removeVaultNotCopied_one": {
+    "message": "Sein $1 Code wurde nicht kopiert und wird ungeöffnet auf allen Ihren Computern gelöscht. Die Codes in Ihrem Tresor sind nicht betroffen."
+  },
+  "removeVaultNotCopied_other": {
+    "message": "Seine $1 Codes wurden nicht kopiert und werden ungeöffnet auf allen Ihren Computern gelöscht. Die Codes in Ihrem Tresor sind nicht betroffen."
+  },
+  "removeVaultFailed": {
+    "message": "Der Tresor konnte nicht entfernt werden. Bitte versuchen Sie es erneut."
+  },
+  "mergeOpenTitle": {
+    "message": "Den anderen Tresor öffnen"
+  },
+  "mergePasswordPrompt": {
+    "message": "Geben Sie das Passwort ein, das Sie auf dem anderen Computer dafür gewählt haben."
+  },
+  "mergeKeyPrompt": {
+    "message": "Geben Sie den Wiederherstellungsschlüssel ein, der beim Erstellen des anderen Tresors gesichert wurde."
+  },
+  "passwordOfOther": {
+    "message": "Passwort des anderen Tresors"
+  },
+  "keyOfOther": {
+    "message": "Wiederherstellungsschlüssel des anderen Tresors"
+  },
+  "useKeyInstead": {
+    "message": "Stattdessen den Wiederherstellungsschlüssel verwenden"
+  },
+  "usePasswordInstead": {
+    "message": "Stattdessen das Passwort verwenden"
+  },
+  "vaultGone": {
+    "message": "Dieser Tresor ist nicht mehr vorhanden."
+  },
+  "keyNotThatVault": {
+    "message": "Dieser Wiederherstellungsschlüssel öffnet diesen Tresor nicht."
+  },
+  "mergeCodesIntro": {
+    "message": "Wählen Sie die Codes, die in Ihren Tresor kopiert werden sollen. Der andere Tresor bleibt, wie er ist: Sie können ihn danach entfernen."
+  },
+  "copyCodes_one": {
+    "message": "$1 Code kopieren"
+  },
+  "copyCodes_other": {
+    "message": "$1 Codes kopieren"
+  },
+  "copyCodesNone": {
+    "message": "Codes kopieren"
+  },
+  "listedTwiceInVault": {
+    "message": "Zweimal in diesem Tresor enthalten."
+  },
+  "copyRaisesCounter": {
+    "message": "In Ihrer Liste als „$1“ mit einem niedrigeren Zähler, den das Kopieren erhöht."
+  },
+  "mergeDamaged_one": {
+    "message": "$1 Code des anderen Tresors lässt sich nicht öffnen. Er bleibt darin."
+  },
+  "mergeDamaged_other": {
+    "message": "$1 Codes des anderen Tresors lassen sich nicht öffnen. Sie bleiben darin."
+  },
+  "otherChanged": {
+    "message": "Der andere Tresor hat sich inzwischen geändert. Prüfen Sie die Codes erneut."
+  },
+  "copyFailed": {
+    "message": "Die Codes konnten nicht kopiert werden. Bitte versuchen Sie es erneut."
+  },
+  "duplicatesTitle": {
+    "message": "Derselbe Code zweimal hinzugefügt"
+  },
+  "duplicatesIntro": {
+    "message": "Sie haben diesen Schlüssel auf zwei Computern hinzugefügt, bevor sie synchronisiert wurden. Behalten Sie einen Eintrag; der andere wird überall entfernt."
+  },
+  "keepThisOne": {
+    "message": "Diesen behalten"
+  },
+  "addedOn": {
+    "message": "Hinzugefügt am $1"
+  },
+  "removeEntryFailed": {
+    "message": "Der andere Eintrag konnte nicht entfernt werden. Bitte versuchen Sie es erneut."
+  },
+  "damagedTitle": {
+    "message": "Einige Codes können nicht gelesen werden"
+  },
+  "damagedCodes_one": {
+    "message": "Ein Code in Ihrem Tresor ist beschädigt und kann nicht angezeigt werden. Die anderen funktionieren wie gewohnt."
+  },
+  "damagedCodes_other": {
+    "message": "$1 Codes in Ihrem Tresor sind beschädigt und können nicht angezeigt werden. Die anderen funktionieren wie gewohnt."
+  },
+  "readOnlyTitle": {
+    "message": "Codes, schreibgeschützt"
+  },
+  "recoverySourceTrusted": {
+    "message": "Gelesen mit dem Tresorkopf, den dieser Computer zuletzt mit Ihrem Passwort geöffnet hat. Es wird nichts in Firefox Sync geschrieben, und diese Codes können hier nicht geändert werden."
+  },
+  "recoverySourceOther": {
+    "message": "Gelesen aus einem anderen Tresor in Firefox Sync. Es wird nichts in Firefox Sync geschrieben, und diese Codes können hier nicht geändert werden."
+  },
+  "onlyInCopy": {
+    "message": "Nur in der Kopie dieses Computers"
+  },
+  "mayBeOutdated": {
+    "message": "Sie sind möglicherweise veraltet."
+  },
+  "hotpMayBeUsed": {
+    "message": "Zählerbasiert: Dieser Code wurde möglicherweise schon verwendet."
+  },
+  "copyCode": {
+    "message": "Code kopieren"
+  },
+  "copyKey": {
+    "message": "Schlüssel kopieren"
+  },
+  "codeCopiedFor": {
+    "message": "Code für $1 kopiert"
+  },
+  "keyCopiedFor": {
+    "message": "Schlüssel für $1 kopiert"
+  },
+  "codeCannotShow": {
+    "message": "Dieser Code kann nicht angezeigt werden."
+  },
+  "unreadableNewer_one": {
+    "message": "$1 Code, den eine neuere Version von Authenticator gespeichert hat, kann hier nicht angezeigt werden."
+  },
+  "unreadableNewer_other": {
+    "message": "$1 Codes, die eine neuere Version von Authenticator gespeichert hat, können hier nicht angezeigt werden."
+  },
+  "unreadableCodes_one": {
+    "message": "$1 Code kann nicht gelesen werden."
+  },
+  "unreadableCodes_other": {
+    "message": "$1 Codes können nicht gelesen werden."
+  },
+  "restoreDescription": {
+    "message": "Dieser Computer hat eine Kopie Ihres Tresors aufbewahrt, als er Firefox Sync verließ. Geben Sie das Passwort ein, das er damals hatte."
+  },
+  "restoreDescriptionDated": {
+    "message": "Dieser Computer hat eine Kopie Ihres Tresors aufbewahrt, wie er am $1 war, als er Firefox Sync verließ. Geben Sie das Passwort ein, das er damals hatte."
+  },
+  "passwordOfCopy": {
+    "message": "Passwort der Kopie"
+  },
+  "keyOfCopy": {
+    "message": "Wiederherstellungsschlüssel der Kopie"
+  },
+  "restoreWarning": {
+    "message": "Ihre Codes sind möglicherweise veraltet. Wenn Sie Ihr Passwort seitdem geändert haben, öffnet das alte die Kopie und gilt wieder, sobald Sie sie wiederherstellen."
+  },
+  "copyGone": {
+    "message": "Diese Kopie ist nicht mehr vorhanden."
+  },
+  "keyNotCopy": {
+    "message": "Dieser Wiederherstellungsschlüssel öffnet die Kopie nicht."
+  },
+  "restoreCodesIntro": {
+    "message": "Wählen Sie die Codes, die zurück in Firefox Sync sollen. Die Codes, die dort schon sind, bleiben unverändert."
+  },
+  "restoreCodes_one": {
+    "message": "$1 Code wiederherstellen"
+  },
+  "restoreCodes_other": {
+    "message": "$1 Codes wiederherstellen"
+  },
+  "restoreVault": {
+    "message": "Tresor wiederherstellen"
+  },
+  "alreadyInSync": {
+    "message": "Bereits in Firefox Sync"
+  },
+  "copyDamaged_one": {
+    "message": "$1 Code in der Kopie kann nicht gelesen werden."
+  },
+  "copyDamaged_other": {
+    "message": "$1 Codes in der Kopie können nicht gelesen werden."
+  },
+  "becomesMain": {
+    "message": "Er wird wieder Ihr Haupttresor. Die Codes des Tresors, der jetzt in Firefox Sync liegt, können Sie nach dem Entsperren hinzufügen."
+  },
+  "vaultIsBack": {
+    "message": "Dieser Tresor ist wieder in Firefox Sync. Gehen Sie zurück und entsperren Sie ihn."
+  },
+  "restoreFailed": {
+    "message": "Der Tresor konnte nicht wiederhergestellt werden. Bitte versuchen Sie es erneut."
+  },
+  "deleteCopy": {
+    "message": "Diese Kopie löschen"
+  },
+  "deleteForGood": {
+    "message": "Endgültig löschen"
+  },
+  "deleteCopyFailed": {
+    "message": "Die Kopie konnte nicht gelöscht werden. Bitte versuchen Sie es erneut."
+  }
+}

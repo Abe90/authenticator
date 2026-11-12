@@ -2,6 +2,7 @@ import { decodeBase32 } from '../../core/base32.mjs';
 import { isShortManualKey } from '../../core/totp.mjs';
 import { cleanName } from '../../core/limits.mjs';
 import { DuplicateAccountError, duplicateReasons } from '../../core/duplicates.mjs';
+import { t } from '../../shared/i18n.mjs';
 import { NAME_REQUIRED, changeHint, saveFailure, storedAccounts } from './account-input.mjs';
 import { element, message } from './dom.mjs';
 import { createMigrationPreview } from './migration-preview.mjs';
@@ -93,7 +94,7 @@ export function createAddForm({ vault, active, blocked, onSaved, onCancel }) {
     showManual();
     picker.reset();
     message(error);
-    save.textContent = 'Add';
+    save.textContent = t('add');
   }
 
   function manualRecord() {
@@ -106,12 +107,12 @@ export function createAddForm({ vault, active, blocked, onSaved, onCancel }) {
     }
     try { decodeBase32(key); }
     catch {
-      message(error, 'Invalid key. Enter a Base32 key (letters A–Z and digits 2–7), not a six-digit code.');
+      message(error, t('invalidKey'));
       secret.focus();
       return null;
     }
     if (key !== importedSecret && isShortManualKey(key)) {
-      message(error, 'The key is too short. Check that you copied all of it.');
+      message(error, t('keyTooShort'));
       secret.focus();
       return null;
     }
@@ -126,7 +127,7 @@ export function createAddForm({ vault, active, blocked, onSaved, onCancel }) {
     const current = revision;
     saving = true;
     save.disabled = qrButton.disabled = true;
-    save.textContent = 'Saving…';
+    save.textContent = t('saving');
     message(error);
     try {
       const saved = await vault.addMany(records);
@@ -143,7 +144,7 @@ export function createAddForm({ vault, active, blocked, onSaved, onCancel }) {
       if (current === revision) {
         save.disabled = preview.visible && !preview.selected().length;
         qrButton.disabled = false;
-        save.textContent = 'Add';
+        save.textContent = t('add');
       }
     }
   }

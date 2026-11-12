@@ -1,5 +1,6 @@
 import { MAX_COUNTER } from '../../core/limits.mjs';
 import { TOTP_PERIOD, createHotpGenerator, totpStep } from '../../core/totp.mjs';
+import { t } from '../../shared/i18n.mjs';
 import { element, reducedMotion } from './dom.mjs';
 import { createCountdown } from './countdown.mjs';
 import { failureText } from './messages.mjs';
@@ -46,7 +47,7 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
   function filter() {
     const hasText = search.value.length > 0;
     settings.classList.toggle('clear-search', hasText);
-    settings.setAttribute('aria-label', hasText ? 'Clear search' : 'Settings');
+    settings.setAttribute('aria-label', hasText ? t('clearSearch') : t('settings'));
     if (hasText) {
       settings.removeAttribute('aria-controls');
       settings.removeAttribute('aria-expanded');
@@ -87,7 +88,7 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
       // If this write fails, the code is only hidden again when the popup reopens.
       try { await onAdvanced(account.id); } catch {}
     } catch (failure) {
-      if (current === revision) onError(failureText(failure, 'Could not save the next counter. Please try again.'));
+      if (current === revision) onError(failureText(failure, t('nextCounterFailed')));
     } finally {
       saving = account.pending = false;
       account.next.disabled = account.counter >= MAX_COUNTER;
@@ -100,7 +101,7 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
 
   function createAccount(record) {
     const row = template.cloneNode(true);
-    row.setAttribute('aria-label', `${record.name}: copy code`);
+    row.setAttribute('aria-label', t('copyCodeOf', record.name));
     row.setAttribute('role', 'button');
     row.tabIndex = 0;
     element('h2', row).textContent = record.name;
@@ -121,9 +122,9 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
       if (!/^\d{6}$/.test(value)) return;
       try {
         await navigator.clipboard.writeText(value);
-        toast.show('Code copied', code.parentElement, { success: true });
+        toast.show(t('codeCopied'), code.parentElement, { success: true });
       } catch {
-        toast.show('Copy failed. Please try again.', code.parentElement);
+        toast.show(t('clipboardFailed'), code.parentElement);
       }
     }
     row.addEventListener('click', copy);
@@ -143,7 +144,7 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
       const next = document.createElement('button');
       next.type = 'button';
       next.className = 'counter-next icon-button';
-      next.setAttribute('aria-label', `Generate the next code for ${record.name}`);
+      next.setAttribute('aria-label', t('nextCodeFor', record.name));
       const icon = document.createElement('span');
       icon.className = 'icon icon-refresh';
       next.append(icon);
@@ -214,13 +215,13 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
         else {
           const remaining = TOTP_PERIOD - seconds % TOTP_PERIOD;
           // A label for screen readers only: no tooltip.
-          account.timer.setAttribute('aria-label', `New code in ${remaining} s`);
+          account.timer.setAttribute('aria-label', t('newCodeIn', remaining));
           countdown.draw(account.sector, remaining);
         }
       } catch {
         if (current !== revision) return;
-        showCode(account, 'Error', true);
-        account.timer.setAttribute('aria-label', 'Code unavailable. Reopen the popup.');
+        showCode(account, t('codeError'), true);
+        account.timer.setAttribute('aria-label', t('codeUnavailable'));
         countdown.draw(account.sector, 0);
       }
     }
@@ -295,7 +296,7 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
       if (current === revision) {
         accounts = previous;
         arrange();
-        onError(failureText(failure, 'Could not save the new order. Please try again.'));
+        onError(failureText(failure, t('orderFailed')));
       }
     } finally {
       saving = false;

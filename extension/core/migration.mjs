@@ -1,14 +1,15 @@
 import { encodeBase32 } from './base32.mjs';
 import { parseOtpAuth } from './otpauth.mjs';
-import { cleanName } from './limits.mjs';
+import { cleanName, unnamedAccount } from './limits.mjs';
+import { UserError } from './user-error.mjs';
 
-const invalid = () => new Error('Invalid Google Authenticator export.');
-const damaged = () => new Error('This account is damaged in the export.');
+const invalid = () => new UserError('exportInvalid');
+const damaged = () => new UserError('exportDamagedAccount');
 const utf8 = new TextDecoder('utf-8', { fatal: true });
 
 function readText(bytes) {
   try { return cleanName(utf8.decode(bytes)); }
-  catch { throw new Error('The account name is not valid text.'); }
+  catch { throw new UserError('exportInvalidName'); }
 }
 
 // Bounded protobuf reader. Unknown fields are skipped for forward compatibility.
@@ -72,25 +73,25 @@ export function parseMigration(uri) {
     || url.searchParams.getAll('data').length !== 1) throw invalid();
   const encoded = url.searchParams.get('data').replace(/[ -]/g, '+').replace(/_/g, '/');
   if (!encoded || !/^[A-Za-z0-9+/]+={0,2}$/.test(encoded)) {
-    throw new Error('The export contains invalid Base64 data. Try a fresh QR image.');
+    throw new UserError('exportInvalidData');
   }
   let bytes;
   try { bytes = Uint8Array.fromBase64(encoded); }
-  catch { throw new Error('The export data is incomplete. Try a clearer QR image.'); }
+  catch { throw new UserError('exportIncomplete'); }
   try {
     const payload = fields(bytes);
     const version = one(payload, 2, 0, 0n);
     const batchSize = Number(one(payload, 3, 0, 0n)) || 1;
     const batchIndex = Number(one(payload, 4, 0, 0n));
-    if (version > 2n) throw new Error(`Google export version ${version} is not supported yet.`);
+    if (version > 2n) throw new UserError('exportVersion', String(version));
     if (batchSize < 1 || batchSize > 1000 || batchIndex < 0 || batchIndex >= batchSize) {
-      throw new Error('The Google export has invalid QR page information.');
+      throw new UserError('exportPages');
     }
     const entries = payload.get(1) ?? [];
-    if (!entries.length) throw new Error('No accounts found in the Google export.');
-    if (entries.length > 1000) throw new Error('Too many accounts in this QR image.');
+    if (!entries.length) throw new UserError('exportEmpty');
+    if (entries.length > 1000) throw new UserError('exportTooMany');
     const accounts = entries.map((entry) => {
-      let name = 'Unnamed account';
+      let name = unnamedAccount();
       try {
         const field = accountFields(entry);
         const label = readText(field(2, 2, new Uint8Array()));
@@ -98,18 +99,20 @@ export function parseMigration(uri) {
         name = !label ? issuer : issuer && !label.startsWith(`${issuer}:`) ? `${issuer}: ${label}` : label;
         // 0 is UNSPECIFIED, which Google reads as SHA-1 and six digits, like an otpauth URI without the parameter.
         if (![0n, 1n].includes(field(4, 0, 0n)) || ![0n, 1n].includes(field(5, 0, 0n))) {
-          throw new Error('Only SHA-1 and six-digit codes are supported.');
+          throw new UserError('exportUnsupportedCode');
         }
         const type = field(6, 0, 0n);
-        if (![1n, 2n].includes(type)) throw new Error('Unsupported account type.');
+        if (![1n, 2n].includes(type)) throw new UserError('exportUnsupportedType');
         const secret = encodeBase32(field(1, 2, new Uint8Array()));
         const params = new URLSearchParams({ secret });
         if (type === 1n) params.set('counter', String(field(7, 0, 0n)));
-        if (!label) throw new Error('Missing account name.');
+        if (!label) throw new UserError('exportMissingName');
         const record = parseOtpAuth(`otpauth://${type === 1n ? 'hotp' : 'totp'}/${encodeURIComponent(name)}?${params}`);
         return { name: record.name, record };
       } catch (error) {
-        return { name: name || 'Unnamed account', error: error.message };
+        // The error crosses from the background script to the popup, so it is a plain { key, values } for a message.
+        const { key, values } = error instanceof UserError ? error : damaged();
+        return { name: name || unnamedAccount(), error: { key, values } };
       }
     });
     return { kind: 'migration', accounts, batchSize, batchIndex };

@@ -22,6 +22,7 @@ Get it from addons.mozilla.org: **https://addons.mozilla.org/firefox/addon/authe
 - **Read-only codes when something is wrong.** If the vault in Firefox Sync is damaged or replaced, or another vault claims to be older, your password still opens your codes read-only, without writing anything to Firefox Sync.
 - **Recovery key.** Shown once when the vault is created; with it, **Forgot password?** sets a new password.
 - Light and dark themes that follow Firefox's.
+- In English, French, German, Spanish and Italian, following Firefox's language.
 
 Not supported: SHA-256 or SHA-512, eight-digit codes, periods other than 30 seconds, the camera, and backup files.
 
@@ -73,19 +74,20 @@ node tools/check.mjs     # static checks
 node tools/package.mjs   # builds the archives in dist/
 ```
 
-`tools/check.mjs` checks text hygiene and syntax, and follows the manifest through HTML, CSS, imports and asset paths, so that every file the extension loads exists and is packaged. `tools/package.mjs` builds, from committed files, the archive to upload to Mozilla and a source archive that reproduces it; both are reproducible byte for byte.
+`tools/check.mjs` checks text hygiene and syntax, follows the manifest through HTML, CSS, imports and asset paths, so that every file the extension loads exists and is packaged, and checks that every text the extension shows is in each language of `extension/_locales`. `tools/package.mjs` builds, from committed files, the archive to upload to Mozilla and a source archive that reproduces it; both are reproducible byte for byte.
 
 ### Project structure
 
 ```
 extension/          what Firefox loads; the upload archive contains its files
   manifest.json
+  _locales/         the texts, one messages.json per language
   popup/            the toolbar popup, also the Add code window (popup.html?view=add)
     ui/             one module per part of the page
   background/       background scripts: Scan a QR code, the local copy of the vault, the lock timer
   content/          the script Scan a QR code injects into the page
   core/             OTP generation, QR payload parsers, the encrypted vault
-  shared/           what the popup and the background share: the QR decoder and its worker
+  shared/           what the popup and the background share: the texts, the QR decoder and its worker
   assets/           fonts and icons
   vendor/jsqr/      the bundled QR decoder
 tools/              the static check and the packager

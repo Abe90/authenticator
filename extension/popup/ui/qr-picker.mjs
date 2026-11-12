@@ -1,28 +1,28 @@
 import { parseQrAccount } from '../../core/migration.mjs';
-import { FULL_SIDE, UNREADABLE_IMAGE, createQrDecoder, imageData, wholeRect } from '../../shared/qr-decoder.mjs';
+import { UserError } from '../../core/user-error.mjs';
+import { errorText, t } from '../../shared/i18n.mjs';
+import { FULL_SIDE, createQrDecoder, imageData, unreadable, wholeRect } from '../../shared/qr-decoder.mjs';
 import { element } from './dom.mjs';
 
 const TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/bmp'];
 
 async function readQrImage(file, signal) {
-  if (!TYPES.includes(file.type)) throw new Error('Choose a PNG, JPEG, WebP, GIF or BMP image.');
-  if (file.size > 10 * 1024 * 1024) throw new Error('Choose an image smaller than 10 MB.');
+  if (!TYPES.includes(file.type)) throw new UserError('imageType');
+  if (file.size > 10 * 1024 * 1024) throw new UserError('imageTooBig');
   const pixels = await rasterize(file);
   signal?.throwIfAborted();
   const decoder = createQrDecoder(signal);
   let code;
   try { code = await decoder.decode(pixels); } finally { decoder.close(); }
-  if (code === null) throw new Error('No readable QR code found. Try a clearer image cropped around the code.');
+  if (code === null) throw new UserError('qrNotFound');
   return parseQrAccount(code.data);
 }
 
 async function rasterize(file) {
   let bitmap;
   try {
-    try { bitmap = await createImageBitmap(file); } catch { throw new Error(UNREADABLE_IMAGE); }
-    if (bitmap.width * bitmap.height > 20_000_000) {
-      throw new Error('The image is too large. Crop it around the QR code.');
-    }
+    try { bitmap = await createImageBitmap(file); } catch { throw unreadable(); }
+    if (bitmap.width * bitmap.height > 20_000_000) throw new UserError('imageTooLarge');
     return imageData(bitmap, wholeRect(bitmap), FULL_SIDE);
   } finally {
     bitmap?.close();
@@ -61,7 +61,7 @@ export function createQrPicker({ active, blocked, onRead, onError, onBusy }) {
       const record = await readQrImage(file, signal);
       if (current === revision && active()) onRead(record);
     } catch (error) {
-      if (current === revision && active()) onError(error.message || UNREADABLE_IMAGE);
+      if (current === revision && active()) onError(errorText(error, t('imageUnreadable')));
     } finally {
       if (current === revision) reset();
     }

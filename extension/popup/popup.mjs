@@ -7,7 +7,8 @@ import {
 import { RevealedCodes } from '../core/revealed-codes.mjs';
 import { MergeReceipts } from '../core/merge-receipts.mjs';
 import { openAddCodeWindow } from '../shared/add-window.mjs';
-import { element } from './ui/dom.mjs';
+import { t } from '../shared/i18n.mjs';
+import { element, localize } from './ui/dom.mjs';
 import { createViews } from './ui/views.mjs';
 import { createAuthentication } from './ui/authentication.mjs';
 import { createSettings, normalizeSettings } from './ui/settings.mjs';
@@ -36,6 +37,7 @@ import { setUpPasswordHints } from './ui/password-meter.mjs';
 const addWindow = new URLSearchParams(location.search).get('view') === 'add';
 const homeView = addWindow ? 'add' : 'list';
 document.body.classList.toggle('add-window', addWindow);
+localize();
 setUpPasswordFields();
 setUpPasswordHints();
 const vault = new VaultSession(
@@ -140,7 +142,7 @@ const auth = createAuthentication({
     await openUnlocked();
   },
   onForgot: () => reset.start(),
-  onRecover: (found) => recoveryView.start(found).catch(() => showError('Could not read the codes. Please try again.')),
+  onRecover: (found) => recoveryView.start(found).catch(() => showError(t('readCodesFailed'))),
 });
 // The time of Lock automatically, also for Codes, read-only: 1 minute with When the popup closes, null with Never.
 const recoveryView = createRecoveryView({
@@ -169,7 +171,7 @@ const afterUnlock = createAfterUnlock({
 // choice and recovery key when it opens again; so do New recovery key, with the same key, Forgot password, from its
 // recovery key, and another vault's codes, from its first page.
 const store = procedureStore(browser.storage.session, {
-  onError: () => showError('Could not clear the progress of this procedure. Close Firefox to clear it.'),
+  onError: () => showError(t('clearProgressFailed')),
 });
 const recovery = createNewRecoveryKey({ vault, store, onDone: () => leaveVaultChange(true) });
 const reset = createReset({
@@ -191,7 +193,7 @@ const merge = createMerge({
 // the setup or the password page, and lead back there.
 const restoreCopy = createRestoreCopy({
   copy: vaultCopy, views,
-  onDone: () => leaveRestore('Your vault is back in Firefox Sync. Enter its password to open it.'),
+  onDone: () => leaveRestore(t('vaultBack')),
   onExit: () => leaveRestore(),
 });
 const session = createUnlockSession({
@@ -256,7 +258,7 @@ async function openUnlocked() {
   if (!page && !addWindow) await afterUnlock.run().catch(() => {});
 }
 // Every error that does not belong to a form opens the notice page, once a view change or a save has finished.
-function showError(text, title = 'Something went wrong') {
+function showError(text, title = t('errorTitle')) {
   clearTimeout(timers.notice);
   if (disposed || retryWhenBusy('notice', () => showError(text, title))) return;
   notice.show(title, text);
@@ -286,7 +288,7 @@ async function lockVault(revoke = true) {
   auth.configure();
   await showLockedView();
   if (!(await cleared) || !(await forgotten)) {
-    showError('Could not clear the remembered unlock. Close Firefox to clear it.');
+    showError(t('clearUnlockFailed'));
   }
 }
 async function openAddWindow() {
@@ -300,7 +302,7 @@ async function openAddWindow() {
   }
   catch {
     session.cancelHandOff();
-    showError('Could not open the Add code window. Please try again.');
+    showError(t('openAddWindowFailed'));
   }
   finally {
     opening = false;
@@ -312,19 +314,19 @@ async function openAddWindow() {
 const VAULT_CHANGES = {
   password: {
     setting: '#change-password',
-    title: 'Change password',
-    description: 'Enter your password to choose a new one.',
+    title: t('changePassword'),
+    description: t('changePasswordPrompt'),
     prepare: () => newPassword.reset(),
     next(password) {
       // The vault key stays, so other computers keep their unlock.
       newPassword.start({
-        label: 'Change password',
-        backLabel: 'Back to settings',
+        label: t('changePassword'),
+        backLabel: t('backToSettings'),
         save: async (next) => {
           await vault.changePassword(password, next);
           return true;
         },
-        failure: 'Could not change the password. Please try again.',
+        failure: t('changePasswordFailed'),
         done: () => leaveVaultChange(true),
         back: () => leaveVaultChange(),
       });
@@ -333,8 +335,8 @@ const VAULT_CHANGES = {
   },
   recovery: {
     setting: '#new-recovery-key',
-    title: 'New recovery key',
-    description: 'A new key will replace the one you saved before. Enter your password to continue.',
+    title: t('newRecoveryKey'),
+    description: t('newKeyPrompt'),
     prepare: (state) => recovery.prepare(state),
     next(password) {
       recovery.start(password);
@@ -457,7 +459,7 @@ async function initialize() {
     }
   } catch {
     revealAuth();
-    auth.showError('Could not access local storage. Reload the extension and try again.');
+    auth.showError(t('storageFailed'));
   } finally {
     element('#initial-loading').hidden = true;
     document.documentElement.removeAttribute('data-starting');

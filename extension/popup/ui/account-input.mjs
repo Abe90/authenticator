@@ -1,14 +1,12 @@
+import { t } from '../../shared/i18n.mjs';
 import { failureText } from './messages.mjs';
 
 // Shared by the Add code form, the Scanned code page and the Edit code page.
-export const NAME_REQUIRED = 'Enter a code name.';
+export const NAME_REQUIRED = t('nameRequired');
 
-export const changeHint = (type) => (type === 'hotp'
-  ? 'The code changes when you request the next one.'
-  : 'The code changes every 30 seconds.');
+export const changeHint = (type) => (type === 'hotp' ? t('hintHotp') : t('hintTotp'));
 
-export const saveFailure = (failure) => failureText(failure,
-  'Could not save the codes. No codes were added. Please try again.');
+export const saveFailure = (failure) => failureText(failure, t('saveFailed'));
 
 // The accounts to warn about duplicates; an unreadable vault skips the warning, as saving refuses them anyway.
 export async function storedAccounts(vault) {

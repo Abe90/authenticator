@@ -1,6 +1,7 @@
 import { element } from './dom.mjs';
 import { formError, onSubmit, pageAction } from './forms.mjs';
-import { WRONG_PASSWORD, failureText, plural } from './messages.mjs';
+import { WRONG_PASSWORD, failureText } from './messages.mjs';
+import { plural, t } from '../../shared/i18n.mjs';
 
 const day = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium' });
 
@@ -41,11 +42,11 @@ export function createRestoreCopy({ copy, views, onDone, onExit }) {
     .map(({ id }) => id);
   function count() {
     const chosen = selected().length;
-    submit.textContent = chosen ? `Restore ${plural(chosen, 'code')}` : 'Restore the vault';
+    submit.textContent = chosen ? plural('restoreCodes', chosen) : t('restoreVault');
   }
 
   function render(opened) {
-    title.textContent = plural(opened.accounts.length, 'code');
+    title.textContent = plural('codeCount', opened.accounts.length);
     choices = opened.accounts.map(({ id, name, inSync }) => {
       const label = document.createElement('label');
       label.className = 'migration-account';
@@ -59,7 +60,7 @@ export function createRestoreCopy({ copy, views, onDone, onExit }) {
       if (inSync) {
         const small = document.createElement('small');
         small.className = 'duplicate';
-        small.textContent = 'Already in Firefox Sync';
+        small.textContent = t('alreadyInSync');
         text.append(small);
       }
       label.append(checkbox, text);
@@ -67,11 +68,8 @@ export function createRestoreCopy({ copy, views, onDone, onExit }) {
     });
     list.replaceChildren(...choices.map(({ label }) => label));
     const notes = [];
-    if (opened.damaged) notes.push(`${plural(opened.damaged, 'code')} in the copy cannot be read.`);
-    if (opened.replaces) {
-      notes.push('It becomes your main vault again. You can add the codes of the vault now in Firefox Sync after you '
-        + 'unlock.');
-    }
+    if (opened.damaged) notes.push(plural('copyDamaged', opened.damaged));
+    if (opened.replaces) notes.push(t('becomesMain'));
     note.textContent = notes.join(' ');
     note.hidden = !notes.length;
     count();
@@ -82,13 +80,13 @@ export function createRestoreCopy({ copy, views, onDone, onExit }) {
     openForm.reset();
     password.closest('.password-field').hidden = withKey;
     keyInput.hidden = !withKey;
-    useKey.textContent = withKey ? 'Use its password instead' : 'Use its recovery key instead';
+    useKey.textContent = withKey ? t('usePasswordInstead') : t('useKeyInstead');
     openError.clear();
   }
 
   function confirmDiscard(on) {
     confirming = on;
-    discard.textContent = on ? 'Delete it for good' : 'Delete this copy';
+    discard.textContent = on ? t('deleteForGood') : t('deleteCopy');
   }
 
   // Forgets the password or key typed, the codes and the choices: at the end, the exit and a lock.
@@ -111,8 +109,8 @@ export function createRestoreCopy({ copy, views, onDone, onExit }) {
     const current = revision;
     const opened = await action.run(openButton, () => copy.open(withKey ? 'recovery' : 'password', secret().value),
       (error) => {
-        if (error.reason === 'not-found') openError.show('This copy is no longer here.');
-        else openError.show(withKey ? 'This recovery key does not open the copy.' : WRONG_PASSWORD, secret());
+        if (error.reason === 'not-found') openError.show(t('copyGone'));
+        else openError.show(withKey ? t('keyNotCopy') : WRONG_PASSWORD, secret());
         secret().focus();
       });
     if (!opened || current !== revision) return;
@@ -131,8 +129,8 @@ export function createRestoreCopy({ copy, views, onDone, onExit }) {
       await copy.restore(vaultId, chosen);
       return true;
     }, (error) => codesError.show(error.reason === 'exists'
-      ? 'This vault is back in Firefox Sync. Go back and unlock it.'
-      : failureText(error, 'Could not restore the vault. Please try again.')));
+      ? t('vaultIsBack')
+      : failureText(error, t('restoreFailed'))));
     if (!done) return;
     reset();
     await onDone();
@@ -146,7 +144,7 @@ export function createRestoreCopy({ copy, views, onDone, onExit }) {
     const done = await action.run(discard, async () => {
       await copy.discard(vaultId);
       return true;
-    }, () => codesError.show('Could not delete the copy. Please try again.'));
+    }, () => codesError.show(t('deleteCopyFailed')));
     if (!done) return;
     reset();
     await onExit();
@@ -158,9 +156,8 @@ export function createRestoreCopy({ copy, views, onDone, onExit }) {
       useSecret(false);
       const [first] = await copy.kept();
       description.textContent = first?.at
-        ? `This computer kept a copy of your vault, as it was on ${day.format(first.at)}, when it left Firefox Sync. `
-          + 'Enter the password it had then.'
-        : 'This computer kept a copy of your vault when it left Firefox Sync. Enter the password it had then.';
+        ? t('restoreDescriptionDated', day.format(first.at))
+        : t('restoreDescription');
       await views.navigate('restore-open');
     },
     async back() {

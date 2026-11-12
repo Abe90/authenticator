@@ -11,6 +11,10 @@
   // The primary violet of the popup's light theme (--button in popup.css), in the dark theme too.
   const PRIMARY = '#7543e3';
   const port = browser.runtime.connect({ name: 'qr-scan' });
+  // The texts come from _locales, as in the popup (shared/i18n.mjs).
+  const t = (key, ...values) => browser.i18n.getMessage(key, values.map(String));
+  const rules = new Intl.PluralRules(t('locale'));
+  const plural = (key, count) => t(`${key}_${rules.select(count)}`, count) || t(`${key}_other`, count);
   let regions = [];
   let hovered = -1;
   let host = null;
@@ -93,7 +97,7 @@
     const root = host.attachShadow({ mode: 'closed' });
     canvas = document.createElement('canvas');
     canvas.tabIndex = 0;
-    canvas.setAttribute('aria-label', 'QR codes on this page');
+    canvas.setAttribute('aria-label', t('overlayLabel'));
     Object.assign(canvas.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', outline: 'none' });
     hint = document.createElement('div');
     Object.assign(hint.style, {
@@ -154,12 +158,8 @@
     hovered = regions.length === 1 ? 0 : -1;
     if (!host) build();
     important(host, { display: 'block' });
-    hint.textContent = regions.length
-      ? 'Click a QR code to import it · Esc to cancel'
-      : 'No whole QR code visible · Scroll until it shows or press Esc';
-    live.textContent = regions.length === 1
-      ? '1 QR code found. Click it or press Enter to import it, or press Escape to cancel.'
-      : `${regions.length} QR codes found. Click one to import it, or press Escape to cancel.`;
+    hint.textContent = regions.length ? t('overlayHint') : t('overlayNone');
+    live.textContent = regions.length ? plural('overlayFound', regions.length) : hint.textContent;
     draw();
     canvas.focus({ preventScroll: true });
   }
