@@ -1,4 +1,5 @@
 import { searchQuery } from '../../core/search.mjs';
+import { createAccountIcon } from './account-icon.mjs';
 import { element, moveFocus } from './dom.mjs';
 
 // The accounts that can fill a field, by name: on the popup's Fill in a code page (fill-page.mjs) and in the list under
@@ -29,7 +30,10 @@ export function createFillList(root, { choose, onFilter = () => {} }) {
       button.type = 'button';
       button.className = 'fill-account';
       button.tabIndex = -1;
-      button.textContent = name;
+      const label = document.createElement('span');
+      label.className = 'fill-account-name';
+      label.textContent = name;
+      button.append(createAccountIcon(name), label);
       button.addEventListener('click', (event) => { if (event.isTrusted) choose(id, button, event); });
       return { id, search: text, button };
     });

@@ -463,6 +463,21 @@ main > :nth-last-child(1 of :not([hidden])) .account::after {
   min-width: 0;
   flex: 1;
 }
+/* The round icon left of an account's name, here and in the lists for filling a field (ui/account-icon.mjs): the first
+   letter of the name, on the soft violet of a secondary button under the pointer, which no row's background takes. */
+.account-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--button-soft-hover);
+  color: var(--button-text);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+}
 h2 {
   margin: 0 0 4px;
   font-size: 14px;
@@ -787,15 +802,26 @@ main {
   font-size: 14px;
   color: var(--text-muted);
 }
+/* A row: the account's icon, smaller than on the list, then its name, which wraps beside it. */
 .fill-account {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   width: 100%;
-  padding: 10px 12px;
+  padding: 8px 12px;
   border: 0;
   border-radius: 8px;
   background: transparent;
   font-size: 14px;
   text-align: start;
+}
+.fill-account .account-icon {
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+}
+.fill-account-name {
+  min-width: 0;
   overflow-wrap: anywhere;
 }
 .fill-account:active {

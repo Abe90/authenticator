@@ -2,6 +2,7 @@ import { MAX_COUNTER } from '../../core/limits.mjs';
 import { searchQuery, searchText } from '../../core/search.mjs';
 import { TOTP_PERIOD, createHotpGenerator, totpStep } from '../../core/totp.mjs';
 import { t } from '../../shared/i18n.mjs';
+import { createAccountIcon } from './account-icon.mjs';
 import { element, moveFocus, reducedMotion } from './dom.mjs';
 import { createCountdown } from './countdown.mjs';
 import { failureText } from './messages.mjs';
@@ -126,6 +127,7 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
     // and Down go from the search field through the rows (keyboardRows).
     row.tabIndex = -1;
     element('h2', row).textContent = record.name;
+    row.prepend(createAccountIcon(record.name));
     const code = element('output', row);
     code.removeAttribute('id');
     const timerIcon = element('svg', row);
