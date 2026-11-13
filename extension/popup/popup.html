@@ -259,7 +259,7 @@
     <form id="verify-form" class="auth-form" hidden autocomplete="off" aria-labelledby="verify-title">
       <div class="auth-fields">
         <label class="visually-hidden" for="verify-password" data-i18n="password"></label>
-        <span class="password-field"><input id="verify-password" class="secret field large" type="text" data-i18n-placeholder="password" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="verify-description verify-error"><button class="reveal icon-button" type="button" data-i18n-aria-label="showPassword" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
+        <span class="password-field"><input id="verify-password" class="secret field large" type="text" data-i18n-placeholder="password" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="verify-description verify-error"><button class="reveal icon-button" type="button" tabindex="-1" data-i18n-aria-label="showPassword" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
         <p id="verify-error" class="error centered" role="alert" hidden></p>
       </div>
       <button id="verify-submit" class="primary wide" type="submit" data-i18n="continue"></button>
@@ -267,14 +267,14 @@
     <form id="password-form" class="auth-form" hidden autocomplete="off" novalidate aria-labelledby="password-title">
       <div class="auth-fields">
         <label class="visually-hidden" for="password-new" data-i18n="newPassword"></label>
-        <span class="password-field"><input id="password-new" class="secret field large" type="text" data-i18n-placeholder="newPassword" autocomplete="off" spellcheck="false" autocapitalize="off"><button class="reveal icon-button" type="button" data-i18n-aria-label="showPassword" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
+        <span class="password-field"><input id="password-new" class="secret field large" type="text" data-i18n-placeholder="newPassword" autocomplete="off" spellcheck="false" autocapitalize="off"><button class="reveal icon-button" type="button" tabindex="-1" data-i18n-aria-label="showPassword" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
         <label class="visually-hidden" for="password-confirm" data-i18n="confirmNewPassword"></label>
-        <span class="password-field"><input id="password-confirm" class="secret field large" type="text" data-i18n-placeholder="confirmNewPassword" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="password-error"><button class="reveal icon-button" type="button" data-i18n-aria-label="showPassword" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
+        <span class="password-field"><input id="password-confirm" class="secret field large" type="text" data-i18n-placeholder="confirmNewPassword" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="password-error"><button class="reveal icon-button" type="button" tabindex="-1" data-i18n-aria-label="showPassword" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
         <div class="password-quality">
           <label for="password-quality" data-i18n="passwordQuality"></label>
           <progress id="password-quality" class="password-meter" max="100" value="0" data-password="password-new"></progress>
         </div>
-        <button class="text-link suggest" type="button" data-suggest="password-new" data-confirm="password-confirm" data-i18n="suggestPassword"></button>
+        <button class="text-link suggest" type="button" tabindex="-1" data-suggest="password-new" data-confirm="password-confirm" data-i18n="suggestPassword"></button>
         <p id="password-error" class="error centered" role="alert" hidden></p>
       </div>
       <button id="password-save" class="primary wide" type="submit" data-i18n="changePassword"></button>
@@ -407,14 +407,14 @@
     <form id="setup-password-form" class="auth-form" hidden autocomplete="off" aria-labelledby="setup-password-title">
       <div class="auth-fields">
         <label class="visually-hidden" for="new-password" data-i18n="password"></label>
-        <span class="password-field"><input id="new-password" class="secret field large" type="text" data-i18n-placeholder="password" autocomplete="off" spellcheck="false" autocapitalize="off"><button class="reveal icon-button" type="button" data-i18n-aria-label="showPassword" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
+        <span class="password-field"><input id="new-password" class="secret field large" type="text" data-i18n-placeholder="password" autocomplete="off" spellcheck="false" autocapitalize="off"><button class="reveal icon-button" type="button" tabindex="-1" data-i18n-aria-label="showPassword" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
         <label class="visually-hidden" for="new-confirm" data-i18n="confirmPassword"></label>
-        <span class="password-field"><input id="new-confirm" class="secret field large" type="text" data-i18n-placeholder="confirmPassword" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="setup-password-error"><button class="reveal icon-button" type="button" data-i18n-aria-label="showPassword" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
+        <span class="password-field"><input id="new-confirm" class="secret field large" type="text" data-i18n-placeholder="confirmPassword" autocomplete="off" spellcheck="false" autocapitalize="off" aria-describedby="setup-password-error"><button class="reveal icon-button" type="button" tabindex="-1" data-i18n-aria-label="showPassword" aria-pressed="false"><span class="icon icon-eye"></span></button></span>
         <div class="password-quality">
           <label for="setup-password-quality" data-i18n="passwordQuality"></label>
           <progress id="setup-password-quality" class="password-meter" max="100" value="0" data-password="new-password"></progress>
         </div>
-        <button class="text-link suggest" type="button" data-suggest="new-password" data-confirm="new-confirm" data-i18n="suggestPassword"></button>
+        <button class="text-link suggest" type="button" tabindex="-1" data-suggest="new-password" data-confirm="new-confirm" data-i18n="suggestPassword"></button>
         <p id="setup-password-error" class="error centered" role="alert" hidden></p>
       </div>
       <button id="setup-password-next" class="primary wide" type="submit" data-i18n="continue"></button>
