@@ -402,11 +402,18 @@ main > :nth-last-child(1 of :not([hidden])) .account::after {
 .code-area {
   position: relative;
 }
-/* Each digit of a new code grows from its own centre (account-list.mjs showCode). */
+/* Each digit of a code shrinks away or grows from its own centre (account-list.mjs showCode). */
 .code-digit {
   display: inline-block;
 }
-.code-area.copying output {
+/* The code being replaced, laid over the new one while its digits go. */
+.code-old {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+.code-area.copying output, .code-area.copying .code-old {
   visibility: hidden;
 }
 #toast {
@@ -467,7 +474,7 @@ h2 {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-output {
+output, .code-old {
   display: block;
   color: inherit;
   font-size: 30px;

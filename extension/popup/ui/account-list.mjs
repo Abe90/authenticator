@@ -9,6 +9,22 @@ import { createReorder } from './reorder.mjs';
 
 // HOTP accounts show this until their next-code button is pressed during the current unlock.
 const HIDDEN_CODE = '--- ---';
+// A new code replacing the shown one (showCode): each digit, from the left, starts DIGIT_STEP_MS after the one before
+// it; the old digits take DIGIT_OUT_MS to go, and the new ones start DIGIT_IN_DELAY_MS after the old ones, while those
+// are still going, and take DIGIT_IN_MS to come.
+const DIGIT_STEP_MS = 40;
+const DIGIT_OUT_MS = 120;
+const DIGIT_IN_DELAY_MS = 100;
+const DIGIT_IN_MS = 300;
+
+// A code as nodes: each digit, or dash, in a box of its own that can be animated, and the space between the groups.
+const codeNodes = (text) => [...text].map((character) => {
+  if (character === ' ') return document.createTextNode(' ');
+  const digit = document.createElement('span');
+  digit.className = 'code-digit';
+  digit.textContent = character;
+  return digit;
+});
 
 export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu, onRemove, onRender }) {
   const main = element('main');
@@ -169,28 +185,40 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
     return account;
   }
 
-  // A new code shows digit by digit as the timer fills again: each digit that changed fades in and grows from its own
-  // centre, a little after the one before it. A row's first code, at once, and reduced motion show at once.
+  // A new code replaces the shown one as the timer fills again, digit by digit from the left: each old digit shrinks
+  // and fades away, and the new ones grow from their centre, starting while the old ones are still going. Every digit
+  // takes part, also one that stays the same. The old code goes on a copy laid over the new one, which screen readers
+  // and copying, which reads the code itself, never see. A row's first code, at once, and reduced motion show at once.
   function showCode(account, text, atOnce = false) {
     const { code } = account;
+    const area = code.parentElement;
+    area.querySelector('.code-old')?.remove();
     const before = code.textContent;
     if (atOnce || reducedMotion() || account.shownStep === null) {
       code.textContent = text;
       return;
     }
     if (before === text) return;
-    let order = 0;
-    code.replaceChildren(...[...text].map((character, index) => {
-      if (character === ' ') return document.createTextNode(' ');
-      const digit = document.createElement('span');
-      digit.className = 'code-digit';
-      digit.textContent = character;
-      if (character !== before[index]) {
-        digit.animate([{ opacity: 0, transform: 'scale(0.5)' }, { opacity: 1, transform: 'none' }],
-          { duration: 300, delay: 25 * order++, easing: 'cubic-bezier(0.2, 0, 0, 1)', fill: 'backwards' });
-      }
-      return digit;
-    }));
+    code.replaceChildren(...codeNodes(text));
+    code.querySelectorAll('.code-digit').forEach((digit, index) => digit.animate(
+      [{ opacity: 0, transform: 'scale(0.5)' }, { opacity: 1, transform: 'none' }],
+      {
+        duration: DIGIT_IN_MS, delay: DIGIT_IN_DELAY_MS + DIGIT_STEP_MS * index,
+        easing: 'cubic-bezier(0.2, 0, 0, 1)', fill: 'backwards',
+      },
+    ));
+    // Only a code goes away digit by digit, not an error message.
+    if (!/^\d{3} \d{3}$/.test(before)) return;
+    const old = document.createElement('span');
+    old.className = 'code-old';
+    old.setAttribute('aria-hidden', 'true');
+    old.append(...codeNodes(before));
+    area.append(old);
+    const going = [...old.querySelectorAll('.code-digit')].map((digit, index) => digit.animate(
+      [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(0.5)' }],
+      { duration: DIGIT_OUT_MS, delay: DIGIT_STEP_MS * index, easing: 'cubic-bezier(0.3, 0, 1, 1)', fill: 'forwards' },
+    ));
+    going.at(-1).finished.then(() => old.remove(), () => {});
   }
 
   async function refresh() {
