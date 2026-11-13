@@ -521,10 +521,6 @@ export class VaultSession {
     });
   }
 
-  add(name, secret, type, counter = '0') {
-    return this.addMany([{ name, secret, type, counter }]);
-  }
-
   // All or nothing. Duplicates are checked inside the write lock, so two windows cannot add the same code.
   addMany(records) {
     return this.#commit((accounts) => { addRecords(accounts, records); });
