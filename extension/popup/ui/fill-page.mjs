@@ -1,4 +1,4 @@
-import { matchesHost } from '../../core/sites.mjs';
+import { matchingAccounts } from '../../core/sites.mjs';
 import { fillCode, fillField } from '../../shared/fill-field.mjs';
 import { element } from './dom.mjs';
 
@@ -21,14 +21,12 @@ export function createFillPage({ vault, revealed, addWindow, onLeave }) {
     } catch { return null; }
   }
 
-  // The code of account goes into the field; then the page's site joins the account's, and the popup closes.
-  // Resolves to false when the field took nothing.
+  // The code of account goes into the field; then the account learns the page's site, which it may have already, and
+  // the popup closes. Resolves to false when the field took nothing.
   async function put(account) {
     const code = await fillCode(vault, revealed, account);
     if (!(await fillField(request, code))) return false;
-    if (request.host && !request.incognito && !matchesHost(account, request.host)) {
-      await vault.learnSite(account.id, request.host).catch(() => {});
-    }
+    if (request.host && !request.incognito) await vault.learnSite(account.id, request.host).catch(() => {});
     request = null;
     window.close();
     return true;
@@ -53,7 +51,7 @@ export function createFillPage({ vault, revealed, addWindow, onLeave }) {
     const accounts = await vault.read().catch(() => []);
     if (!accounts.length) return null;
     request = taken;
-    const matching = request.host ? accounts.filter((account) => matchesHost(account, request.host)) : [];
+    const matching = request.host ? matchingAccounts(accounts, request.host) : [];
     if (matching.length === 1) {
       const filled = await put(matching[0]).catch(() => false);
       if (!filled) request = null;

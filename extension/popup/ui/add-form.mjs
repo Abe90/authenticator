@@ -135,11 +135,11 @@ export function createAddForm({ vault, active, blocked, proposedSite, onSaved, o
       secret.focus();
       return null;
     }
-    const chosen = sites.read();
-    if (!chosen) return null;
+    const siteEntries = sites.readSites();
+    if (!siteEntries) return null;
     return {
       name: label, secret: key, type: type.value, counter: type.value === 'hotp' ? importedCounter : '0',
-      sites: [...chosen.kept, ...chosen.added].map((host) => ({ host })),
+      sites: siteEntries,
     };
   }
 

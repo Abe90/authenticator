@@ -38,11 +38,6 @@ function suffixList() {
   return list;
 }
 
-const isSite = (entry) => entry !== null && typeof entry === 'object' && !Array.isArray(entry) && isHost(entry.host);
-
-// The entries of a site list this version can use; a value that is not a list has none.
-export const validSites = (value) => (Array.isArray(value) ? value.filter(isSite) : []);
-
 // What two hosts share when they are the same site: their registrable domain, from Firefox's Public Suffix List,
 // so that myaccount.google.com is accounts.google.com and mario.github.io is not luigi.github.io; or the whole host
 // when it has none: IP addresses and local names such as nas, router.lan and nas.local. getDomain keeps its default
@@ -54,12 +49,6 @@ export function siteKey(host) {
   // Firefox's list may refuse a host that URL accepts: the whole host then stands for the site.
   try { domain = list.getDomain(host); } catch { /* No registrable domain. */ }
   return domain ?? host;
-}
-
-// Whether a page's host is one of the account's sites.
-export function matchesHost(account, host) {
-  const key = siteKey(host);
-  return validSites(account.sites).some((site) => siteKey(site.host) === key);
 }
 
 // A host as the pages show it: its registrable domain, or its last two labels when it has none (bücher.de1, a local
@@ -78,15 +67,25 @@ export function displayHost(host) {
   return host.slice(0, host.length - domain.length) + shown;
 }
 
-// The list value with entries added, or null when none was added. Each valid entry joins last, with its fields,
-// unless the list already has its site, while the list has fewer than MAX_SITES valid entries. The entries already
-// there stay as they are; a value that is not a list counts as an empty one.
-export function withSites(value, entries) {
-  const list = Array.isArray(value) ? [...value] : [];
-  const valid = validSites(list);
+const isSite = (entry) => entry !== null && typeof entry === 'object' && !Array.isArray(entry) && isHost(entry.host);
+
+// The entries of a site list this version can use; a value that is not a list has none.
+export const validSites = (value) => (Array.isArray(value) ? value.filter(isSite) : []);
+
+// The accounts that have host's site among theirs.
+export function matchingAccounts(accounts, host) {
+  const key = siteKey(host);
+  return accounts.filter((account) => validSites(account.sites).some((site) => siteKey(site.host) === key));
+}
+
+// Adds entries to the account's sites: each valid one joins last, with its fields, unless the account has its site
+// already, while the account has fewer than MAX_SITES valid sites. The entries already there stay as they are, and a
+// value that is not a list counts as an empty one; the account changes only when an entry joins.
+export function addSites(account, entries) {
+  const valid = validSites(account.sites);
   const keys = new Set(valid.map((entry) => siteKey(entry.host)));
+  const list = Array.isArray(account.sites) ? [...account.sites] : [];
   let count = valid.length;
-  let added = false;
   for (const entry of validSites(entries)) {
     if (count >= MAX_SITES) break;
     const key = siteKey(entry.host);
@@ -94,15 +93,17 @@ export function withSites(value, entries) {
     keys.add(key);
     list.push({ ...entry });
     count++;
-    added = true;
   }
-  return added ? list : null;
+  if (count > valid.length) account.sites = list;
 }
 
-// The list value without the valid entries whose host is one of hosts, or null when none was there.
-export function withoutSites(value, hosts) {
-  if (!Array.isArray(value)) return null;
+// Removes the account's valid sites whose host is one of hosts. A list left empty goes: a missing list means no
+// sites.
+export function removeSites(account, hosts) {
+  if (!Array.isArray(account.sites)) return;
   const removed = new Set(hosts);
-  const list = value.filter((entry) => !(isSite(entry) && removed.has(entry.host)));
-  return list.length === value.length ? null : list;
+  const list = account.sites.filter((entry) => !(isSite(entry) && removed.has(entry.host)));
+  if (list.length === account.sites.length) return;
+  if (list.length) account.sites = list;
+  else delete account.sites;
 }

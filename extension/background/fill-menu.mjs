@@ -1,5 +1,5 @@
 import { RevealedCodes } from '../core/revealed-codes.mjs';
-import { hostFromUrl, matchesHost } from '../core/sites.mjs';
+import { hostFromUrl, matchingAccounts } from '../core/sites.mjs';
 import { VaultSession } from '../core/vault.mjs';
 import { fillCode, fillField } from '../shared/fill-field.mjs';
 import { autoLock, fromPopupPage } from './open-windows.mjs';
@@ -32,7 +32,7 @@ async function soleCode(host) {
   const vault = new VaultSession(browser.storage.sync, browser.storage.session, undefined, undefined,
     browser.storage.local);
   try {
-    const matching = (await vault.restore() ?? []).filter((account) => matchesHost(account, host));
+    const matching = matchingAccounts(await vault.restore() ?? [], host);
     return matching.length === 1 ? await fillCode(vault, revealed, matching[0]) : null;
   } finally {
     // The key stays only in the remembered unlock.

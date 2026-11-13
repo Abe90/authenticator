@@ -88,8 +88,10 @@ const list = createAccountList({
 });
 // The Add code window proposes the site of the page where the toolbar popup that opened it was, read once: a window
 // already open, brought forward from another tab, keeps its form as it is.
-const proposedSite = !addWindow ? Promise.resolve(null) : browser.storage.session.get(SCAN_TARGET_KEY).then(
-  ({ [SCAN_TARGET_KEY]: target }) => (isHost(target?.host) ? target.host : null), () => null);
+const proposedSite = addWindow
+  ? browser.storage.session.get(SCAN_TARGET_KEY)
+    .then(({ [SCAN_TARGET_KEY]: target }) => (isHost(target?.host) ? target.host : null), () => null)
+  : Promise.resolve(null);
 const form = createAddForm({
   vault,
   active: () => session.unlocked && views.current === 'add',

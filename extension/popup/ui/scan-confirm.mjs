@@ -83,9 +83,8 @@ export function createScanConfirm({ vault, notice, active, onSaved, onCancel }) 
       name.focus();
       return;
     }
-    const chosen = isExport() ? { kept: [], added: [] } : sites.read();
-    if (!chosen) return;
-    const siteEntries = [...chosen.kept, ...chosen.added].map((host) => ({ host }));
+    const siteEntries = isExport() ? [] : sites.readSites();
+    if (!siteEntries) return;
     const records = (isExport() ? preview.selected() : [{ ...record, name: label }])
       .map(({ name: accountName, secret, type, counter }) => ({
         name: accountName, secret, type, counter, sites: siteEntries,

@@ -128,6 +128,12 @@ export function createSiteList(root) {
     return { kept, added };
   }
 
+  // The sites of a new account, as the entries the vault stores, or null as with read().
+  function readSites() {
+    const chosen = read();
+    return chosen && [...chosen.kept, ...chosen.added].map((host) => ({ host }));
+  }
+
   add.addEventListener('click', () => {
     if (entries.length >= MAX_SITES) return;
     const entry = newRow();
@@ -137,5 +143,5 @@ export function createSiteList(root) {
     entry.input.focus();
   });
 
-  return { show, read };
+  return { show, read, readSites };
 }

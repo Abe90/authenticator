@@ -4,7 +4,7 @@ import {
 } from './vault-crypto.mjs';
 import { DuplicateAccountError, accountKey } from './duplicates.mjs';
 import { MAX_COUNTER, isAccountName, isNewPassword, shownName } from './limits.mjs';
-import { withSites, withoutSites } from './sites.mjs';
+import { addSites, removeSites } from './sites.mjs';
 import {
   CLOSED_STORAGE_KEY, HANDOFF_STORAGE_KEY, HOLDERS_STORAGE_KEY, HOTP_COUNTERS_KEY, LAST_INPUT_STORAGE_KEY,
   TRUSTED_HEADER_KEY,
@@ -123,18 +123,6 @@ export async function openVault(vault, wrap, text) {
   }
 }
 
-// The sites a new account starts with: the valid entries of sites, within the limit, or none (core/sites.mjs).
-function startingSites(account, sites) {
-  const list = withSites(undefined, sites);
-  if (list) account.sites = list;
-}
-
-// An empty list is not stored: a missing list means no sites.
-function putSites(account, sites) {
-  if (sites.length) account.sites = sites;
-  else delete account.sites;
-}
-
 function addRecords(accounts, records) {
   if (!Array.isArray(records) || !records.length) throw new Error('Select at least one account');
   const names = new Map(accounts.map((account) => [accountKey(account), account.name]));
@@ -145,7 +133,7 @@ function addRecords(accounts, records) {
     if (names.has(key)) throw new DuplicateAccountError(shownName(names.get(key)));
     names.set(key, name);
     const account = { id: randomId(), name, secret, type, counter, position: position++, added: added ?? now };
-    startingSites(account, sites);
+    addSites(account, sites);
     accounts.push(account);
   }
 }
@@ -169,8 +157,7 @@ function copyRecords(accounts, records) {
         throw new DuplicateAccountError(shownName(existing.name));
       }
       existing.counter = counter;
-      const sites = withSites(existing.sites, fields.sites);
-      if (sites) existing.sites = sites;
+      addSites(existing, fields.sites);
       continue;
     }
     const account = {
@@ -553,10 +540,8 @@ export class VaultSession {
       if (!isAccountName(name)) throw new Error('Invalid name');
       if (!Array.isArray(removed) || !Array.isArray(added)) throw new Error('Invalid sites');
       account.name = name;
-      const kept = withoutSites(account.sites, removed);
-      if (kept) putSites(account, kept);
-      const grown = withSites(account.sites, added.map((host) => ({ host })));
-      if (grown) account.sites = grown;
+      removeSites(account, removed);
+      addSites(account, added.map((host) => ({ host })));
     });
   }
 
@@ -566,8 +551,7 @@ export class VaultSession {
     return this.#commit((accounts) => {
       const account = accounts.find((entry) => entry.id === id);
       if (!account) throw new Error('Account not found');
-      const sites = withSites(account.sites, [{ host }]);
-      if (sites) account.sites = sites;
+      addSites(account, [{ host }]);
     });
   }
 
@@ -636,8 +620,7 @@ export class VaultSession {
         // The highest counter of the entries removed stays: their codes up to there may have been used.
         if (kept.type === 'hotp') kept.counter = maxCounter(kept.counter, other.counter);
         // Their sites join the kept account's own, which come first.
-        const sites = withSites(kept.sites, other.sites);
-        if (sites) kept.sites = sites;
+        addSites(kept, other.sites);
         accounts.splice(accounts.indexOf(other), 1);
       }
     });
