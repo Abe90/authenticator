@@ -6,9 +6,11 @@ import { createHotpGenerator, totpStep } from '../core/totp.mjs';
 
 // Runs in the clicked frame, as a content script, so Firefox serialises it: it uses nothing from around it. Finds the
 // field the menu was opened on and tells whether it can take a code; given one, puts it in: one digit per box for a
-// group of exactly six one-character inputs (codes always have six digits), the whole code otherwise. Disabled and
-// read-only fields, and boxes outside such a group, cannot. The page sees an input and a change event, as from
-// typing, so that frameworks such as React take the value.
+// group of exactly six one-character inputs (codes always have six digits), the whole code otherwise. The group is
+// the boxes of the widest element around the clicked box that holds only such boxes, at most six of them, and no
+// other field; so a second row of boxes further on never joins it. Disabled and read-only fields, and boxes outside
+// such a group, cannot take a code. The page sees an input and a change event, as from typing, so that frameworks
+// such as React take the value.
 function putCode(targetElementId, code) {
   const TEXT_TYPES = ['text', 'password', 'tel', 'number', 'search', 'email', 'url'];
   const DIGITS = 6;
@@ -18,17 +20,13 @@ function putCode(targetElementId, code) {
   if (!field || !(isInput(field) || field.localName === 'textarea') || !writable(field)) return false;
   let boxes = [field];
   if (field.localName === 'input' && field.maxLength === 1) {
-    const inputs = [...(field.form ?? field.getRootNode()).querySelectorAll('input')]
-      .filter((node) => node.type !== 'hidden');
     const isBox = (node) => isInput(node) && node.maxLength === 1 && writable(node);
-    const at = inputs.indexOf(field);
-    if (at === -1) return false;
-    let first = at;
-    let last = at;
-    while (first > 0 && isBox(inputs[first - 1])) first--;
-    while (last < inputs.length - 1 && isBox(inputs[last + 1])) last++;
-    if (last - first + 1 !== DIGITS) return false;
-    boxes = inputs.slice(first, last + 1);
+    for (let around = field.parentElement; around; around = around.parentElement) {
+      const inputs = [...around.querySelectorAll('input')].filter((node) => node.type !== 'hidden');
+      if (inputs.length > DIGITS || !inputs.every(isBox)) break;
+      boxes = inputs;
+    }
+    if (boxes.length !== DIGITS) return false;
   }
   if (code === null) return true;
   const values = boxes.length === 1 ? [code] : [...code];
