@@ -534,6 +534,11 @@ document.addEventListener('keydown', (event) => {
   if ((event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey
       && ['s', 'p'].includes(event.key.toLowerCase())) event.preventDefault();
 });
+// Firefox's own context menu would offer Save Page, View Page Source and the like for the extension's page: it shows
+// only in text fields, where it cuts, copies and pastes.
+document.addEventListener('contextmenu', (event) => {
+  if (!event.target.closest('textarea, input[type="text"], input:not([type])')) event.preventDefault();
+});
 window.addEventListener('pagehide', () => {
   disposed = true;
   session.dispose();
