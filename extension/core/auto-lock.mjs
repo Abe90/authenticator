@@ -286,6 +286,28 @@ export class AutoLock {
     });
   }
 
+  // A code is about to go into a page from the context menu, without an extension window. Resolves to whether the
+  // unlock still holds; if it does, the fill counts as use: input in the windows that hold the unlock, or, with none,
+  // a new close, from which a timed unlock counts again.
+  use() {
+    return this.#exclusive(async () => {
+      const state = await this.#read();
+      const held = state.ids.length > 0;
+      if (!state.entry || unlockEnded({ ...state, held })) {
+        await this.#settle(state);
+        return false;
+      }
+      if (held) {
+        await this.#session.set({ [LAST_INPUT_STORAGE_KEY]: state.now });
+        await this.#settle({ ...state, lastInputAt: state.now });
+      } else {
+        await this.#session.set({ [CLOSED_STORAGE_KEY]: state.now });
+        await this.#settle({ ...state, closedAt: state.now });
+      }
+      return true;
+    });
+  }
+
   // An alarm fired or the stored unlock changed: decide again from what is stored.
   check() {
     return this.#exclusive(async () => this.#settle(await this.#read()));

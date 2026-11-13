@@ -249,10 +249,6 @@ body.add-window #account-form {
 body.add-window #account-form > * {
   flex-shrink: 0;
 }
-body.add-window .form-actions {
-  margin-top: auto;
-  padding-top: 16px;
-}
 header {
   flex-shrink: 0;
 }
@@ -301,11 +297,11 @@ header {
   min-width: 0;
   overflow-wrap: anywhere;
 }
-/* Every page keeps 16 px from the sides and from the bottom. A page scrolls, so it clips what overflows its
-   sides: 4 px of padding, taken from its margin, leave room for the focus ring of a field or a button. */
+/* Every page keeps 16 px from the sides and from the bottom, as padding: a page scrolls, so its scrollbar runs along
+   the popup's right edge, and the padding leaves room for the focus ring of a field or a button, which the scrolling
+   box would otherwise clip. The Add code form and the password page do the same. */
 .page {
-  margin: 0 12px;
-  padding: 0 4px 16px;
+  padding: 0 16px 16px;
 }
 /* The circles of the back arrow and of Settings are wider than the room their icon takes: the negative margin keeps
    the icon, the title and the search field where a 30 px button puts them. */
@@ -664,8 +660,7 @@ main {
 
 /* Add code */
 #account-form {
-  margin: 0 12px;
-  padding: 0 4px 16px;
+  padding: 0 16px 16px;
 }
 .qr-import-section {
   padding-top: 8px;
@@ -751,6 +746,64 @@ main {
   font-size: 14px;
   line-height: 20px;
   font-weight: 500;
+}
+/* Fill in a code: the accounts by name, as rows to click, those of the page first and a line before the others. */
+.fill-account {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 14px;
+  text-align: start;
+  overflow-wrap: anywhere;
+}
+.fill-account:active {
+  background: var(--control-active);
+}
+.fill-line {
+  margin: 6px 0;
+  border: 0;
+  border-top: 1px solid var(--divider);
+}
+/* Sites, on the same three pages: a row per site, the host or a field to type one on the left and its remove button
+   on the right, then Add a site on the left. */
+.site-list .site-list-title {
+  margin: 16px 0 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.site-rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 36px;
+  align-items: center;
+  column-gap: 4px;
+  min-height: 36px;
+}
+.site-host {
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.site-row .field {
+  padding: 7px 9px;
+}
+.site-row .error {
+  grid-column: 1 / -1;
+  margin: 2px 0 6px;
+}
+.site-remove .icon {
+  width: 18px;
+  height: 18px;
+}
+.site-list .add-site {
+  margin: 2px 0 0;
+  padding: 4px 0;
 }
 
 /* Small text under a field: a hint, or an error. The Add code form keeps the spacing of a paragraph. */
@@ -946,6 +999,43 @@ select.field {
   height: 20px;
 }
 
+/* A page with buttons at the bottom: what is above them scrolls in its own box, which reaches the popup's sides so
+   that its scrollbar runs along the right edge, and the buttons stay below it, always in view. The box keeps 4 px
+   at its bottom for the focus ring of the last control; the buttons take the rest of the 16 px above them. */
+.page:has(> .page-footer), .auth-form:has(> .page-footer) {
+  padding: 0;
+}
+.page-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px 4px;
+}
+.auth-form > .page-body, .interstitial > .page-body {
+  padding-top: 6px;
+}
+.page-footer {
+  flex-shrink: 0;
+  margin-top: auto;
+  padding: 12px 16px 16px;
+}
+/* The Add code window scrolls as a whole, so that its scrollbar runs along the window's edge: its buttons stay at the
+   bottom of the window over what scrolls under them, and a field reached with the keyboard stops above their 72 px
+   and the 4 px of its focus ring. */
+html:has(> body.add-window) {
+  scroll-padding-bottom: 76px;
+}
+body.add-window #account-form {
+  padding-bottom: 0;
+}
+body.add-window .page-footer {
+  position: sticky;
+  bottom: 0;
+  padding: 16px 0;
+  background: var(--surface);
+}
 /* Cancel and Add share one width: equal grid columns in a box only as wide as its content, kept on the right. */
 .form-actions {
   display: grid;
@@ -953,8 +1043,7 @@ select.field {
   grid-auto-columns: minmax(96px, 1fr);
   gap: 8px;
   width: max-content;
-  margin: auto 0 0 auto;
-  padding-top: 16px;
+  margin-left: auto;
 }
 /* The password page, and the pages like it: the extension's logo, the title and the description centred in the
    header, then the fields and the button. The fields and the error share an area as tall as two fields and two lines
@@ -984,8 +1073,7 @@ select.field {
   text-wrap: balance;
 }
 .auth-form {
-  margin: 0 12px;
-  padding: 6px 4px 16px;
+  padding: 6px 16px 16px;
 }
 .auth-fields {
   display: flex;
@@ -1214,15 +1302,12 @@ main.reorder-settling > *, main.reorder-settling .account {
   filter: var(--icon-hover-filter);
 }
 .interstitial {
-  margin: 0 16px;
-  padding: 6px 0 16px;
+  padding: 6px 16px 16px;
 }
 .interstitial-actions {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-top: auto;
-  padding-top: 16px;
 }
 .wide {
   width: 100%;

@@ -230,14 +230,41 @@
   "editCode": {
     "message": "Edit code"
   },
+  "fillTitle": {
+    "message": "Fill in a code"
+  },
   "codeName": {
     "message": "Code name"
   },
   "nameRequired": {
     "message": "Enter a code name."
   },
-  "renameFailed": {
-    "message": "Could not save the name. Please try again."
+  "editFailed": {
+    "message": "Could not save the changes. Please try again."
+  },
+  "sites": {
+    "message": "Sites"
+  },
+  "addSite": {
+    "message": "Add a site"
+  },
+  "newSite": {
+    "message": "New site"
+  },
+  "sitePlaceholder": {
+    "message": "example.com"
+  },
+  "removeSite": {
+    "message": "Remove $1"
+  },
+  "removeNewSite": {
+    "message": "Remove this site"
+  },
+  "invalidSite": {
+    "message": "Enter a site such as example.com, or paste its address."
+  },
+  "sameSite": {
+    "message": "Same site as $1."
   },
   "removeTitle": {
     "message": "Remove $1?"
@@ -453,7 +480,7 @@
     "message": "Never"
   },
   "autoLockDescription": {
-    "message": "The timer starts when you close the popup or stop using an open Authenticator window. With When the popup closes, an open window locks after 1 minute without use. Never keeps the vault unlocked until Firefox closes or you select Lock now."
+    "message": "The timer starts when you close the popup or stop using an open Authenticator window, and starts again when you fill in a code from a page. With When the popup closes, an open window locks after 1 minute without use. Never keeps the vault unlocked until Firefox closes or you select Lock now."
   },
   "vault": {
     "message": "Vault"

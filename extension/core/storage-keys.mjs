@@ -58,5 +58,6 @@ export const AFTER_UNLOCK_KEY = 'afterUnlock';
 // The procedure of several steps the popup was in, and the recovery key it made: reopening the popup goes on from
 // there. Passwords are never kept.
 export const PROCEDURE_KEY = 'procedure';
-// The tab and window where the toolbar popup last opened, which Scan page may capture.
+// The tab and window where the toolbar popup last opened, which Scan page may capture, and the host of its page, which
+// the Add code window proposes as a site.
 export const SCAN_TARGET_KEY = 'scanTarget';

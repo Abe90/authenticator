@@ -4,6 +4,7 @@ import {
 } from './vault-crypto.mjs';
 import { DuplicateAccountError, accountKey } from './duplicates.mjs';
 import { MAX_COUNTER, isAccountName, isNewPassword, shownName } from './limits.mjs';
+import { withSites, withoutSites } from './sites.mjs';
 import {
   CLOSED_STORAGE_KEY, HANDOFF_STORAGE_KEY, HOLDERS_STORAGE_KEY, HOTP_COUNTERS_KEY, LAST_INPUT_STORAGE_KEY,
   TRUSTED_HEADER_KEY,
@@ -122,29 +123,45 @@ export async function openVault(vault, wrap, text) {
   }
 }
 
+// The sites a new account starts with: the valid entries of sites, within the limit, or none (core/sites.mjs).
+function startingSites(account, sites) {
+  const list = withSites(undefined, sites);
+  if (list) account.sites = list;
+}
+
+// An empty list is not stored: a missing list means no sites.
+function putSites(account, sites) {
+  if (sites.length) account.sites = sites;
+  else delete account.sites;
+}
+
 function addRecords(accounts, records) {
   if (!Array.isArray(records) || !records.length) throw new Error('Select at least one account');
   const names = new Map(accounts.map((account) => [accountKey(account), account.name]));
   let position = nextPosition(accounts);
   const now = Date.now();
-  for (const { name, secret, type, counter, added } of records) {
+  for (const { name, secret, type, counter, added, sites } of records) {
     const key = accountKey({ secret, type });
     if (names.has(key)) throw new DuplicateAccountError(shownName(names.get(key)));
     names.set(key, name);
-    accounts.push({ id: randomId(), name, secret, type, counter, position: position++, added: added ?? now });
+    const account = { id: randomId(), name, secret, type, counter, position: position++, added: added ?? now };
+    startingSites(account, sites);
+    accounts.push(account);
   }
 }
 
-// Adds accounts copied from another vault, keeping their dates. A key already stored is not added again, except that
-// an HOTP account whose copy has a higher counter takes that counter: its codes up to there may have been used.
-// Resolves to the IDs of the accounts added.
+// Adds accounts copied from another vault, keeping their dates, their sites and the fields a later version added. A
+// key already stored is not added again, except that an HOTP account whose copy has a higher counter takes that
+// counter, since its codes up to there may have been used, and the copy's sites join its own. Resolves to the IDs of
+// the accounts added.
 function copyRecords(accounts, records) {
   if (!Array.isArray(records) || !records.length) throw new Error('Select at least one account');
   const stored = new Map(accounts.map((account) => [accountKey(account), account]));
   const added = [];
   let position = nextPosition(accounts);
   const now = Date.now();
-  for (const { name, secret, type, counter, added: date } of records) {
+  // The ID and the place in the list belong to the other vault, and are left out of fields.
+  for (const { id, position: place, name, secret, type, counter, added: date, ...fields } of records) {
     const key = accountKey({ secret, type });
     const existing = stored.get(key);
     if (existing) {
@@ -152,9 +169,13 @@ function copyRecords(accounts, records) {
         throw new DuplicateAccountError(shownName(existing.name));
       }
       existing.counter = counter;
+      const sites = withSites(existing.sites, fields.sites);
+      if (sites) existing.sites = sites;
       continue;
     }
-    const account = { id: randomId(), name, secret, type, counter, position: position++, added: date ?? now };
+    const account = {
+      ...fields, id: randomId(), name, secret, type, counter, position: position++, added: date ?? now,
+    };
     accounts.push(account);
     stored.set(key, account);
     added.push(account.id);
@@ -522,12 +543,31 @@ export class VaultSession {
     return this.#commit((accounts) => { addRecords(accounts, records); });
   }
 
-  rename(id, name) {
+  // Edit code: the name, and the hosts of the sites removed and added on the page. They change the list as stored at
+  // the write, so that the entries the page does not show and the sites added meanwhile elsewhere stay. Removals
+  // come first; additions follow the rules of core/sites.mjs, and the ones beyond the limit are left out.
+  edit(id, name, { removed = [], added = [] } = {}) {
     return this.#commit((accounts) => {
       const account = accounts.find((entry) => entry.id === id);
       if (!account) throw new Error('Account not found');
       if (!isAccountName(name)) throw new Error('Invalid name');
+      if (!Array.isArray(removed) || !Array.isArray(added)) throw new Error('Invalid sites');
       account.name = name;
+      const kept = withoutSites(account.sites, removed);
+      if (kept) putSites(account, kept);
+      const grown = withSites(account.sites, added.map((host) => ({ host })));
+      if (grown) account.sites = grown;
+    });
+  }
+
+  // A code went into a page from the context menu with this account: the page's host joins its sites, unless the
+  // account has that site already or has reached the limit (core/sites.mjs), and then nothing is written.
+  learnSite(id, host) {
+    return this.#commit((accounts) => {
+      const account = accounts.find((entry) => entry.id === id);
+      if (!account) throw new Error('Account not found');
+      const sites = withSites(account.sites, [{ host }]);
+      if (sites) account.sites = sites;
     });
   }
 
@@ -589,11 +629,16 @@ export class VaultSession {
       const kept = accounts.find((entry) => entry.id === id);
       if (!kept) throw new Error('Account not found');
       const key = accountKey(kept);
-      for (let index = accounts.length - 1; index >= 0; index--) {
-        if (accounts[index] === kept || accountKey(accounts[index]) !== key) continue;
+      // Oldest first, as the page that offers the choice lists them.
+      const others = accounts.filter((entry) => entry !== kept && accountKey(entry) === key)
+        .toSorted((a, b) => a.added - b.added);
+      for (const other of others) {
         // The highest counter of the entries removed stays: their codes up to there may have been used.
-        if (kept.type === 'hotp') kept.counter = maxCounter(kept.counter, accounts[index].counter);
-        accounts.splice(index, 1);
+        if (kept.type === 'hotp') kept.counter = maxCounter(kept.counter, other.counter);
+        // Their sites join the kept account's own, which come first.
+        const sites = withSites(kept.sites, other.sites);
+        if (sites) kept.sites = sites;
+        accounts.splice(accounts.indexOf(other), 1);
       }
     });
   }

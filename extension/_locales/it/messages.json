@@ -230,14 +230,41 @@
   "editCode": {
     "message": "Modifica codice"
   },
+  "fillTitle": {
+    "message": "Inserisci un codice"
+  },
   "codeName": {
     "message": "Nome del codice"
   },
   "nameRequired": {
     "message": "Inserisci un nome per il codice."
   },
-  "renameFailed": {
-    "message": "Impossibile salvare il nome. Riprova."
+  "editFailed": {
+    "message": "Impossibile salvare le modifiche. Riprova."
+  },
+  "sites": {
+    "message": "Siti"
+  },
+  "addSite": {
+    "message": "Aggiungi un sito"
+  },
+  "newSite": {
+    "message": "Nuovo sito"
+  },
+  "sitePlaceholder": {
+    "message": "example.com"
+  },
+  "removeSite": {
+    "message": "Rimuovi $1"
+  },
+  "removeNewSite": {
+    "message": "Rimuovi questo sito"
+  },
+  "invalidSite": {
+    "message": "Inserisci un sito come example.com, oppure incolla il suo indirizzo."
+  },
+  "sameSite": {
+    "message": "Stesso sito di $1."
   },
   "removeTitle": {
     "message": "Rimuovere $1?"
@@ -453,7 +480,7 @@
     "message": "Mai"
   },
   "autoLockDescription": {
-    "message": "Il tempo parte quando chiudi il popup o smetti di usare una finestra di Authenticator aperta. Con Alla chiusura del popup, una finestra aperta si blocca dopo 1 minuto di inattività. Mai tiene la cassaforte sbloccata finché Firefox non si chiude o non scegli Blocca ora."
+    "message": "Il tempo parte quando chiudi il popup o smetti di usare una finestra di Authenticator aperta, e riparte quando inserisci un codice da una pagina. Con Alla chiusura del popup, una finestra aperta si blocca dopo 1 minuto di inattività. Mai tiene la cassaforte sbloccata finché Firefox non si chiude o non scegli Blocca ora."
   },
   "vault": {
     "message": "Cassaforte"

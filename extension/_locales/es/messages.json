@@ -230,14 +230,41 @@
   "editCode": {
     "message": "Editar el código"
   },
+  "fillTitle": {
+    "message": "Introducir un código"
+  },
   "codeName": {
     "message": "Nombre del código"
   },
   "nameRequired": {
     "message": "Introduce un nombre para el código."
   },
-  "renameFailed": {
-    "message": "No se ha podido guardar el nombre. Inténtalo de nuevo."
+  "editFailed": {
+    "message": "No se han podido guardar los cambios. Inténtalo de nuevo."
+  },
+  "sites": {
+    "message": "Sitios"
+  },
+  "addSite": {
+    "message": "Añadir un sitio"
+  },
+  "newSite": {
+    "message": "Nuevo sitio"
+  },
+  "sitePlaceholder": {
+    "message": "example.com"
+  },
+  "removeSite": {
+    "message": "Eliminar $1"
+  },
+  "removeNewSite": {
+    "message": "Eliminar este sitio"
+  },
+  "invalidSite": {
+    "message": "Introduce un sitio como example.com o pega su dirección."
+  },
+  "sameSite": {
+    "message": "Mismo sitio que $1."
   },
   "removeTitle": {
     "message": "¿Eliminar $1?"
@@ -453,7 +480,7 @@
     "message": "Nunca"
   },
   "autoLockDescription": {
-    "message": "El tiempo empieza a contar cuando cierras la ventana emergente o dejas de usar una ventana de Authenticator abierta. Con Al cerrar la ventana emergente, una ventana abierta se bloquea tras 1 minuto sin uso. Nunca mantiene la caja fuerte desbloqueada hasta que se cierre Firefox o elijas Bloquear ahora."
+    "message": "El tiempo empieza a contar cuando cierras la ventana emergente o dejas de usar una ventana de Authenticator abierta, y vuelve a empezar cuando introduces un código desde una página. Con Al cerrar la ventana emergente, una ventana abierta se bloquea tras 1 minuto sin uso. Nunca mantiene la caja fuerte desbloqueada hasta que se cierre Firefox o elijas Bloquear ahora."
   },
   "vault": {
     "message": "Caja fuerte"

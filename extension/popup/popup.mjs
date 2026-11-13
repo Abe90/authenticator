@@ -2,8 +2,9 @@ import { VaultSession } from '../core/vault.mjs';
 import { VaultCopy } from '../core/vault-copy.mjs';
 import { Recovery } from '../core/recovery.mjs';
 import {
-  AFTER_UNLOCK_KEY, KEPT_COPY_KEY, LEGACY_LOCAL_KEYS, parseItem,
+  AFTER_UNLOCK_KEY, KEPT_COPY_KEY, LEGACY_LOCAL_KEYS, SCAN_TARGET_KEY, parseItem,
 } from '../core/storage-keys.mjs';
+import { isHost } from '../core/sites.mjs';
 import { RevealedCodes } from '../core/revealed-codes.mjs';
 import { MergeReceipts } from '../core/merge-receipts.mjs';
 import { openAddCodeWindow } from '../shared/add-window.mjs';
@@ -19,6 +20,7 @@ import { createAccountActions } from './ui/account-actions.mjs';
 import { createAddMenu } from './ui/add-menu.mjs';
 import { createUnlockSession } from './ui/unlock-session.mjs';
 import { createScanResult } from './ui/scan-result.mjs';
+import { createFillPage } from './ui/fill-page.mjs';
 import { createNotice } from './ui/notice.mjs';
 import { createNewPassword } from './ui/new-password.mjs';
 import { createPasswordCheck } from './ui/password-check.mjs';
@@ -58,7 +60,7 @@ let opening = false;
 let disposed = false;
 let started = false;
 const busy = () => form.busy || list.busy || settings.busy || actions.busy || scanConfirm.busy || newPassword.busy
-  || recovery.busy || afterUnlock.busy || merge.busy || setup.busy || restoreCopy.busy;
+  || recovery.busy || afterUnlock.busy || merge.busy || setup.busy || restoreCopy.busy || fillPage.busy;
 const setLaunchersDisabled = (disabled) => {
   for (const button of launchers) button.disabled = disabled;
 };
@@ -84,10 +86,15 @@ const list = createAccountList({
   onRemove: (account) => actions.remove(account),
   onRender: (records) => actions.sync(records),
 });
+// The Add code window proposes the site of the page where the toolbar popup that opened it was, read once: a window
+// already open, brought forward from another tab, keeps its form as it is.
+const proposedSite = !addWindow ? Promise.resolve(null) : browser.storage.session.get(SCAN_TARGET_KEY).then(
+  ({ [SCAN_TARGET_KEY]: target }) => (isHost(target?.host) ? target.host : null), () => null);
 const form = createAddForm({
   vault,
   active: () => session.unlocked && views.current === 'add',
   blocked: () => views.changing,
+  proposedSite,
   async onSaved(records) {
     if (await session.show(records) && addWindow) window.close();
   },
@@ -204,6 +211,8 @@ const session = createUnlockSession({
 const scan = createScanResult({
   addWindow, session, form, scanConfirm, notice, blocked: () => opening, onError: showError,
 });
+// A code to put into the page field whose context menu opened this popup.
+const fillPage = createFillPage({ vault, revealed, addWindow, onLeave: () => leave() });
 
 // The way back from each page reached from the list, shared by its back arrow, Escape, and its Cancel or Close.
 const back = {
@@ -211,6 +220,7 @@ const back = {
   scan: () => scanConfirm.cancel(),
   notice: () => closeNotice(),
   edit: () => actions.cancel(),
+  fill: () => fillPage.cancel(),
   remove: () => actions.cancel(),
   'setup-password': () => setup.back(),
   'setup-key': () => setup.back(),
@@ -247,9 +257,18 @@ async function showUnlockedView() {
   await openUnlocked();
 }
 // The first page once unlocked: the list, or straight the page of a code picked with Scan page, so that the list
-// never shows in between. The Add code window opens on its form, which then takes a waiting result.
+// never shows in between. The Add code window opens on its form, which then takes a waiting result. A code to put
+// into a page comes before all: it fills the field and closes the popup, or opens the page to choose an account; a
+// Scan page result waiting is dropped, and the checks after an unlock wait for the next opening.
 async function openUnlocked() {
   recoveryView.clear();
+  const fill = await fillPage.prepare();
+  if (!session.unlocked || fill === 'done') return;
+  if (fill === 'fill') {
+    scan.clear();
+    await views.navigate('fill');
+    return;
+  }
   const page = await scan.prepare();
   if (!session.unlocked) return;
   await views.navigate(page ?? homeView, page === 'scan' ? scanConfirm.focus : undefined);
@@ -276,6 +295,7 @@ async function lockVault(revoke = true) {
   actions.close();
   addMenu.close();
   scan.clear();
+  fillPage.clear();
   clearVaultChange();
   afterUnlock.clear();
   setup.stop();

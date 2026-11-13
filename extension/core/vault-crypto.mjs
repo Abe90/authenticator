@@ -155,9 +155,11 @@ export async function rewrap(vaultId, header, wrap, wrapKey, key) {
   }
 }
 
+// Every field but the ID, which the storage key holds, is sealed: the fields a later version added, and that this
+// one does not know, are written back as they were read.
 export async function sealAccount(key, vaultId, account) {
-  const { id, name, secret, type, counter, position, added } = validateAccount(account);
-  const bytes = encoder.encode(JSON.stringify({ name, secret, type, counter, position, added }));
+  const { id, ...fields } = validateAccount(account);
+  const bytes = encoder.encode(JSON.stringify(fields));
   try {
     return await seal(key, accountData(vaultId, id), bytes);
   } finally {
@@ -184,11 +186,12 @@ export async function openCounters(key, vaultId, text) {
   }
 }
 
+// Keeps every sealed field, known or not. Only the six fields every version has are checked, so a field added later
+// never makes an account damaged. The ID comes from the storage key, never from the sealed fields.
 export async function openAccount(key, vaultId, id, text) {
   const bytes = await open(key, accountData(vaultId, id), text);
   try {
-    const { name, secret, type, counter, position, added } = JSON.parse(decoder.decode(bytes));
-    return validateAccount({ id, name, secret, type, counter, position, added });
+    return validateAccount({ ...JSON.parse(decoder.decode(bytes)), id });
   } finally {
     bytes.fill(0);
   }

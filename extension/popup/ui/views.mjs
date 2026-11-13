@@ -12,6 +12,8 @@ const PAGES = {
   // Codes, read-only: a vault the password opens but cannot unlock, from the password page.
   recovery: { nodes: ['#recovery-header', '#recovery-panel'], focus: '#recovery-close' },
   edit: { nodes: ['#edit-header', '#edit-form'], focus: '#edit-name' },
+  // Fill in a code, from the context menu of a page's field: the accounts to choose from.
+  fill: { nodes: ['#fill-header', '#fill-panel'], focus: '#fill-accounts .fill-account' },
   remove: { nodes: ['#remove-header', '#remove-panel'], focus: '#remove-cancel' },
   // Change password and New recovery key: the password first, on a page like the password page.
   verify: { nodes: ['#verify-header', '#verify-form'], focus: '#verify-password' },

@@ -45,6 +45,10 @@
         <button id="edit-back" class="back icon-button" type="button" data-i18n-aria-label="backToCodes"><span class="icon icon-back"></span></button>
         <h1 id="edit-title" data-i18n="editCode"></h1>
       </div>
+      <div id="fill-header" class="page-header" hidden>
+        <button id="fill-back" class="back icon-button" type="button" data-i18n-aria-label="backToCodes"><span class="icon icon-back"></span></button>
+        <h1 id="fill-title" data-i18n="fillTitle"></h1>
+      </div>
       <div id="remove-header" class="page-header" hidden>
         <button id="remove-back" class="back icon-button" type="button" data-i18n-aria-label="backToCodes"><span class="icon icon-back"></span></button>
         <h1 id="remove-title"></h1>
@@ -168,55 +172,88 @@
       <button id="lock-vault" class="secondary" type="button"><span class="icon icon-firefox-lock"></span><span data-i18n="lockNow"></span></button>
     </section>
     <form id="scan-confirm" class="page" hidden autocomplete="off" aria-labelledby="scan-title">
-      <div id="scan-single">
-        <label for="scan-name" data-i18n="codeName"></label>
-        <input id="scan-name" class="field" autocomplete="off" required maxlength="100" spellcheck="false" aria-describedby="scan-type scan-error">
-        <p id="scan-type" class="hint"></p>
+      <div class="page-body">
+        <div id="scan-single">
+          <label for="scan-name" data-i18n="codeName"></label>
+          <input id="scan-name" class="field" autocomplete="off" required maxlength="100" spellcheck="false" aria-describedby="scan-type scan-error">
+          <p id="scan-type" class="hint"></p>
+          <div id="scan-sites" class="site-list" role="group" aria-labelledby="scan-sites-title">
+            <p id="scan-sites-title" class="site-list-title" data-i18n="sites"></p>
+            <ul class="site-rows"></ul>
+            <button class="add-site text-link" type="button"><span aria-hidden="true">+</span> <span data-i18n="addSite"></span></button>
+          </div>
+        </div>
+        <section id="scan-migration" hidden aria-labelledby="scan-accounts-title">
+          <h2 id="scan-accounts-title" class="add-section-title" data-i18n="accounts"></h2>
+          <p id="scan-summary" class="hint" hidden></p>
+          <div id="scan-accounts"></div>
+        </section>
+        <p id="scan-error" class="error" role="alert" hidden></p>
       </div>
-      <section id="scan-migration" hidden aria-labelledby="scan-accounts-title">
-        <h2 id="scan-accounts-title" class="add-section-title" data-i18n="accounts"></h2>
-        <p id="scan-summary" class="hint" hidden></p>
-        <div id="scan-accounts"></div>
-      </section>
-      <p id="scan-error" class="error" role="alert" hidden></p>
-      <div class="form-actions">
-        <button id="scan-cancel" class="secondary" type="button" data-i18n="cancel"></button>
-        <button id="scan-save" class="primary" type="submit" data-i18n="add"></button>
+      <div class="page-footer">
+        <div class="form-actions">
+          <button id="scan-cancel" class="secondary" type="button" data-i18n="cancel"></button>
+          <button id="scan-save" class="primary" type="submit" data-i18n="add"></button>
+        </div>
       </div>
     </form>
     <section id="recovery-panel" class="page" hidden aria-labelledby="recovery-title">
-      <p id="recovery-source" class="hint"></p>
-      <div id="recovery-accounts"></div>
-      <h2 id="recovery-older-title" class="recovery-section" hidden data-i18n="onlyInCopy"></h2>
-      <p id="recovery-older-hint" class="hint" hidden data-i18n="mayBeOutdated"></p>
-      <div id="recovery-older" hidden></div>
-      <p id="recovery-unreadable" class="hint" hidden></p>
-      <p id="recovery-status" class="hint" role="status" aria-live="polite"></p>
-      <div class="form-actions">
-        <button id="recovery-close" class="secondary" type="button" data-i18n="close"></button>
+      <div class="page-body">
+        <p id="recovery-source" class="hint"></p>
+        <div id="recovery-accounts"></div>
+        <h2 id="recovery-older-title" class="recovery-section" hidden data-i18n="onlyInCopy"></h2>
+        <p id="recovery-older-hint" class="hint" hidden data-i18n="mayBeOutdated"></p>
+        <div id="recovery-older" hidden></div>
+        <p id="recovery-unreadable" class="hint" hidden></p>
+        <p id="recovery-status" class="hint" role="status" aria-live="polite"></p>
+      </div>
+      <div class="page-footer">
+        <div class="form-actions">
+          <button id="recovery-close" class="secondary" type="button" data-i18n="close"></button>
+        </div>
       </div>
     </section>
     <section id="notice-panel" class="page" hidden aria-labelledby="notice-title">
-      <p id="notice-message" class="page-message" role="alert"></p>
-      <div class="form-actions">
-        <button id="notice-close" class="secondary" type="button" data-i18n="close"></button>
+      <div class="page-body">
+        <p id="notice-message" class="page-message" role="alert"></p>
+      </div>
+      <div class="page-footer">
+        <div class="form-actions">
+          <button id="notice-close" class="secondary" type="button" data-i18n="close"></button>
+        </div>
       </div>
     </section>
+    <section id="fill-panel" class="page" hidden aria-labelledby="fill-title">
+      <div id="fill-accounts"></div>
+    </section>
     <form id="edit-form" class="page" hidden autocomplete="off" novalidate aria-labelledby="edit-title">
-      <label for="edit-name" data-i18n="codeName"></label>
-      <input id="edit-name" class="field" name="name" autocomplete="off" maxlength="100" spellcheck="false" aria-describedby="edit-error">
-      <p id="edit-error" class="error" role="alert" hidden></p>
-      <div class="form-actions">
-        <button id="edit-cancel" class="secondary" type="button" data-i18n="cancel"></button>
-        <button id="edit-save" class="primary" type="submit" data-i18n="save"></button>
+      <div class="page-body">
+        <label for="edit-name" data-i18n="codeName"></label>
+        <input id="edit-name" class="field" name="name" autocomplete="off" maxlength="100" spellcheck="false" aria-describedby="edit-error">
+        <div id="edit-sites" class="site-list" role="group" aria-labelledby="edit-sites-title">
+          <p id="edit-sites-title" class="site-list-title" data-i18n="sites"></p>
+          <ul class="site-rows"></ul>
+          <button class="add-site text-link" type="button"><span aria-hidden="true">+</span> <span data-i18n="addSite"></span></button>
+        </div>
+        <p id="edit-error" class="error" role="alert" hidden></p>
+      </div>
+      <div class="page-footer">
+        <div class="form-actions">
+          <button id="edit-cancel" class="secondary" type="button" data-i18n="cancel"></button>
+          <button id="edit-save" class="primary" type="submit" data-i18n="save"></button>
+        </div>
       </div>
     </form>
     <section id="remove-panel" class="page" hidden aria-labelledby="remove-title">
-      <p id="remove-message" class="page-message" data-i18n="removeMessage"></p>
-      <p id="remove-error" class="error" role="alert" hidden></p>
-      <div class="form-actions">
-        <button id="remove-cancel" class="secondary" type="button" data-i18n="cancel"></button>
-        <button id="remove-confirm" class="primary" type="button" data-i18n="remove"></button>
+      <div class="page-body">
+        <p id="remove-message" class="page-message" data-i18n="removeMessage"></p>
+        <p id="remove-error" class="error" role="alert" hidden></p>
+      </div>
+      <div class="page-footer">
+        <div class="form-actions">
+          <button id="remove-cancel" class="secondary" type="button" data-i18n="cancel"></button>
+          <button id="remove-confirm" class="primary" type="button" data-i18n="remove"></button>
+        </div>
       </div>
     </section>
     <form id="verify-form" class="auth-form" hidden autocomplete="off" aria-labelledby="verify-title">
@@ -262,12 +299,16 @@
       <button id="merge-continue" class="primary wide" type="submit" data-i18n="continue"></button>
     </form>
     <form id="merge-codes-form" class="auth-form" hidden aria-labelledby="merge-codes-title">
-      <div>
-        <div id="merge-accounts" class="merge-accounts"></div>
-        <p id="merge-damaged" class="warning" hidden></p>
-        <p id="merge-codes-error" class="error centered" role="alert" hidden></p>
+      <div class="page-body">
+        <div>
+          <div id="merge-accounts" class="merge-accounts"></div>
+          <p id="merge-damaged" class="warning" hidden></p>
+          <p id="merge-codes-error" class="error centered" role="alert" hidden></p>
+        </div>
       </div>
-      <button id="merge-add" class="primary wide" type="submit"></button>
+      <div class="page-footer">
+        <button id="merge-add" class="primary wide" type="submit"></button>
+      </div>
     </form>
     <form id="restore-open-form" class="auth-form" hidden autocomplete="off" aria-labelledby="restore-open-title">
       <div class="auth-fields">
@@ -282,13 +323,17 @@
       <button id="restore-continue" class="primary wide" type="submit" data-i18n="continue"></button>
     </form>
     <form id="restore-codes-form" class="auth-form" hidden aria-labelledby="restore-codes-title">
-      <div>
-        <div id="restore-accounts" class="merge-accounts"></div>
-        <p id="restore-codes-note" class="warning" hidden></p>
-        <p id="restore-codes-error" class="error centered" role="alert" hidden></p>
+      <div class="page-body">
+        <div>
+          <div id="restore-accounts" class="merge-accounts"></div>
+          <p id="restore-codes-note" class="warning" hidden></p>
+          <p id="restore-codes-error" class="error centered" role="alert" hidden></p>
+        </div>
       </div>
-      <button id="restore-submit" class="primary wide" type="submit"></button>
-      <button id="restore-discard" class="text-link danger" type="button" data-i18n="deleteCopy"></button>
+      <div class="page-footer">
+        <button id="restore-submit" class="primary wide" type="submit"></button>
+        <button id="restore-discard" class="text-link danger" type="button" data-i18n="deleteCopy"></button>
+      </div>
     </form>
     <form id="new-key-form" class="auth-form" hidden aria-labelledby="new-key-title">
       <div>
@@ -303,24 +348,30 @@
       <button id="replace-key" class="primary wide" type="submit" disabled data-i18n="replaceKey"></button>
     </form>
     <section id="other-panel" class="page interstitial" hidden aria-labelledby="other-title">
-      <div class="interstitial-actions">
+      <div class="interstitial-actions page-footer">
         <button id="other-add" class="primary wide" type="button" data-i18n="copyItsCodes"></button>
         <button id="other-later" class="secondary wide" type="button" data-i18n="notNow"></button>
         <button id="other-remove" class="text-link danger" type="button" data-i18n="removeThatVault"></button>
       </div>
     </section>
     <section id="remove-vault-panel" class="page" hidden aria-labelledby="remove-vault-title">
-      <p id="remove-vault-message" class="page-message"></p>
-      <p id="remove-vault-error" class="error" role="alert" hidden></p>
-      <div class="form-actions">
-        <button id="remove-vault-cancel" class="secondary" type="button" data-i18n="cancel"></button>
-        <button id="remove-vault-confirm" class="primary" type="button" data-i18n="removeVault"></button>
+      <div class="page-body">
+        <p id="remove-vault-message" class="page-message"></p>
+        <p id="remove-vault-error" class="error" role="alert" hidden></p>
+      </div>
+      <div class="page-footer">
+        <div class="form-actions">
+          <button id="remove-vault-cancel" class="secondary" type="button" data-i18n="cancel"></button>
+          <button id="remove-vault-confirm" class="primary" type="button" data-i18n="removeVault"></button>
+        </div>
       </div>
     </section>
     <form id="duplicates-panel" class="page interstitial" hidden aria-labelledby="duplicates-title">
-      <div id="duplicates-choices" class="choices" role="radiogroup" aria-labelledby="duplicates-title"></div>
-      <p id="duplicates-error" class="error" role="alert" hidden></p>
-      <div class="interstitial-actions">
+      <div class="page-body">
+        <div id="duplicates-choices" class="choices" role="radiogroup" aria-labelledby="duplicates-title"></div>
+        <p id="duplicates-error" class="error" role="alert" hidden></p>
+      </div>
+      <div class="interstitial-actions page-footer">
         <button id="duplicates-keep" class="primary wide" type="submit" data-i18n="keepThisOne"></button>
         <button id="duplicates-later" class="text-link" type="button" data-i18n="notNow"></button>
       </div>
@@ -404,11 +455,18 @@
           <option value="hotp" data-i18n="counterBased"></option>
         </select>
         <p id="form-hint" class="hint" data-i18n="hintTotp"></p>
+        <div id="account-sites" class="site-list" role="group" aria-labelledby="account-sites-title">
+          <p id="account-sites-title" class="site-list-title" data-i18n="sites"></p>
+          <ul class="site-rows"></ul>
+          <button class="add-site text-link" type="button"><span aria-hidden="true">+</span> <span data-i18n="addSite"></span></button>
+        </div>
       </div>
       <p id="form-error" class="error" role="alert" hidden></p>
-      <div class="form-actions">
-        <button id="cancel" class="secondary" type="button" data-i18n="cancel"></button>
-        <button id="account-save" class="primary" type="submit" data-i18n="add"></button>
+      <div class="page-footer">
+        <div class="form-actions">
+          <button id="cancel" class="secondary" type="button" data-i18n="cancel"></button>
+          <button id="account-save" class="primary" type="submit" data-i18n="add"></button>
+        </div>
       </div>
     </form>
     <main hidden>

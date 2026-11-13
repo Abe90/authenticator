@@ -34,7 +34,7 @@ export function createScanResult({ addWindow, session, form, scanConfirm, notice
       notice.fill(t('cantAddTitle'), result.error, 'list');
       return 'notice';
     }
-    return scanConfirm.show(result.record);
+    return scanConfirm.show(result.record, result.host);
   }
 
   // The Add code window, on its form: a waiting result fills it.

@@ -1,6 +1,8 @@
 export const MAX_NAME_LENGTH = 100;
 export const MAX_SECRET_LENGTH = 512;
 export const MAX_COUNTER = 0xffffffffffffffffn;
+// The valid sites an account can reach by adding them; an account read with more keeps them all (core/sites.mjs).
+export const MAX_SITES = 10;
 // For a password chosen from now on; an existing vault opens with whatever password it has.
 export const MIN_PASSWORD_LENGTH = 4;
 

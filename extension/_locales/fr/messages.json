@@ -230,14 +230,41 @@
   "editCode": {
     "message": "Modifier le code"
   },
+  "fillTitle": {
+    "message": "Saisir un code"
+  },
   "codeName": {
     "message": "Nom du code"
   },
   "nameRequired": {
     "message": "Saisissez un nom pour le code."
   },
-  "renameFailed": {
-    "message": "Impossible d’enregistrer le nom. Veuillez réessayer."
+  "editFailed": {
+    "message": "Impossible d’enregistrer les modifications. Veuillez réessayer."
+  },
+  "sites": {
+    "message": "Sites"
+  },
+  "addSite": {
+    "message": "Ajouter un site"
+  },
+  "newSite": {
+    "message": "Nouveau site"
+  },
+  "sitePlaceholder": {
+    "message": "example.com"
+  },
+  "removeSite": {
+    "message": "Supprimer $1"
+  },
+  "removeNewSite": {
+    "message": "Supprimer ce site"
+  },
+  "invalidSite": {
+    "message": "Saisissez un site comme example.com, ou collez son adresse."
+  },
+  "sameSite": {
+    "message": "Même site que $1."
   },
   "removeTitle": {
     "message": "Supprimer $1 ?"
@@ -453,7 +480,7 @@
     "message": "Jamais"
   },
   "autoLockDescription": {
-    "message": "Le délai commence quand vous fermez le panneau ou cessez d’utiliser une fenêtre Authenticator ouverte. Avec À la fermeture du panneau, une fenêtre ouverte se verrouille après 1 minute sans utilisation. Jamais garde le coffre déverrouillé jusqu’à la fermeture de Firefox ou jusqu’à ce que vous choisissiez Verrouiller maintenant."
+    "message": "Le délai commence quand vous fermez le panneau ou cessez d’utiliser une fenêtre Authenticator ouverte, et recommence quand vous saisissez un code depuis une page. Avec À la fermeture du panneau, une fenêtre ouverte se verrouille après 1 minute sans utilisation. Jamais garde le coffre déverrouillé jusqu’à la fermeture de Firefox ou jusqu’à ce que vous choisissiez Verrouiller maintenant."
   },
   "vault": {
     "message": "Coffre"

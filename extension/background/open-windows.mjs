@@ -9,9 +9,12 @@ import { WINDOW_PORT } from '../shared/open-windows.mjs';
 const page = browser.runtime.getURL('popup/popup.html');
 export const autoLock = new AutoLock({ session: browser.storage.session, alarms: browser.alarms });
 
+// Whether a message or a port comes from the extension's own page: the toolbar popup or the Add code window.
+export const fromPopupPage = (sender) => sender?.id === browser.runtime.id && typeof sender.url === 'string'
+  && sender.url.startsWith(page);
+
 browser.runtime.onConnect.addListener((port) => {
-  if (port.name !== WINDOW_PORT || port.sender?.id !== browser.runtime.id
-    || typeof port.sender.url !== 'string' || !port.sender.url.startsWith(page)) return;
+  if (port.name !== WINDOW_PORT || !fromPopupPage(port.sender)) return;
   const kind = new URL(port.sender.url).searchParams.get('view') === 'add' ? 'add' : 'popup';
   let windowId = null;
   const reply = (id, ok) => {

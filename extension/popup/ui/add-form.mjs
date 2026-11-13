@@ -7,8 +7,10 @@ import { NAME_REQUIRED, changeHint, saveFailure, storedAccounts } from './accoun
 import { element, message } from './dom.mjs';
 import { createMigrationPreview } from './migration-preview.mjs';
 import { createQrPicker } from './qr-picker.mjs';
+import { createSiteList } from './site-list.mjs';
 
-export function createAddForm({ vault, active, blocked, onSaved, onCancel }) {
+// proposedSite resolves to the site the form proposes for a key typed in or read from an image, or to null.
+export function createAddForm({ vault, active, blocked, proposedSite, onSaved, onCancel }) {
   const form = element('#account-form');
   const name = element('#account-name');
   const secret = element('#account-secret');
@@ -17,6 +19,9 @@ export function createAddForm({ vault, active, blocked, onSaved, onCancel }) {
   const save = element('#account-save');
   const qrButton = element('#import-qr');
   const error = element('#form-error');
+  const sites = createSiteList(element('#account-sites'));
+  // Bumped whenever the site list is filled, so that a proposal arriving late never replaces a newer list.
+  let proposal = 0;
   let importedCounter = '0';
   // The key read from a single-account QR code; the issuer chose it, so its length is not checked.
   let importedSecret = null;
@@ -44,8 +49,16 @@ export function createAddForm({ vault, active, blocked, onSaved, onCancel }) {
     updateHint();
   }
 
-  // One account fills the form; an export shows its list, where accounts already stored cannot be selected.
-  async function applyRecord(record) {
+  // The site list, empty, then with the proposed site.
+  function propose() {
+    const current = ++proposal;
+    sites.show();
+    proposedSite.then((host) => { if (current === proposal && host) sites.show([host]); });
+  }
+
+  // One account fills the form; an export shows its list, where accounts already stored cannot be selected. host,
+  // when given, is the site of a Scan page result, or null, and replaces the list; an export takes no site.
+  async function applyRecord(record, host) {
     let reasons = [];
     if (record.kind === 'migration') {
       const current = revision;
@@ -65,6 +78,10 @@ export function createAddForm({ vault, active, blocked, onSaved, onCancel }) {
       type.value = record.type;
       importedCounter = record.counter;
       importedSecret = record.secret;
+      if (host !== undefined) {
+        proposal++;
+        sites.show(host ? [host] : []);
+      }
       updateHint();
       name.focus();
     }
@@ -77,14 +94,15 @@ export function createAddForm({ vault, active, blocked, onSaved, onCancel }) {
     onBusy: (busy) => {
       save.disabled = busy || (preview.visible && !preview.selected().length);
     },
-    onRead: applyRecord,
+    // An image keeps the site list as it is.
+    onRead: (record) => applyRecord(record),
   });
 
   // A Scan page result: a record or an error message. It never replaces a form being saved or an image being read.
   function applyScanResult(result) {
     if (saving || picker.busy || !active()) return;
     message(error);
-    if (result.record) applyRecord(result.record);
+    if (result.record) applyRecord(result.record, result.host ?? null);
     else if (result.error) message(error, result.error);
   }
 
@@ -92,6 +110,7 @@ export function createAddForm({ vault, active, blocked, onSaved, onCancel }) {
     revision++;
     form.reset();
     showManual();
+    propose();
     picker.reset();
     message(error);
     save.textContent = t('add');
@@ -116,7 +135,12 @@ export function createAddForm({ vault, active, blocked, onSaved, onCancel }) {
       secret.focus();
       return null;
     }
-    return { name: label, secret: key, type: type.value, counter: type.value === 'hotp' ? importedCounter : '0' };
+    const chosen = sites.read();
+    if (!chosen) return null;
+    return {
+      name: label, secret: key, type: type.value, counter: type.value === 'hotp' ? importedCounter : '0',
+      sites: [...chosen.kept, ...chosen.added].map((host) => ({ host })),
+    };
   }
 
   async function submit(event) {

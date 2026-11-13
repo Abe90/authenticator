@@ -1,4 +1,5 @@
 import { parseQrAccount } from '../core/migration.mjs';
+import { hostFromUrl } from '../core/sites.mjs';
 import { SCAN_TARGET_KEY } from '../core/storage-keys.mjs';
 import { UserError } from '../core/user-error.mjs';
 import { FULL_SIDE, createQrDecoder, imageData, wholeRect } from '../shared/qr-decoder.mjs';
@@ -28,7 +29,7 @@ async function findTarget(api) {
   let tab;
   try { tab = await api.tabs.get(target.tabId); } catch { throw new UserError('scanGrant'); }
   if (!tab.active || tab.windowId !== target.windowId) throw new UserError('scanGrant');
-  return { tabId: target.tabId, windowId: target.windowId };
+  return { tabId: target.tabId, windowId: target.windowId, host: hostFromUrl(tab.url) };
 }
 
 const isSize = (value) => typeof value === 'number' && Number.isFinite(value) && value >= 0;
@@ -46,13 +47,15 @@ export function readCandidates(message) {
   return { innerWidth: viewport.innerWidth, items: rects };
 }
 
-// Resolves to the picked record, or null when cancelled; rejects with a UserError for the user. onInput(time) runs for
-// the user's input on the page.
+// Resolves to { record, host }, the picked record and the host of the scanned page (null for a page that is not http
+// or https), or to null when cancelled; rejects with a UserError for the user. onInput(time) runs for the user's input
+// on the page.
 export async function scanPage({ api = browser, signal, onInput, ...overrides } = {}) {
   const deps = { ...DEFAULTS, ...overrides };
   if (signal?.aborted) return null;
   const target = await findTarget(api);
   if (signal?.aborted) return null;
+  const picked = (record) => (record ? { record, host: target.host } : null);
 
   const internal = new AbortController();
   const decoder = deps.createDecoder(internal.signal);
@@ -184,13 +187,13 @@ export async function scanPage({ api = browser, signal, onInput, ...overrides } 
     } catch { injected = false; }
     if (!active()) return null;
     if (!injected) {
-      try { return await scanWithoutPage(); } catch (error) {
+      try { return picked(await scanWithoutPage()); } catch (error) {
         if (!active()) return null;
         throw error;
       }
     }
     timer = setTimeout(() => { if (!port) finish(null, new UserError('scanFailed')); }, CONNECT_TIMEOUT_MS);
-    return await outcome;
+    return picked(await outcome);
   } finally {
     clearTimeout(timer);
     finish(null);

@@ -2,7 +2,7 @@ import { SCAN_TARGET_KEY } from '../core/storage-keys.mjs';
 import { findAddCodeWindow, openAddCodeWindow } from '../shared/add-window.mjs';
 import { errorText, t } from '../shared/i18n.mjs';
 import { scanPage } from './page-scan.mjs';
-import { autoLock } from './open-windows.mjs';
+import { autoLock, fromPopupPage } from './open-windows.mjs';
 
 // Scan page runs here, since the toolbar popup closes when the page is clicked. The picked record stays in memory,
 // never in storage, until the reopened popup or the Add code window takes it.
@@ -10,11 +10,9 @@ const RESULT_MS = 120_000;
 let running = null;
 let result = null;
 
-const fromPopupPage = (sender) => sender.id === browser.runtime.id && typeof sender.url === 'string'
-  && sender.url.startsWith(browser.runtime.getURL('popup/popup.html'));
-
 function takeResult() {
-  const taken = result && Date.now() - result.at < RESULT_MS ? { record: result.record, error: result.error } : null;
+  const taken = result && Date.now() - result.at < RESULT_MS
+    ? { record: result.record, host: result.host, error: result.error } : null;
   result = null;
   return taken;
 }
@@ -32,12 +30,12 @@ async function scan(holder) {
   if (open) await browser.windows.update(open.id, { state: 'minimized' }).catch(() => {});
   let outcome = null;
   try {
-    const record = await scanPage({
+    const picked = await scanPage({
       signal: controller.signal,
       // The overlay reports the user's input, which keeps the unlock from ending for inactivity during the scan.
       onInput: (at) => { if (holder) autoLock.input(holder, at).catch(() => {}); },
     });
-    if (record) outcome = { record };
+    if (picked) outcome = { record: picked.record, host: picked.host };
   } catch (error) {
     outcome = { error: errorText(error, t('scanFailed')) };
   }
@@ -63,7 +61,7 @@ async function scan(holder) {
   try {
     await browser.action.openPopup(Number.isSafeInteger(scanTarget?.windowId) ? { windowId: scanTarget.windowId } : {});
     return;
-  } catch { /* Opening the popup without a click may be turned off; the Add code window takes over. */ }
+  } catch { /* Firefox refuses to open it, as for a window without focus: the Add code window takes over. */ }
   await restore();
   try { await openAddCodeWindow(); } catch {
     result = null;

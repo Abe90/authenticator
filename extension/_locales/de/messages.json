@@ -230,14 +230,41 @@
   "editCode": {
     "message": "Code bearbeiten"
   },
+  "fillTitle": {
+    "message": "Code eintragen"
+  },
   "codeName": {
     "message": "Name des Codes"
   },
   "nameRequired": {
     "message": "Geben Sie einen Namen für den Code ein."
   },
-  "renameFailed": {
-    "message": "Der Name konnte nicht gespeichert werden. Bitte versuchen Sie es erneut."
+  "editFailed": {
+    "message": "Die Änderungen konnten nicht gespeichert werden. Bitte versuchen Sie es erneut."
+  },
+  "sites": {
+    "message": "Websites"
+  },
+  "addSite": {
+    "message": "Website hinzufügen"
+  },
+  "newSite": {
+    "message": "Neue Website"
+  },
+  "sitePlaceholder": {
+    "message": "example.com"
+  },
+  "removeSite": {
+    "message": "$1 entfernen"
+  },
+  "removeNewSite": {
+    "message": "Diese Website entfernen"
+  },
+  "invalidSite": {
+    "message": "Geben Sie eine Website wie example.com ein oder fügen Sie ihre Adresse ein."
+  },
+  "sameSite": {
+    "message": "Dieselbe Website wie $1."
   },
   "removeTitle": {
     "message": "$1 entfernen?"
@@ -453,7 +480,7 @@
     "message": "Nie"
   },
   "autoLockDescription": {
-    "message": "Die Zeit läuft, sobald Sie das Popup schließen oder ein geöffnetes Authenticator-Fenster nicht mehr verwenden. Mit „Wenn das Popup geschlossen wird“ wird ein geöffnetes Fenster nach 1 Minute ohne Verwendung gesperrt. „Nie“ lässt den Tresor entsperrt, bis Firefox geschlossen wird oder Sie „Jetzt sperren“ wählen."
+    "message": "Die Zeit läuft, sobald Sie das Popup schließen oder ein geöffnetes Authenticator-Fenster nicht mehr verwenden, und beginnt neu, wenn Sie einen Code von einer Seite aus eintragen. Mit „Wenn das Popup geschlossen wird“ wird ein geöffnetes Fenster nach 1 Minute ohne Verwendung gesperrt. „Nie“ lässt den Tresor entsperrt, bis Firefox geschlossen wird oder Sie „Jetzt sperren“ wählen."
   },
   "vault": {
     "message": "Tresor"

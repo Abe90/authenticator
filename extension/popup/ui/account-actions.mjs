@@ -1,8 +1,10 @@
 import { cleanName } from '../../core/limits.mjs';
+import { validSites } from '../../core/sites.mjs';
 import { t } from '../../shared/i18n.mjs';
 import { NAME_REQUIRED } from './account-input.mjs';
 import { element, message } from './dom.mjs';
 import { failureText } from './messages.mjs';
+import { createSiteList } from './site-list.mjs';
 
 // Keeps the menu off the popup edges.
 const EDGE = 4;
@@ -17,10 +19,12 @@ export function createAccountActions({ vault, blocked, onOpen, onLeave, onRename
   const editName = element('#edit-name');
   const editError = element('#edit-error');
   const editSave = element('#edit-save');
+  const editSites = createSiteList(element('#edit-sites'));
   const removeTitle = element('#remove-title');
   const removeError = element('#remove-error');
   const removeConfirm = element('#remove-confirm');
-  // The account the menu or a page acts on, as { id, name }.
+  // The account the menu or a page acts on, as { id, name, sites }, with the hosts of its sites when the menu opened:
+  // Save in Edit code changes the stored list by what was removed from them and added.
   let target = null;
   // The accounts last shown in the list.
   let records = [];
@@ -54,7 +58,9 @@ export function createAccountActions({ vault, blocked, onOpen, onLeave, onRename
   function begin(account) {
     if (saving || blocked()) return false;
     close();
-    target = { id: account.id, name: account.name };
+    // The list's menu gives only the ID and the name; the sites come from the accounts it last showed.
+    const record = records.find((entry) => entry.id === account.id);
+    target = { id: account.id, name: account.name, sites: validSites(record?.sites).map((site) => site.host) };
     return true;
   }
 
@@ -75,6 +81,7 @@ export function createAccountActions({ vault, blocked, onOpen, onLeave, onRename
   function edit() {
     hideMenu();
     editName.value = target.name;
+    editSites.show(target.sites);
     editSave.disabled = false;
     message(editError);
     onOpen('edit', () => {
@@ -140,11 +147,15 @@ export function createAccountActions({ vault, blocked, onOpen, onLeave, onRename
       editName.focus();
       return;
     }
-    if (name === target.name) {
+    const chosen = editSites.read();
+    if (!chosen) return;
+    const removed = target.sites.filter((host) => !chosen.kept.includes(host));
+    const { added } = chosen;
+    if (name === target.name && !removed.length && !added.length) {
       leave(target.id);
       return;
     }
-    run(editSave, editError, (id) => vault.rename(id, name), t('renameFailed'), onRenamed, target.id);
+    run(editSave, editError, (id) => vault.edit(id, name, { removed, added }), t('editFailed'), onRenamed, target.id);
   }
 
   // Back to the list without saving: the back arrow, Escape and Cancel.
