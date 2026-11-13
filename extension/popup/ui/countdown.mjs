@@ -4,6 +4,9 @@ import { reducedMotion } from './dom.mjs';
 export function createCountdown() {
   const states = new Map();
 
+  // The sector of the time left, from the top anticlockwise. More than half goes first down the left half and then on
+  // from the bottom: a single arc whose ends almost meet at the top, as just after a new period, is ambiguous, and
+  // Firefox would not draw it for a few frames.
   function paint(sector, remaining) {
     if (remaining === TOTP_PERIOD) {
       sector.setAttribute('d', 'M16 2 A14 14 0 1 1 16 30 A14 14 0 1 1 16 2 Z');
@@ -13,7 +16,8 @@ export function createCountdown() {
       const angle = -(remaining / TOTP_PERIOD) * 2 * Math.PI - Math.PI / 2;
       const x = 16 + 14 * Math.cos(angle);
       const y = 16 + 14 * Math.sin(angle);
-      sector.setAttribute('d', `M16 16 L16 2 A14 14 0 ${remaining > TOTP_PERIOD / 2 ? 1 : 0} 0 ${x} ${y} Z`);
+      const half = remaining > TOTP_PERIOD / 2 ? 'A14 14 0 0 0 16 30 ' : '';
+      sector.setAttribute('d', `M16 16 L16 2 ${half}A14 14 0 0 0 ${x} ${y} Z`);
     }
   }
 
