@@ -1,3 +1,4 @@
+import { isSiteImage } from '../core/site-icons.mjs';
 import { blockPageCommands, element, localize } from './ui/dom.mjs';
 import { createFillList } from './ui/fill-list.mjs';
 
@@ -52,7 +53,9 @@ function choose(id, button, event = null) {
   send({ type: 'choose', id, at: Date.now(), x, y });
 }
 
-const isRow = (row) => typeof row?.id === 'string' && typeof row.name === 'string' && typeof row.search === 'string';
+const isRow = (row) => typeof row?.id === 'string' && typeof row.name === 'string' && typeof row.search === 'string'
+  && (row.icon === null || typeof row.icon === 'string')
+  && (row.image === null || isSiteImage(row.image));
 port.onMessage.addListener((message) => {
   if (message?.type === 'rows' && !rendered && Array.isArray(message.rows) && message.rows.every(isRow)
     && Number.isSafeInteger(message.matching)) {

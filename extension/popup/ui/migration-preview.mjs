@@ -1,6 +1,9 @@
+import { brandOf } from '../../core/brands.mjs';
 import { plural, t } from '../../shared/i18n.mjs';
+import { createAccountIcon } from './account-icon.mjs';
 
-// The account list of a Google export, in the Add code window or in the scan confirmation of the popup.
+// The account list of a Google export, in the Add code window or in the scan confirmation of the popup. Each account
+// shows the icon it will have: a bundled one its name finds, or its first letter, since an export gives no site.
 export function createMigrationPreview({ preview, accounts, title, summary, onSelection }) {
   let choices = [];
 
@@ -40,7 +43,7 @@ export function createMigrationPreview({ preview, accounts, title, summary, onSe
         note.classList.toggle('duplicate', Boolean(reason));
         text.append(note);
       }
-      label.append(checkbox, text);
+      label.append(checkbox, createAccountIcon(entry.name, brandOf({ name: entry.name })), text);
       accounts.append(label);
       checkbox.addEventListener('change', () => onSelection(selected().length));
       return { checkbox, record };

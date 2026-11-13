@@ -463,20 +463,45 @@ main > :nth-last-child(1 of :not([hidden])) .account::after {
   min-width: 0;
   flex: 1;
 }
-/* The round icon left of an account's name, here and in the lists for filling a field (ui/account-icon.mjs): the first
-   letter of the name, on the soft violet of a secondary button under the pointer, which no row's background takes. */
+/* The icon left of an account's name, here and in the lists for filling a field (ui/account-icon.mjs): the icon of
+   its service, in its own colours, or the first letter of the name, white in the middle of a shield. */
 .account-icon {
   flex: none;
   display: grid;
   place-items: center;
   width: 36px;
   height: 36px;
-  border-radius: 50%;
-  background: var(--button-soft-hover);
+  /* A little nearer the name than the row's gap puts it. */
+  margin-inline-end: -4px;
   color: var(--button-text);
   font-size: 16px;
   font-weight: 500;
   line-height: 1;
+}
+.letter-icon {
+  background: url('../assets/icons/account.svg') center / contain no-repeat;
+  color: #fff;
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.brand-icon {
+  width: 24px;
+  height: 24px;
+  background: center / contain no-repeat;
+  mask-position: center;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+}
+.site-icon {
+  border-radius: 4px;
+}
+@media (prefers-color-scheme: dark) {
+  .brand-icon-dark {
+    background-color: var(--text);
+    background-image: none !important;
+  }
 }
 h2 {
   margin: 0 0 4px;
@@ -734,7 +759,7 @@ main {
 }
 .migration-account {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 10px;
   padding: 10px 0;
   margin: 0;
@@ -745,8 +770,18 @@ main {
   width: 18px;
   height: 18px;
   padding: 0;
-  margin: 1px 0 0;
+  margin: 0;
   flex-shrink: 0;
+}
+.migration-account .account-icon {
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  font-size: 11px;
+}
+.migration-account .brand-icon {
+  width: 20px;
+  height: 20px;
 }
 .migration-account small {
   display: block;
@@ -757,6 +792,34 @@ main {
 /* An account already in the list is not an error in the export, so its note is grey. */
 .migration-account small.duplicate {
   color: var(--text-muted);
+}
+/* Scanned code: the icon the account will have, the site of the scanned page and the page's address. */
+.scan-site {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 14px;
+}
+.scan-site .account-icon {
+  margin: 0;
+}
+.scan-site-text {
+  min-width: 0;
+  margin: 0;
+}
+.scan-site-text span {
+  display: block;
+  overflow-wrap: anywhere;
+}
+#scan-site-name {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 500;
+}
+#scan-site-address {
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 16px;
 }
 /* Scanned code and Edit code: the Add code form, compact. */
 #scan-confirm label, #edit-form label {
@@ -806,7 +869,7 @@ main {
 .fill-account {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   width: 100%;
   padding: 8px 12px;
   border: 0;
@@ -818,7 +881,12 @@ main {
 .fill-account .account-icon {
   width: 24px;
   height: 24px;
-  font-size: 12px;
+  margin-inline-end: 0;
+  font-size: 11px;
+}
+.fill-account .brand-icon {
+  width: 16px;
+  height: 16px;
 }
 .fill-account-name {
   min-width: 0;

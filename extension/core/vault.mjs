@@ -1,13 +1,13 @@
 import {
-  createVault, decode, importVaultKey, openAccount, openCounters, parseRecoveryKey, passwordKey, recoveryKey, rewrap,
-  sealAccount, sealCounters, unwrapVaultKey, validateHeader, verifyVaultKey,
+  createVault, decode, importVaultKey, openAccount, openCounters, openIcons, parseRecoveryKey, passwordKey,
+  recoveryKey, rewrap, sealAccount, sealCounters, sealIcons, unwrapVaultKey, validateHeader, verifyVaultKey,
 } from './vault-crypto.mjs';
 import { DuplicateAccountError, accountKey } from './duplicates.mjs';
 import { MAX_COUNTER, isAccountName, isNewPassword, shownName } from './limits.mjs';
-import { addSites, removeSites } from './sites.mjs';
+import { addSites, removeSites, siteKey, validSites } from './sites.mjs';
 import {
   CLOSED_STORAGE_KEY, HANDOFF_STORAGE_KEY, HOLDERS_STORAGE_KEY, HOTP_COUNTERS_KEY, LAST_INPUT_STORAGE_KEY,
-  TRUSTED_HEADER_KEY,
+  SITE_ICONS_KEY, TRUSTED_HEADER_KEY,
   UNLOCK_STORAGE_KEY, accountItem, isId, parseItem, randomId, vaultItem,
 } from './storage-keys.mjs';
 import { HANDOFF_MS, withUnlockLock } from './auto-lock.mjs';
@@ -255,6 +255,38 @@ export class VaultSession {
     Object.assign(counters, seen);
     if (Object.keys(seen).length) await this.#keepCounters(key, vaultId, seen).catch(() => {});
     return { counters };
+  }
+
+  // This computer's icons of sites for a vault, { [site]: image }; none when the stored ones do not open.
+  async #icons(key, vaultId) {
+    if (!this.#local) return {};
+    const { [SITE_ICONS_KEY]: stored } = await this.#local.get(SITE_ICONS_KEY);
+    const sealed = stored?.[vaultId];
+    if (sealed === undefined) return {};
+    try { return await openIcons(key, vaultId, sealed); } catch { return {}; }
+  }
+
+  // The icons this computer took from the pages of sites, { [site]: image }, with site as siteKey gives it
+  // (core/site-icons.mjs).
+  async siteIcons() {
+    const key = this.#key;
+    if (!key) throw new VaultError('locked', 'Vault is locked');
+    return this.#icons(key, this.#vaultId);
+  }
+
+  // Keeps image as the icon of site, on this computer only, when an account has that site; the icons of sites that
+  // no account has any more go.
+  keepSiteIcon(site, image) {
+    const current = this.#revision;
+    return this.#exclusive(async () => {
+      const { key, vault, accounts } = await this.#load(current);
+      if (!this.#local) return;
+      const sites = new Set(accounts.flatMap((account) => validSites(account.sites).map(({ host }) => siteKey(host))));
+      const icons = Object.fromEntries(Object.entries({ ...await this.#icons(key, vault.id), [site]: image })
+        .filter(([name]) => sites.has(name)));
+      const { [SITE_ICONS_KEY]: all } = await this.#local.get(SITE_ICONS_KEY);
+      await this.#local.set({ [SITE_ICONS_KEY]: { ...all, [vault.id]: await sealIcons(key, vault.id, icons) } });
+    });
   }
 
   // The header this computer just proved with the password; a failure to keep it only leaves the previous one.

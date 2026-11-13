@@ -13,7 +13,7 @@
   "icons": { "48": "assets/icons/logo-48.png", "96": "assets/icons/logo-96.png" },
   "web_accessible_resources": [{ "resources": ["popup/bubble.html"], "matches": ["http://*/*", "https://*/*"] }],
   "content_security_policy": {
-    "extension_pages": "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; worker-src 'self'; connect-src data:; base-uri 'none'; form-action 'none'"
+    "extension_pages": "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; worker-src 'self'; connect-src data:; base-uri 'none'; form-action 'none'"
   },
   "browser_specific_settings": {
     "gecko": {

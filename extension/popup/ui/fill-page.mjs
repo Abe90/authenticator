@@ -51,7 +51,8 @@ export function createFillPage({ vault, revealed, addWindow, onLeave }) {
       return filled ? 'done' : null;
     }
     accounts = [...matching, ...others];
-    list.render(accounts.map(searchEntry), matching.length);
+    const icons = await vault.siteIcons().catch(() => ({}));
+    list.render(accounts.map((account) => searchEntry(account, icons)), matching.length);
     return 'fill';
   }
 

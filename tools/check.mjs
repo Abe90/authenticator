@@ -8,7 +8,8 @@
 //   from the manifest (popup, background scripts, icons, web-accessible pages) through HTML
 //   attributes, CSS url(), module imports, worker URLs, asset paths in scripts and page scripts
 //   injected with scripting.executeScript. A manifest with default_locale loads every
-//   _locales/*/messages.json.
+//   _locales/*/messages.json. The icons of services are loaded by name: every icon of the table in core/brands.mjs
+//   has its file in assets/brands, and no site or name stands for two icons.
 // - Every message the extension asks for is in every language, with the same $1, $2… as in English, and every
 //   message is asked for. Keys are read from t('key'), plural('key') (key_one and key_other), UserError('key'),
 //   getMessage('key'), data-i18n attributes and __MSG_key__ in the manifest.
@@ -17,6 +18,7 @@
 import { execFileSync, spawnSync } from 'node:child_process';
 import { readFileSync, readdirSync } from 'node:fs';
 import { basename, dirname, extname, join, resolve } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { EXTENSION, ROOT, byPath, isFile, name, runtimeFiles } from './package.mjs';
 
 const TEXT = new Set(['.mjs', '.js', '.html', '.css', '.json', '.md', '.svg', '.gitignore', '.gitattributes']);
@@ -77,7 +79,25 @@ function references(path, page) {
   return found;
 }
 
-function loadedFiles() {
+// The files of the bundled icons, which the pages name from the table.
+async function brandFiles() {
+  const { BRANDS } = await import(pathToFileURL(join(EXTENSION, 'core', 'brands.mjs')));
+  const seen = new Map();
+  for (const { icon, sites, names } of BRANDS) {
+    if (!/^[a-z0-9]+$/.test(icon)) problems.push(`extension/core/brands.mjs: ${icon} is not a file name of a-z and 0-9`);
+    for (const key of [`icon ${icon}`, ...sites.map((site) => `site ${site}`),
+      ...names.map((text) => `name ${text.toLowerCase()}`)]) {
+      if (seen.has(key)) problems.push(`extension/core/brands.mjs: ${key} is in ${seen.get(key)} and in ${icon}`);
+      seen.set(key, icon);
+    }
+    for (const site of sites) {
+      if (!/^[a-z0-9-]+(.[a-z0-9-]+)+$/.test(site)) problems.push(`extension/core/brands.mjs: ${site} is not a domain`);
+    }
+  }
+  return BRANDS.map(({ icon }) => join(EXTENSION, 'assets', 'brands', `${icon}.svg`));
+}
+
+function loadedFiles(brands) {
   const manifest = JSON.parse(readFileSync(join(EXTENSION, 'manifest.json'), 'utf8'));
   const pending = [manifest.action.default_popup, ...(manifest.background?.scripts ?? []),
     ...Object.values(manifest.icons), ...Object.values(manifest.action.default_icon),
@@ -86,6 +106,7 @@ function loadedFiles() {
   const page = pending[0];
   const loaded = new Set([join(EXTENSION, 'manifest.json')]);
   if (manifest.default_locale) pending.push(...localeFiles());
+  pending.push(...brands);
   while (pending.length) {
     const path = pending.pop();
     if (loaded.has(path)) continue;
@@ -159,7 +180,7 @@ for (const path of files) {
   }
 }
 checkSyntax(files.filter((path) => extname(path) === '.mjs' || name(path).startsWith('extension/content/')));
-const loaded = loadedFiles();
+const loaded = loadedFiles(await brandFiles());
 checkPackage(loaded);
 checkMessages(loaded);
 for (const problem of problems) console.log(problem);

@@ -37,6 +37,9 @@ export const MERGE_RECEIPTS_KEY = 'mergeReceipts';
 // The highest HOTP counter this computer saw or used for each key, by vault ID, sealed with that vault's key: a
 // counter never goes back, whatever an older write in storage.sync says (core/vault.mjs).
 export const HOTP_COUNTERS_KEY = 'hotpCounters';
+// The icons this computer took from the pages of sites, for the accounts without a bundled one, by vault ID, sealed
+// with that vault's key: { [site]: image } (core/site-icons.mjs). They never go to storage.sync.
+export const SITE_ICONS_KEY = 'siteIcons';
 
 // browser.storage.session: cleared when Firefox closes.
 // The remembered unlock: the exported vault key, its vault's ID and how it ends.
@@ -61,3 +64,6 @@ export const PROCEDURE_KEY = 'procedure';
 // The tab and window where the toolbar popup last opened, which Scan page may capture, and the host of its page, which
 // the Add code window proposes as a site.
 export const SCAN_TARGET_KEY = 'scanTarget';
+// The sites whose page was asked for an icon since Firefox started, so that one without any is not asked at every
+// opening (shared/site-icon.mjs).
+export const ICON_TRIED_KEY = 'iconTried';

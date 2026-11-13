@@ -68,6 +68,7 @@ const wrapData = (vaultId, { version, created, kdf, iterations, salt }, wrap) =>
 const checkData = (vaultId) => bind({ version: FORMAT, vault: vaultId, check: true });
 const accountData = (vaultId, accountId) => bind({ version: FORMAT, vault: vaultId, account: accountId });
 const countersData = (vaultId) => bind({ version: FORMAT, vault: vaultId, counters: true });
+const iconsData = (vaultId) => bind({ version: FORMAT, vault: vaultId, icons: true });
 
 async function seal(key, additionalData, bytes) {
   const iv = crypto.getRandomValues(new Uint8Array(IV));
@@ -181,6 +182,23 @@ export async function openCounters(key, vaultId, text) {
     if (!counters || typeof counters !== 'object' || Array.isArray(counters)
       || !Object.values(counters).every(isCounter)) throw new Error('Invalid counters');
     return counters;
+  } finally {
+    bytes.fill(0);
+  }
+}
+
+// This computer's icons of sites, { [site]: image }, sealed so that the sites are not stored in the clear.
+export async function sealIcons(key, vaultId, icons) {
+  const bytes = encoder.encode(JSON.stringify(icons));
+  try { return await seal(key, iconsData(vaultId), bytes); } finally { bytes.fill(0); }
+}
+
+export async function openIcons(key, vaultId, text) {
+  const bytes = await open(key, iconsData(vaultId), text);
+  try {
+    const icons = JSON.parse(decoder.decode(bytes));
+    if (!icons || typeof icons !== 'object' || Array.isArray(icons)) throw new Error('Invalid icons');
+    return icons;
   } finally {
     bytes.fill(0);
   }

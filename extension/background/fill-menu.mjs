@@ -86,7 +86,9 @@ async function fill(info, tab) {
       await fillAccount(vault, revealed, matching[0], target);
       return { filled: true };
     }
-    return { rows: [...matching, ...others].map(searchEntry), matching: matching.length };
+    const icons = await vault.siteIcons().catch(() => ({}));
+    const rows = [...matching, ...others].map((account) => searchEntry(account, icons));
+    return { rows, matching: matching.length };
   }).catch(() => null);
   if (found?.filled) return;
   const choose = (id) => enqueue(() => fillChosen(tab, target, id));

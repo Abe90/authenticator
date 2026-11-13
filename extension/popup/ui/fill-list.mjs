@@ -23,9 +23,9 @@ export function createFillList(root, { choose, onFilter = () => {} }) {
   let matching = 0;
   let line = null;
 
-  // accounts, [{ id, name, search }], the first count of them matching the page.
+  // accounts, [{ id, name, search, icon, image }], the first count of them matching the page.
   function render(accounts, count) {
-    rows = accounts.map(({ id, name, search: text }) => {
+    rows = accounts.map(({ id, name, search: text, icon, image }) => {
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'fill-account';
@@ -33,7 +33,7 @@ export function createFillList(root, { choose, onFilter = () => {} }) {
       const label = document.createElement('span');
       label.className = 'fill-account-name';
       label.textContent = name;
-      button.append(createAccountIcon(name), label);
+      button.append(createAccountIcon(name, icon, image), label);
       button.addEventListener('click', (event) => { if (event.isTrusted) choose(id, button, event); });
       return { id, search: text, button };
     });

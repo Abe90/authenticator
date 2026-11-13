@@ -26,7 +26,7 @@ const MAX_HEIGHT = 2000;
 // settle, checked, timer, choosing }.
 let current = null;
 
-// Shows rows, [{ id, name, search }] with the matching first, under the field of target ({ tabId, frameId,
+// Shows rows, [{ id, name, search, icon, image }] with the matching first, under the field of target ({ tabId, frameId,
 // targetElementId }); the caller has closed any list showing (closeBubble). choose(id) runs once the user picks an
 // account and the injected script confirms the list was there to be seen. Resolves to whether the list showed; false
 // when it could not, and the caller falls back to the toolbar popup.

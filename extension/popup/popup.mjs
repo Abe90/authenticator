@@ -21,6 +21,7 @@ import { createAddMenu } from './ui/add-menu.mjs';
 import { createUnlockSession } from './ui/unlock-session.mjs';
 import { createScanResult } from './ui/scan-result.mjs';
 import { createFillPage } from './ui/fill-page.mjs';
+import { createSiteIcons } from './ui/site-icons.mjs';
 import { createNotice } from './ui/notice.mjs';
 import { createNewPassword } from './ui/new-password.mjs';
 import { createPasswordCheck } from './ui/password-check.mjs';
@@ -84,8 +85,12 @@ const list = createAccountList({
   vault, blocked: () => !session.unlocked || views.changing, onError: showError, onAdvanced: (id) => revealed.add(id),
   onMenu: (account, point) => actions.menu(account, point),
   onRemove: (account) => actions.remove(account),
-  onRender: (records) => actions.sync(records),
+  onRender(records) {
+    actions.sync(records);
+    siteIcons.update(records);
+  },
 });
+const siteIcons = createSiteIcons({ vault, list, addWindow });
 // The Add code window proposes the site of the page where the toolbar popup that opened it was, read once: a window
 // already open, brought forward from another tab, keeps its form as it is.
 const proposedSite = addWindow

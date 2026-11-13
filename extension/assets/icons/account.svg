@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg fill="none" version="1.1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <linearGradient id="a" x1="214.38" x2="299.54" y1="136.78" y2="343.76" gradientTransform="matrix(-.99998 0 0 .99998 536.59 -24.604)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#b338e1" offset="0"/>
+   <stop stop-color="#705ee8" offset=".5"/>
+   <stop stop-color="#5939af" offset="1"/>
+  </linearGradient>
+ </defs>
+ <g stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="4.2">
+  <path d="m256.19 37.843c-2.5231-0.01905-5.1224 0.46681-7.3885 1.5243l-162.14 80.263c-8.4168 3.906-13.473 10.156-13.473 18.444v102.55c0.90452 92.638 26.469 119.42 168.96 228.55 9.7402 6.6783 18.033 6.5735 27.44 0.17148l46.844-32.601 0.0286 0.01 1.0759-0.77167 0.92356-0.64782-0.01-0.01c120.73-86.189 119.74-131.49 120.35-194.7v-102.67c0-9.9269-5.6747-14.271-13.396-18.282l-162.25-80.33c-1.9804-0.95268-4.4369-1.4766-6.9695-1.4957" fill="url(#a)" stroke="#000" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit=".5" stroke-width="9.018" style="paint-order:fill markers stroke"/>
+ </g>
+</svg>

@@ -1,3 +1,5 @@
+import { brandOf } from '../../core/brands.mjs';
+import { siteImage } from '../../core/site-icons.mjs';
 import { MAX_COUNTER } from '../../core/limits.mjs';
 import { searchQuery, searchText } from '../../core/search.mjs';
 import { TOTP_PERIOD, createHotpGenerator, totpStep } from '../../core/totp.mjs';
@@ -42,6 +44,7 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
   const countdown = createCountdown();
   const toast = createToast();
   let accounts = [];
+  let images = {};
   let revision = 0;
   let saving = false;
   let pendingUpdate = null;
@@ -119,6 +122,22 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
     }
   }
 
+  // A site added or removed, or an icon taken from a page, may change the icon of a row that stays.
+  function showBrand(account, brand, image) {
+    if (brand === account.brand && image === account.image) return;
+    const icon = createAccountIcon(account.name, brand, image);
+    account.icon.replaceWith(icon);
+    account.icon = icon;
+    account.brand = brand;
+    account.image = image;
+  }
+
+  // The icons this computer took from the pages of sites (core/site-icons.mjs), for the rows without a bundled one.
+  function setImages(icons) {
+    images = icons;
+    for (const account of accounts) showBrand(account, account.brand, siteImage(account, images));
+  }
+
   function createAccount(record) {
     const row = template.cloneNode(true);
     row.setAttribute('aria-label', t('copyCodeOf', record.name));
@@ -127,7 +146,10 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
     // and Down go from the search field through the rows (keyboardRows).
     row.tabIndex = -1;
     element('h2', row).textContent = record.name;
-    row.prepend(createAccountIcon(record.name));
+    const brand = brandOf(record);
+    const image = siteImage(record, images);
+    const icon = createAccountIcon(record.name, brand, image);
+    row.prepend(icon);
     const code = element('output', row);
     code.removeAttribute('id');
     const timerIcon = element('svg', row);
@@ -138,7 +160,7 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
     sector.classList.add('timer-sector');
     const account = {
       ...record, counter: BigInt(record.counter), search: searchText(record), entry: row, row, code, timer: timerIcon,
-      sector, shownStep: null, pending: false, generate: null,
+      sector, brand, image, icon, shownStep: null, pending: false, generate: null,
     };
     async function copy() {
       const value = code.textContent.replace(/\s/g, '');
@@ -286,6 +308,8 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
       records.forEach((record, index) => {
         accounts[index].counter = BigInt(record.counter);
         accounts[index].search = searchText(record);
+        accounts[index].sites = record.sites;
+        showBrand(accounts[index], brandOf(record), siteImage(record, images));
       });
     } else {
       revision++;
@@ -371,7 +395,7 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
   document.addEventListener('visibilitychange', () => { if (!document.hidden) update(); });
   tick();
   return {
-    render, clear, reveal, filter, update, focus, neighbour,
+    render, clear, reveal, filter, update, focus, neighbour, setImages,
     dispose() { clearTimeout(timer); clear(); },
     get busy() { return saving; },
   };

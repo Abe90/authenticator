@@ -174,6 +174,10 @@
     <form id="scan-confirm" class="page" hidden autocomplete="off" aria-labelledby="scan-title">
       <div class="page-body">
         <div id="scan-single">
+          <div id="scan-site" class="scan-site" hidden>
+            <span class="account-icon" aria-hidden="true"></span>
+            <p class="scan-site-text"><span id="scan-site-name"></span><span id="scan-site-address"></span></p>
+          </div>
           <label for="scan-name" data-i18n="codeName"></label>
           <input id="scan-name" class="field" autocomplete="off" required maxlength="100" spellcheck="false" aria-describedby="scan-type scan-error">
           <p id="scan-type" class="hint"></p>

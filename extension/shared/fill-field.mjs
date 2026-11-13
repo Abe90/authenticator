@@ -1,4 +1,6 @@
+import { validSites } from '../core/sites.mjs';
 import { createHotpGenerator, totpStep } from '../core/totp.mjs';
+import { captureSiteIcon } from './site-icon.mjs';
 
 // A code put into a page's field from the context menu: by the background script when one account matches the page or
 // the user picks one in the list under the field (background/fill-menu.mjs), by the toolbar popup when the user picks
@@ -61,10 +63,15 @@ async function fillCode(vault, revealed, account) {
 
 // Puts the code of account into the field of target, { tabId, frameId, targetElementId, host, incognito }, from
 // vault, held open; the account then learns the page's site, which it may have already, except in a private window,
-// where nobody would see it learned. Resolves to whether the field took the code.
+// where nobody would see it learned; an account without an icon takes the page's (site-icon.mjs). Resolves to whether
+// the field took the code.
 export async function fillAccount(vault, revealed, account, target) {
   const code = await fillCode(vault, revealed, account);
   if (!(await fillField(target, code))) return false;
-  if (target.host && !target.incognito) await vault.learnSite(account.id, target.host).catch(() => {});
+  if (target.host && !target.incognito) {
+    await vault.learnSite(account.id, target.host).catch(() => {});
+    const learned = { ...account, sites: [...validSites(account.sites), { host: target.host }] };
+    await captureSiteIcon(vault, [learned], target).catch(() => {});
+  }
   return true;
 }

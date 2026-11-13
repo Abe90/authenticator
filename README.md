@@ -20,6 +20,7 @@ Get it from addons.mozilla.org: **https://addons.mozilla.org/firefox/addon/authe
 - **Fill in a code from the page.** Right-click the field that asks for the code and choose **Authenticator**. When one account belongs to the site, its code goes straight into the field, also when the field is split into six boxes; otherwise the names of your accounts show under the field, the site's first, and the one you choose fills it (with the mouse, or the arrow keys and Enter; with more than 10 accounts, a search field finds them by name or by site). With the vault locked, the popup asks for the password first, then lists the accounts the same way; so it does when the page leaves no room for the list. Where the extension cannot reach the field (Mozilla's own sites, the PDF viewer, a frame of another origin), or the field cannot take a code (read-only, disabled, or an editable area that is not a field), the popup opens on the list, which copies.
 - **Sites.** Each account remembers the websites it belongs to: the page you scanned its QR code on, the tab where you opened **Enter a setup key**, and every site where you chose it from the field's menu, except in private windows. **Edit** shows them and lets you add or remove them, up to ten per account. A site covers all its subdomains: `accounts.google.com` and `myaccount.google.com` are one site, while `mario.github.io` and `luigi.github.io` are two.
 - **Organise** your accounts: search them by name or by site, edit their name and sites or remove them from the right-click menu, and drag them (or press Alt+Up and Alt+Down) to change the order.
+- **Icons.** Each account shows the icon of its service, found by its sites or by its name among the icons that come with the extension. Without one it shows the icon of its site, read from the page when you open Authenticator there or fill in a code, except in private windows, and kept encrypted on that computer only; else the first letter of its name on a shield.
 - **Password lock.** The vault locks 5 minutes after the popup closes, after the last code filled in from a page, or after 5 minutes without using an open Authenticator window, or when you choose in Settings: as soon as the popup closes (an open window then locks after 1 minute without use), after 1 or 30 minutes or 1 hour, or never until Firefox closes. **Lock now** locks it at once. **Suggest a password** fills in 20 random letters, digits and symbols.
 - **Read-only codes when something is wrong.** If the vault in Firefox Sync is damaged or replaced, or another vault claims to be older, your password still opens your codes read-only, without writing anything to Firefox Sync.
 - **Recovery key.** Shown once when the vault is created; with it, **Forgot password?** sets a new password.
@@ -64,7 +65,7 @@ The extension has no server, sends nothing and collects nothing. QR codes are de
 
 | Permission | Why |
 |---|---|
-| `storage` | The encrypted vault, its local copy and the unlock settings. |
+| `storage` | The encrypted vault, its local copy, the unlock settings and, on each computer, the encrypted icons of your sites. |
 | `clipboardWrite` | Copying a code. |
 | `alarms` | Locking the vault when its time is up, also with no extension window open. |
 | `activeTab`, `scripting` | Scan a QR code and filling in a code: they apply only to the tab where you clicked the extension's button or its menu item, until it loads another page. |
@@ -106,7 +107,7 @@ extension/          what Firefox loads; the upload archive contains its files
   content/          the scripts injected into a page: the picker of Scan a QR code, the list under a field
   core/             OTP generation, QR payload parsers, the encrypted vault
   shared/           what the popup and the background share: the texts, the QR decoder and its worker, the filling of a field
-  assets/           fonts and icons
+  assets/           fonts, icons and the icons of services (brands/, listed in core/brands.mjs)
   vendor/jsqr/      the bundled QR decoder
 tools/              the static check and the packager
 ```
@@ -115,4 +116,4 @@ tools/              the static check and the packager
 
 Authenticator is released under the Mozilla Public License 2.0, see `LICENSE`.
 
-Bundled third-party components keep their own licenses: [jsQR](https://github.com/cozmo/jsQR) 1.4.0 (Apache-2.0) in `extension/vendor/jsqr/`, and the Google Sans font (SIL Open Font License) in `extension/assets/fonts/`. The icons named `firefox-*.svg` are Firefox's own icons, under the Mozilla Public License 2.0.
+Bundled third-party components keep their own licenses: [jsQR](https://github.com/cozmo/jsQR) 1.4.0 (Apache-2.0) in `extension/vendor/jsqr/`, and the Google Sans font (SIL Open Font License) in `extension/assets/fonts/`. The icons named `firefox-*.svg` are Firefox's own icons, under the Mozilla Public License 2.0. The icons of services in `extension/assets/brands/` come from [Simple Icons](https://simpleicons.org/) 16.37.0 (Plex and Xbox: 5.24.0; Amazon: 13.21.0) and, for a few, from [Logos](https://github.com/gilbarbara/logos) by Gil Barbara, both CC0-1.0, except for eBay, from its [official logo package](https://playbook.ebay.com/foundations/logo), Snapchat, from the outlined Ghost on its [official website](https://www.snapchat.com/), Hugging Face, from the logo on its [official website](https://huggingface.co/), and EA, Unity and Pinterest, from their logos on [Wikimedia Commons](https://commons.wikimedia.org/). The logos are trademarks of their owners, shown only to tell an account's service.
