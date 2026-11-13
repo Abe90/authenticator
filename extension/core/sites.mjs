@@ -72,10 +72,17 @@ const isSite = (entry) => entry !== null && typeof entry === 'object' && !Array.
 // The entries of a site list this version can use; a value that is not a list has none.
 export const validSites = (value) => (Array.isArray(value) ? value.filter(isSite) : []);
 
-// The accounts that have host's site among theirs.
-export function matchingAccounts(accounts, host) {
-  const key = siteKey(host);
-  return accounts.filter((account) => validSites(account.sites).some((site) => siteKey(site.host) === key));
+// The accounts split as the lists for filling a field show them: matching, those that have host's site among theirs,
+// then the others, each in order. Without a host, none match.
+export function bySite(accounts, host) {
+  const key = host ? siteKey(host) : null;
+  const matching = [];
+  const others = [];
+  for (const account of accounts) {
+    const matches = key !== null && validSites(account.sites).some((site) => siteKey(site.host) === key);
+    (matches ? matching : others).push(account);
+  }
+  return { matching, others };
 }
 
 // Adds entries to the account's sites: each valid one joins last, with its fields, unless the account has its site

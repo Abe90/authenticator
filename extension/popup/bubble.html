@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title data-i18n="fillTitle"></title>
+    <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" href="bubble.css">
+  </head>
+  <body class="bubble">
+    <div id="bubble" class="fill-list">
+      <div class="search-field" hidden>
+        <span class="icon icon-search"></span>
+        <input id="bubble-search" type="text" role="searchbox" data-i18n-aria-label="searchAccounts" data-i18n-placeholder="searchPlaceholder" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="fill-accounts" role="group" data-i18n-aria-label="fillTitle"></div>
+      <p class="fill-empty" role="status" hidden data-i18n="noAccountsFound"></p>
+    </div>
+    <script type="module" src="bubble.mjs"></script>
+  </body>
+</html>

@@ -223,8 +223,13 @@
         </div>
       </div>
     </section>
-    <section id="fill-panel" class="page" hidden aria-labelledby="fill-title">
-      <div id="fill-accounts"></div>
+    <section id="fill-panel" class="page fill-list" hidden aria-labelledby="fill-title">
+      <div class="search-field" hidden>
+        <span class="icon icon-search"></span>
+        <input id="fill-search" type="text" role="searchbox" data-i18n-aria-label="searchAccounts" data-i18n-placeholder="searchPlaceholder" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="fill-accounts"></div>
+      <p class="fill-empty" role="status" hidden data-i18n="noAccountsFound"></p>
     </section>
     <form id="edit-form" class="page" hidden autocomplete="off" novalidate aria-labelledby="edit-title">
       <div class="page-body">

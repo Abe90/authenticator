@@ -1,8 +1,8 @@
 import { createHotpGenerator, totpStep } from '../core/totp.mjs';
 
-// A code put into a page's field from the context menu: by the background script when one account matches the page
-// (background/fill-menu.mjs), by the toolbar popup when the user picks one (popup/ui/fill-page.mjs). The page gets the
-// code, and nothing else.
+// A code put into a page's field from the context menu: by the background script when one account matches the page or
+// the user picks one in the list under the field (background/fill-menu.mjs), by the toolbar popup when the user picks
+// one there (popup/ui/fill-page.mjs). The page gets the code, and nothing else.
 
 // Runs in the clicked frame, as a content script, so Firefox serialises it: it uses nothing from around it. Finds the
 // field the menu was opened on and tells whether it can take a code; given one, puts it in: one digit per box for a
@@ -51,10 +51,20 @@ export function fillField(target, code) {
 
 // The code of account for a fill, from vault, held open: an HOTP account advances, as with the popup's next-code
 // button, which then shows the same code (revealed, core/revealed-codes.mjs).
-export async function fillCode(vault, revealed, account) {
+async function fillCode(vault, revealed, account) {
   const generate = await createHotpGenerator(account.secret);
   if (account.type === 'totp') return generate(totpStep(Date.now() / 1000));
   const records = await vault.advance(account.id);
   await revealed.add(account.id).catch(() => {});
   return generate(BigInt(records.find((record) => record.id === account.id).counter));
+}
+
+// Puts the code of account into the field of target, { tabId, frameId, targetElementId, host, incognito }, from
+// vault, held open; the account then learns the page's site, which it may have already, except in a private window,
+// where nobody would see it learned. Resolves to whether the field took the code.
+export async function fillAccount(vault, revealed, account, target) {
+  const code = await fillCode(vault, revealed, account);
+  if (!(await fillField(target, code))) return false;
+  if (target.host && !target.incognito) await vault.learnSite(account.id, target.host).catch(() => {});
+  return true;
 }

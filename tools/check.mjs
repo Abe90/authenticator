@@ -5,9 +5,10 @@
 // - Every JavaScript module and page script passes `node --check`.
 // - Every file the extension loads exists and is in the release package from tools/package.mjs,
 //   and every packaged file is loaded, apart from licenses and notices. References are followed
-//   from the manifest (popup, background scripts, icons) through HTML attributes, CSS url(),
-//   module imports, worker URLs, asset paths in scripts and page scripts injected with
-//   scripting.executeScript. A manifest with default_locale loads every _locales/*/messages.json.
+//   from the manifest (popup, background scripts, icons, web-accessible pages) through HTML
+//   attributes, CSS url(), module imports, worker URLs, asset paths in scripts and page scripts
+//   injected with scripting.executeScript. A manifest with default_locale loads every
+//   _locales/*/messages.json.
 // - Every message the extension asks for is in every language, with the same $1, $2… as in English, and every
 //   message is asked for. Keys are read from t('key'), plural('key') (key_one and key_other), UserError('key'),
 //   getMessage('key'), data-i18n attributes and __MSG_key__ in the manifest.
@@ -79,7 +80,9 @@ function references(path, page) {
 function loadedFiles() {
   const manifest = JSON.parse(readFileSync(join(EXTENSION, 'manifest.json'), 'utf8'));
   const pending = [manifest.action.default_popup, ...(manifest.background?.scripts ?? []),
-    ...Object.values(manifest.icons), ...Object.values(manifest.action.default_icon)].map((file) => join(EXTENSION, file));
+    ...Object.values(manifest.icons), ...Object.values(manifest.action.default_icon),
+    ...(manifest.web_accessible_resources ?? []).flatMap((entry) => entry.resources)]
+    .map((file) => join(EXTENSION, file));
   const page = pending[0];
   const loaded = new Set([join(EXTENSION, 'manifest.json')]);
   if (manifest.default_locale) pending.push(...localeFiles());

@@ -4,7 +4,7 @@ import { element, reducedMotion } from './dom.mjs';
 // page reached from the list has the same header, a back arrow and a title, and leaves the same way (popup.mjs).
 const PAGES = {
   auth: { nodes: ['#auth-header', '#auth-form'], focus: '#vault-password' },
-  list: { nodes: ['.search-field', '#settings', 'main', '#search-empty', '#list-actions'], focus: '#search' },
+  list: { nodes: ['header .search-field', '#settings', 'main', '#search-empty', '#list-actions'], focus: '#search' },
   add: { nodes: ['#add-header', '#account-form'], focus: '#account-name' },
   settings: { nodes: ['#settings-header', '#settings-panel'], focus: '#settings-back' },
   scan: { nodes: ['#scan-header', '#scan-confirm'], focus: '#scan-name' },
@@ -12,8 +12,12 @@ const PAGES = {
   // Codes, read-only: a vault the password opens but cannot unlock, from the password page.
   recovery: { nodes: ['#recovery-header', '#recovery-panel'], focus: '#recovery-close' },
   edit: { nodes: ['#edit-header', '#edit-form'], focus: '#edit-name' },
-  // Fill in a code, from the context menu of a page's field: the accounts to choose from.
-  fill: { nodes: ['#fill-header', '#fill-panel'], focus: '#fill-accounts .fill-account' },
+  // Fill in a code, from the context menu of a page's field: the accounts to choose from. The search field takes the
+  // keyboard when it shows, as it comes first; otherwise the first account does.
+  fill: {
+    nodes: ['#fill-header', '#fill-panel'],
+    focus: '#fill-panel .search-field:not([hidden]) input, #fill-panel .fill-account',
+  },
   remove: { nodes: ['#remove-header', '#remove-panel'], focus: '#remove-cancel' },
   // Change password and New recovery key: the password first, on a page like the password page.
   verify: { nodes: ['#verify-header', '#verify-form'], focus: '#verify-password' },

@@ -153,8 +153,10 @@ export async function scanPage({ api = browser, signal, onInput, ...overrides } 
   }
 
   function onConnect(candidate) {
+    // Ports with other names belong to other listeners: the extension's windows, the list under a field.
+    if (candidate.name !== PORT_NAME) return;
     const { sender } = candidate;
-    if (candidate.name !== PORT_NAME || port || !active() || sender?.id !== api.runtime.id
+    if (port || !active() || sender?.id !== api.runtime.id
       || sender?.tab?.id !== target.tabId || sender?.frameId !== 0) {
       candidate.disconnect();
       return;

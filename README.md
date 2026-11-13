@@ -17,9 +17,9 @@ Get it from addons.mozilla.org: **https://addons.mozilla.org/firefox/addon/authe
   - **Scan a QR code** finds the QR codes on the web page you are on: the page is dimmed except for the codes, you click one, check the name and press **Add**.
   - **Enter a setup key** opens a window for a name and a Base32 key, or for a QR code from an image file or a pasted screenshot.
   - `otpauth://` links and Google Authenticator exports (`otpauth-migration://`) are read too; from an export you choose which accounts to keep. A key already in your list is not added twice.
-- **Fill in a code from the page.** Right-click the field that asks for the code and choose **Authenticator**. When one account belongs to the site, its code goes straight into the field, also when the field is split into six boxes; otherwise the popup opens with the names of your accounts, the site's first, and the one you choose fills the field. With the vault locked, the popup asks for the password first. Where the extension cannot reach the field (Mozilla's own sites, the PDF viewer, a frame of another origin), or the field cannot take a code (read-only, disabled, or an editable area that is not a field), the popup opens on the list, which copies.
+- **Fill in a code from the page.** Right-click the field that asks for the code and choose **Authenticator**. When one account belongs to the site, its code goes straight into the field, also when the field is split into six boxes; otherwise the names of your accounts show under the field, the site's first, and the one you choose fills it (with the mouse, or the arrow keys and Enter; with more than 10 accounts, a search field finds them by name or by site). With the vault locked, the popup asks for the password first, then lists the accounts the same way; so it does when the page leaves no room for the list. Where the extension cannot reach the field (Mozilla's own sites, the PDF viewer, a frame of another origin), or the field cannot take a code (read-only, disabled, or an editable area that is not a field), the popup opens on the list, which copies.
 - **Sites.** Each account remembers the websites it belongs to: the page you scanned its QR code on, the tab where you opened **Enter a setup key**, and every site where you chose it from the field's menu, except in private windows. **Edit** shows them and lets you add or remove them, up to ten per account. A site covers all its subdomains: `accounts.google.com` and `myaccount.google.com` are one site, while `mario.github.io` and `luigi.github.io` are two.
-- **Organise** your accounts: search them, edit their name and sites or remove them from the right-click menu, and drag them (or press Alt+Up and Alt+Down) to change the order.
+- **Organise** your accounts: search them by name or by site, edit their name and sites or remove them from the right-click menu, and drag them (or press Alt+Up and Alt+Down) to change the order.
 - **Password lock.** The vault locks 5 minutes after the popup closes, after the last code filled in from a page, or after 5 minutes without using an open Authenticator window, or when you choose in Settings: as soon as the popup closes (an open window then locks after 1 minute without use), after 1 or 30 minutes or 1 hour, or never until Firefox closes. **Lock now** locks it at once. **Suggest a password** fills in 20 random letters, digits and symbols.
 - **Read-only codes when something is wrong.** If the vault in Firefox Sync is damaged or replaced, or another vault claims to be older, your password still opens your codes read-only, without writing anything to Firefox Sync.
 - **Recovery key.** Shown once when the vault is created; with it, **Forgot password?** sets a new password.
@@ -47,6 +47,8 @@ Removing a Firefox extension deletes its sync data on every computer. To survive
 The sites of an account are stored inside its encrypted item, as a list of hosts. A page belongs to an account when its registrable domain, from Firefox's own Public Suffix List, is that of one of the account's sites; IP addresses and local names such as `router.lan` match only themselves.
 
 Choosing **Authenticator** in a field's menu lets the extension inject a small script into that tab only. The script finds the field you clicked and puts the code in, as typing would; the page never sees a key, an account name or the password, and the code never goes through the clipboard. Nothing is ever filled in without that click, and a form is never submitted.
+
+The names under the field are an extension page in a frame, inside a closed shadow root in the top layer: the page can neither read nor reach it, nor learn its address. The names go only to the frame made for that click, which proves it with a one-time token. A choice counts only when the list was there to be seen at the point of the click, and not within half a second of appearing or moving; the list goes back on top of anything the page puts over it, and closes when the page changes or removes it.
 
 ### Format of the vault
 
@@ -98,10 +100,10 @@ A temporary add-on is removed when Firefox closes, and Firefox Sync then removes
 extension/          what Firefox loads; the upload archive contains its files
   manifest.json
   _locales/         the texts, one messages.json per language
-  popup/            the toolbar popup, also the Add code window (popup.html?view=add)
+  popup/            the toolbar popup, also the Add code window (popup.html?view=add) and the list under a field (bubble.html)
     ui/             one module per part of the page
   background/       background scripts: Scan a QR code, the field's menu item, the local copy of the vault, the lock timer
-  content/          the script Scan a QR code injects into the page
+  content/          the scripts injected into a page: the picker of Scan a QR code, the list under a field
   core/             OTP generation, QR payload parsers, the encrypted vault
   shared/           what the popup and the background share: the texts, the QR decoder and its worker, the filling of a field
   assets/           fonts and icons

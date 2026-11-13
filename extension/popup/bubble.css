@@ -1,0 +1,19 @@
+/* The list of accounts under a field of a page (bubble.html), over popup.css: the rows of the Fill in a code page, in
+   a frame as large as the list. */
+:root {
+  background: var(--surface-raised);
+}
+body.bubble {
+  width: auto;
+  height: auto;
+  padding: 0;
+  display: block;
+}
+/* The rows scroll to the edges of the frame; the search field, when it shows, keeps a margin around it, inside the
+   box's height (flow-root). */
+#bubble {
+  display: flow-root;
+}
+#bubble .search-field {
+  margin: 4px;
+}

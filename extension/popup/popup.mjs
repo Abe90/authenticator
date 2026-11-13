@@ -9,7 +9,7 @@ import { RevealedCodes } from '../core/revealed-codes.mjs';
 import { MergeReceipts } from '../core/merge-receipts.mjs';
 import { openAddCodeWindow } from '../shared/add-window.mjs';
 import { t } from '../shared/i18n.mjs';
-import { element, localize } from './ui/dom.mjs';
+import { blockPageCommands, element, localize } from './ui/dom.mjs';
 import { createViews } from './ui/views.mjs';
 import { createAuthentication } from './ui/authentication.mjs';
 import { createSettings, normalizeSettings } from './ui/settings.mjs';
@@ -485,10 +485,10 @@ async function initialize() {
   } finally {
     element('#initial-loading').hidden = true;
     document.documentElement.removeAttribute('data-starting');
-    // Focus does not take while the popup is hidden. A page opened before it showed (a Scan page result) is
-    // focused now; the list still opens with nothing focused.
+    // Focus does not take while the popup is hidden: the page that opened before it showed is focused now, the list on
+    // its search field. The Add code window opens on its form as it is.
     if (views.current === 'auth') auth.focus();
-    else if (views.current !== homeView) views.focusPage();
+    else if (views.current !== 'add') views.focusPage();
     session.ready();
     started = true;
   }
@@ -529,16 +529,7 @@ document.addEventListener('keydown', (event) => {
     if (!form.busy) window.close();
   }
 });
-// Firefox's Save page (Ctrl+S) and Print (Ctrl+P) would save or print the extension's own page: here they do nothing.
-document.addEventListener('keydown', (event) => {
-  if ((event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey
-      && ['s', 'p'].includes(event.key.toLowerCase())) event.preventDefault();
-});
-// Firefox's own context menu would offer Save Page, View Page Source and the like for the extension's page: it shows
-// only in text fields, where it cuts, copies and pastes.
-document.addEventListener('contextmenu', (event) => {
-  if (!event.target.closest('textarea, input[type="text"], input:not([type])')) event.preventDefault();
-});
+blockPageCommands();
 window.addEventListener('pagehide', () => {
   disposed = true;
   session.dispose();

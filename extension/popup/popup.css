@@ -754,7 +754,39 @@ main {
   line-height: 20px;
   font-weight: 500;
 }
-/* Fill in a code: the accounts by name, as rows to click, those of the page first and a line before the others. */
+/* Fill in a code, and the list under a page's field (bubble.html): the accounts by name, as rows to click, those of
+   the page first and a line before the others; above them a search field, with more than 10 accounts, and the
+   message when it finds none. The search field keeps its height in the page's column, which the rows leave empty
+   when the search hides them. */
+.fill-list .search-field {
+  flex: none;
+  margin: 0 0 4px;
+}
+/* The rows scroll under the search field, which stays at the top as on the list; the padding keeps a row's focus
+   ring inside the scrolling box. */
+.fill-list .fill-accounts {
+  flex: 1;
+  min-height: 0;
+  padding: 4px;
+  overflow-y: auto;
+}
+/* On the page, as on the list, the rows scroll across the whole popup, to its bottom edge, with the scrollbar at the
+   right edge; the search field and the rows keep the page's margins. */
+#fill-panel {
+  padding: 0;
+}
+#fill-panel .search-field {
+  margin: 0 16px 4px;
+}
+#fill-panel .fill-accounts {
+  padding: 4px 16px 16px;
+}
+.fill-empty {
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
 .fill-account {
   display: block;
   width: 100%;

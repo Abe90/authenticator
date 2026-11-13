@@ -31,3 +31,27 @@ export function localize(root = document) {
 }
 
 export const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Up and Down move the keyboard through items, in order, stopping at both ends: returns whether event was one of them.
+export function moveFocus(event, items) {
+  if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return false;
+  const index = items.indexOf(document.activeElement);
+  const step = event.key === 'ArrowDown' ? 1 : -1;
+  const next = index < 0 ? (step > 0 ? 0 : items.length - 1) : index + step;
+  items[Math.min(Math.max(next, 0), items.length - 1)]?.focus();
+  event.preventDefault();
+  return true;
+}
+
+// Firefox's Save page (Ctrl+S) and Print (Ctrl+P) would save or print the extension's own page, and its context menu
+// would offer Save Page, View Page Source and the like: the keys do nothing, and the menu shows only in text fields,
+// where it cuts, copies and pastes.
+export function blockPageCommands() {
+  document.addEventListener('keydown', (event) => {
+    if ((event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey
+        && ['s', 'p'].includes(event.key.toLowerCase())) event.preventDefault();
+  });
+  document.addEventListener('contextmenu', (event) => {
+    if (!event.target.closest('textarea, input[type="text"], input:not([type])')) event.preventDefault();
+  });
+}

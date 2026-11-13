@@ -1,7 +1,8 @@
 import { MAX_COUNTER } from '../../core/limits.mjs';
+import { searchQuery, searchText } from '../../core/search.mjs';
 import { TOTP_PERIOD, createHotpGenerator, totpStep } from '../../core/totp.mjs';
 import { t } from '../../shared/i18n.mjs';
-import { element, reducedMotion } from './dom.mjs';
+import { element, moveFocus, reducedMotion } from './dom.mjs';
 import { createCountdown } from './countdown.mjs';
 import { failureText } from './messages.mjs';
 import { createToast } from './toast.mjs';
@@ -53,6 +54,8 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
   // Set by a key that opens the context menu, until the menu opens or the pointer is pressed.
   let fromKeyboard = false;
   main.replaceChildren();
+  // Firefox stops Tab on a box that scrolls with nothing to focus inside, which the list is once Tab skips its rows.
+  main.tabIndex = -1;
   // Reordering waits for other writes, and is off while a search hides some rows.
   const canReorder = () => !saving && !blocked() && accounts.length > 1
     && accounts.every((account) => !account.entry.hidden);
@@ -71,10 +74,10 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
       settings.setAttribute('aria-controls', 'settings-panel');
       settings.setAttribute('aria-expanded', String(!settingsPanel.hidden));
     }
-    const query = search.value.trim().toLocaleLowerCase('en');
+    const query = searchQuery(search.value);
     let visible = 0;
     for (const account of accounts) {
-      const matches = account.name.toLocaleLowerCase('en').includes(query);
+      const matches = account.search.includes(query);
       account.entry.hidden = !matches;
       if (matches) visible++;
     }
@@ -119,7 +122,9 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
     const row = template.cloneNode(true);
     row.setAttribute('aria-label', t('copyCodeOf', record.name));
     row.setAttribute('role', 'button');
-    row.tabIndex = 0;
+    // Tab skips the rows and their next-code buttons: it goes to the search field, Settings and the + button, and Up
+    // and Down go from the search field through the rows (keyboardRows).
+    row.tabIndex = -1;
     element('h2', row).textContent = record.name;
     const code = element('output', row);
     code.removeAttribute('id');
@@ -130,8 +135,8 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
     sector.removeAttribute('id');
     sector.classList.add('timer-sector');
     const account = {
-      ...record, counter: BigInt(record.counter), entry: row, row, code, timer: timerIcon, sector,
-      shownStep: null, pending: false, generate: null,
+      ...record, counter: BigInt(record.counter), search: searchText(record), entry: row, row, code, timer: timerIcon,
+      sector, shownStep: null, pending: false, generate: null,
     };
     async function copy() {
       const value = code.textContent.replace(/\s/g, '');
@@ -143,8 +148,10 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
         toast.show(t('clipboardFailed'), code.parentElement);
       }
     }
+    account.copy = copy;
     row.addEventListener('click', copy);
     row.addEventListener('keydown', (event) => {
+      if (!event.altKey && moveFocus(event, keyboardRows())) return;
       if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); copy(); }
       if (event.key === 'Delete') { event.preventDefault(); onRemove({ id: record.id, name: record.name }); }
       if (event.altKey && (event.key === 'ArrowUp' || event.key === 'ArrowDown')) {
@@ -160,6 +167,7 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
       const next = document.createElement('button');
       next.type = 'button';
       next.className = 'counter-next icon-button';
+      next.tabIndex = -1;
       next.setAttribute('aria-label', t('nextCodeFor', record.name));
       const icon = document.createElement('span');
       icon.className = 'icon icon-refresh';
@@ -272,8 +280,11 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
 
   function render(records, { locked = false } = {}) {
     if (!locked && !cleared && sameAccounts(records)) {
-      // Only counters changed: keep the rows, so keyboard focus, a visible toast and pending work survive.
-      records.forEach((record, index) => { accounts[index].counter = BigInt(record.counter); });
+      // Only counters or sites changed: keep the rows, so keyboard focus, a visible toast and pending work survive.
+      records.forEach((record, index) => {
+        accounts[index].counter = BigInt(record.counter);
+        accounts[index].search = searchText(record);
+      });
     } else {
       revision++;
       reorder.cancel();
@@ -346,7 +357,15 @@ export function createAccountList({ vault, blocked, onError, onAdvanced, onMenu,
     if (accounts.length && !document.hidden) update();
     timer = setTimeout(tick, 1000 - Date.now() % 1000);
   }
+  // The search field, then the rows the search leaves: Up and Down move through them, and Enter in the search field
+  // copies the first row's code, as in the lists for filling a field (fill-list.mjs).
+  const keyboardRows = () => [search, ...accounts.filter((account) => !account.entry.hidden).map(({ row }) => row)];
   search.addEventListener('input', filter);
+  search.addEventListener('keydown', (event) => {
+    if (moveFocus(event, keyboardRows()) || event.key !== 'Enter') return;
+    event.preventDefault();
+    accounts.find((account) => !account.entry.hidden)?.copy();
+  });
   document.addEventListener('visibilitychange', () => { if (!document.hidden) update(); });
   tick();
   return {
