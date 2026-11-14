@@ -5,21 +5,29 @@ import { UserError } from '../core/user-error.mjs';
 import { FULL_SIDE, createQrDecoder, imageData, wholeRect } from '../shared/qr-decoder.mjs';
 import { cornersRect, cropRect, isOtpPayload, overlaps } from './scan-geometry.mjs';
 
-// Only rectangles cross into the page: the capture, the decoded text and the secret stay in the extension.
+// Only rectangles and the extension's logo cross into the page: the capture, the decoded text and the secret stay in
+// the extension.
 
 const OVERLAY_FILE = '/content/qr-overlay.js';
+// The logo next to the overlay's hint. The page cannot load the extension's files, so it goes there as bytes.
+const LOGO_FILE = '/assets/icons/logo-64.png';
 export const PORT_NAME = 'qr-scan';
 const MAX_ITEMS = 40;
 const CONNECT_TIMEOUT_MS = 5000;
 // Longest side, in pixels, at which the crop around one page element is decoded.
 const CROP_SIDE = 1024;
 
+async function loadLogo(api) {
+  const response = await fetch(api.runtime.getURL(LOGO_FILE));
+  return new Uint8Array(await response.arrayBuffer()).toBase64();
+}
+
 async function loadCapture(api, windowId) {
   const url = await api.tabs.captureVisibleTab(windowId, { format: 'png' });
   return createImageBitmap(await (await fetch(url)).blob());
 }
 
-const DEFAULTS = { loadCapture, imageData, createDecoder: createQrDecoder, parse: parseQrAccount };
+const DEFAULTS = { loadCapture, loadLogo, imageData, createDecoder: createQrDecoder, parse: parseQrAccount };
 
 async function findTarget(api) {
   const { [SCAN_TARGET_KEY]: target } = await api.storage.session.get(SCAN_TARGET_KEY);
@@ -165,6 +173,8 @@ export async function scanPage({ api = browser, signal, onInput, ...overrides } 
     port.onMessage.addListener(onMessage);
     // The page navigated or closed, or the overlay was removed.
     port.onDisconnect.addListener(() => { port = null; cancel(); });
+    // Without the logo, the hint shows its text alone.
+    deps.loadLogo(api).then((data) => port?.postMessage({ type: 'logo', data })).catch(() => {});
   }
 
   function onActivated({ tabId, windowId }) {

@@ -1,5 +1,6 @@
 // Injected into the scanned page to report where images are and draw the picker. It never sees the capture, the
-// decoded text or any secret, and acts on trusted events only.
+// decoded text or any secret, and acts on trusted events only. The extension's logo, next to the hint, comes from
+// the extension as bytes and is drawn on a canvas: the page's rules for images do not apply to it.
 (() => {
   const KEY = Symbol.for('authenticator.qrScan');
   globalThis[KEY]?.destroy();
@@ -7,6 +8,9 @@
   const MEDIA = new Set(['img', 'picture', 'canvas', 'svg', 'object', 'iframe', 'embed', 'video']);
   const MAX_ITEMS = 40;
   const PADDING = 6;
+  // The side of the logo in the hint, and the most its file can weigh as Base64.
+  const LOGO_SIDE = 20;
+  const MAX_LOGO_LENGTH = 100_000;
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   // The primary violet of the popup's light theme (--button in popup.css), in the dark theme too.
   const PRIMARY = '#7543e3';
@@ -20,6 +24,9 @@
   let host = null;
   let canvas = null;
   let hint = null;
+  let hintText = null;
+  let logo = null;
+  let logoImage = null;
   let live = null;
   let debounce = 0;
   let destroyed = false;
@@ -104,7 +111,13 @@
       position: 'absolute', top: '16px', left: '50%', transform: 'translateX(-50%)', padding: '8px 16px',
       borderRadius: '18px', background: '#202124', color: '#fff', font: '500 14px/20px system-ui, sans-serif',
       whiteSpace: 'nowrap', pointerEvents: 'none', boxShadow: '0 2px 6px rgba(0, 0, 0, .3)',
+      display: 'flex', alignItems: 'center', gap: '8px',
     });
+    // Hidden until the logo arrives.
+    logo = document.createElement('canvas');
+    Object.assign(logo.style, { display: 'none', width: `${LOGO_SIDE}px`, height: `${LOGO_SIDE}px`, flex: 'none' });
+    hintText = document.createElement('span');
+    hint.append(logo, hintText);
     live = document.createElement('div');
     live.setAttribute('aria-live', 'polite');
     Object.assign(live.style, {
@@ -115,6 +128,24 @@
     canvas.addEventListener('click', onClick);
     document.documentElement.append(host);
     if (!reducedMotion) host.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 150, easing: 'ease-out' });
+  }
+
+  function drawLogo() {
+    if (!logo || !logoImage) return;
+    logo.width = logo.height = Math.round(LOGO_SIDE * devicePixelRatio);
+    logo.getContext('2d').drawImage(logoImage, 0, 0, logo.width, logo.height);
+    logo.style.display = 'block';
+    hint.style.paddingLeft = '12px';
+  }
+
+  async function readLogo(data) {
+    if (typeof data !== 'string' || data.length > MAX_LOGO_LENGTH || logoImage) return;
+    let image;
+    try { image = await createImageBitmap(new Blob([Uint8Array.fromBase64(data)], { type: 'image/png' })); }
+    catch { return; }
+    if (destroyed || logoImage) { image.close(); return; }
+    logoImage = image;
+    drawLogo();
   }
 
   function regionAt(x, y) {
@@ -150,6 +181,7 @@
       context.stroke();
     });
     canvas.style.cursor = hovered >= 0 ? 'pointer' : 'default';
+    drawLogo();
   }
 
   function show(next) {
@@ -158,8 +190,8 @@
     hovered = regions.length === 1 ? 0 : -1;
     if (!host) build();
     important(host, { display: 'block' });
-    hint.textContent = regions.length ? t('overlayHint') : t('overlayNone');
-    live.textContent = regions.length ? plural('overlayFound', regions.length) : hint.textContent;
+    hintText.textContent = regions.length ? t('overlayHint') : t('overlayNone');
+    live.textContent = regions.length ? plural('overlayFound', regions.length) : hintText.textContent;
     draw();
     canvas.focus({ preventScroll: true });
   }
@@ -230,7 +262,8 @@
     removeEventListener('scrollend', onScrollEnd, true);
     removeEventListener('resize', onLayoutChange);
     host?.remove();
-    host = canvas = hint = live = null;
+    logoImage?.close();
+    host = canvas = hint = hintText = logo = logoImage = live = null;
     regions = [];
     try { port.disconnect(); } catch { /* Already closed by the extension. */ }
     if (globalThis[KEY]?.destroy === destroy) delete globalThis[KEY];
@@ -239,7 +272,9 @@
   const isRect = (value) => ['x', 'y', 'width', 'height']
     .every((key) => Number.isFinite(value?.[key]) && value[key] >= 0);
   port.onMessage.addListener((message) => {
-    if (destroyed || message?.type !== 'show' || !Array.isArray(message.regions)) return;
+    if (destroyed) return;
+    if (message?.type === 'logo') { readLogo(message.data); return; }
+    if (message?.type !== 'show' || !Array.isArray(message.regions)) return;
     const next = message.regions.filter((region) => typeof region.id === 'string' && isRect(region))
       .map(({ id, x, y, width, height }) => ({ id, x, y, width, height }));
     show(next);
