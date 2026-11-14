@@ -939,8 +939,7 @@ main {
   flex: none;
   margin: 0 0 4px;
 }
-/* The rows scroll under the search field, which stays at the top as on the list; the padding keeps a row's focus
-   ring inside the scrolling box. */
+/* The rows scroll under the search field, which stays at the top as on the list, with a margin around them. */
 .fill-list .fill-accounts {
   flex: 1;
   min-height: 0;
@@ -990,6 +989,10 @@ main {
 .fill-account-name {
   min-width: 0;
   overflow-wrap: anywhere;
+}
+/* The focus ring stays inside the row, away from the edges of the list under a field. */
+.fill-account:focus-visible {
+  outline-offset: -2px;
 }
 .fill-account:active {
   background: var(--control-active);
