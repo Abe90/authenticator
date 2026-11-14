@@ -62,14 +62,14 @@ When you choose **Scan a QR code**, the extension injects a small script into th
 
 ## Privacy and permissions
 
-The extension has no server, sends nothing and collects nothing. QR codes are decoded on the device. A script enters a page only when you ask: with **Scan a QR code**, or with the **Authenticator** item of a field's menu.
+The extension has no server, sends nothing and collects nothing. QR codes are decoded on the device. A script enters a page only in the tab where you clicked: with **Scan a QR code**, with the **Authenticator** item of a field's menu, and, outside private windows, to read the page's icon when you open Authenticator or fill in a code on the site of an account that has none.
 
 | Permission | Why |
 |---|---|
 | `storage` | The encrypted vault, its local copy, the unlock settings and, on each computer, the encrypted icons of your sites. |
 | `clipboardWrite` | Copying a code. |
 | `alarms` | Locking the vault when its time is up, also with no extension window open. |
-| `activeTab`, `scripting` | Scan a QR code and filling in a code: they apply only to the tab where you clicked the extension's button or its menu item, until it loads another page. |
+| `activeTab`, `scripting` | Scan a QR code, filling in a code and reading a site's icon: they apply only to the tab where you clicked the extension's button or its menu item, until it loads another page. |
 | `menus` | The **Authenticator** item in the menu of editable fields. |
 | `publicSuffix` | Telling which hosts are the same site, with Firefox's own Public Suffix List. |
 
