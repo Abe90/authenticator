@@ -57,7 +57,7 @@ export function createAddForm({ vault, active, blocked, proposedSite, onSaved, o
   }
 
   // One account fills the form; an export shows its list, where accounts already stored cannot be selected. host,
-  // when given, is the site of a Scan page result, or null, and replaces the list; an export takes no site.
+  // when given, is the site of a Scan page result, or null, and replaces the list; an export keeps its own sites.
   async function applyRecord(record, host) {
     let reasons = [];
     if (record.kind === 'migration') {

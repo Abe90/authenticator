@@ -3,7 +3,7 @@ import { element } from './dom.mjs';
 import { WRONG_PASSWORD } from './messages.mjs';
 import { createPasswordEntry } from './password-entry.mjs';
 
-// The password asked before Change password and New recovery key, on a page like the password page and with the
+// The password asked before Change password, New recovery key and Export codes, on a page like the password page and with the
 // same behaviour: the password is checked on its own once typing pauses. show() sets the page up for one of them;
 // onChecked(password) runs once the password is right.
 export function createPasswordCheck({ vault, active, blocked }) {

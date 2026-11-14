@@ -124,6 +124,19 @@
         <h1 id="new-key-title" data-i18n="saveNewKeyTitle"></h1>
         <p data-i18n="keyIntro"></p>
       </div>
+      <div id="export-header" class="page-header" hidden>
+        <button id="export-back" class="back icon-button" type="button" data-i18n-aria-label="backToSettings"><span class="icon icon-back"></span></button>
+        <h1 id="export-title" data-i18n="exportQrCodes"></h1>
+      </div>
+      <div id="export-qr-header" class="page-header" hidden>
+        <button id="export-qr-back" class="back icon-button" type="button" data-i18n-aria-label="back"><span class="icon icon-back"></span></button>
+        <h1 id="export-qr-title" data-i18n="exportQrTitle"></h1>
+        <div id="export-pager" hidden>
+          <button id="export-previous" class="icon-button" type="button" data-i18n-aria-label="exportQrPrevious"><span class="icon icon-back"></span></button>
+          <p id="export-page" role="status"></p>
+          <button id="export-next" class="icon-button" type="button" data-i18n-aria-label="exportQrNext"><span class="icon icon-forward"></span></button>
+        </div>
+      </div>
       <div id="other-header" class="intro" hidden>
         <img class="intro-logo" src="../assets/icons/logo-96.png" width="48" height="48" alt="">
         <h1 id="other-title" data-i18n="otherTitle"></h1>
@@ -168,6 +181,7 @@
       <h2 class="settings-section" data-i18n="vault"></h2>
       <button id="change-password" class="setting-link" type="button"><span data-i18n="changePassword"></span><span class="icon icon-chevron"></span></button>
       <button id="new-recovery-key" class="setting-link" type="button"><span data-i18n="newRecoveryKey"></span><span class="icon icon-chevron"></span></button>
+      <button id="export-codes" class="setting-link" type="button"><span data-i18n="exportQrCodes"></span><span class="icon icon-chevron"></span></button>
       <button id="other-vaults" class="setting-link" type="button" hidden><span data-i18n="anotherVault"></span><span class="icon icon-chevron"></span></button>
       <button id="lock-vault" class="secondary" type="button"><span class="icon icon-firefox-lock"></span><span data-i18n="lockNow"></span></button>
     </section>
@@ -356,6 +370,38 @@
       </div>
       <button id="replace-key" class="primary wide" type="submit" disabled data-i18n="replaceKey"></button>
     </form>
+    <form id="export-form" class="page" hidden aria-labelledby="export-title">
+      <div class="page-body">
+        <p class="hint" data-i18n="exportQrIntro"></p>
+        <label class="migration-account export-all"><input id="export-all" type="checkbox"><span data-i18n="exportQrAll"></span></label>
+        <div id="export-accounts"></div>
+        <p id="export-error" class="error" role="alert" hidden></p>
+      </div>
+      <div class="page-footer">
+        <div class="form-actions">
+          <button id="export-cancel" class="secondary" type="button" data-i18n="cancel"></button>
+          <button id="export-submit" class="primary" type="submit" data-i18n="exportQrAction"></button>
+        </div>
+      </div>
+    </form>
+    <section id="export-qr-panel" class="page" hidden aria-labelledby="export-qr-title">
+      <div class="page-body">
+        <div class="export-qr-area">
+          <button id="export-zoom" type="button" aria-pressed="false" data-i18n-aria-label="exportQrZoom">
+            <canvas id="export-qr" width="1" height="1"></canvas>
+            <span class="export-zoom-badge"><span class="icon icon-zoom-in"></span></span>
+          </button>
+        </div>
+        <p class="hint export-note" data-i18n="exportQrWarning"></p>
+        <p id="export-qr-error" class="error" role="alert" hidden></p>
+      </div>
+      <div class="page-footer">
+        <div class="form-actions export-actions">
+          <button id="export-copy" class="secondary" type="button"><span class="icon icon-copy"></span><span data-i18n="exportQrCopy"></span></button>
+          <button id="export-save" class="secondary" type="button"><span class="icon icon-download"></span><span data-i18n="save"></span></button>
+        </div>
+      </div>
+    </section>
     <section id="other-panel" class="page interstitial" hidden aria-labelledby="other-title">
       <div class="interstitial-actions page-footer">
         <button id="other-add" class="primary wide" type="button" data-i18n="copyItsCodes"></button>

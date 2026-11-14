@@ -33,6 +33,7 @@ import { createNewRecoveryKey } from './ui/recovery-key.mjs';
 import { createMerge } from './ui/merge.mjs';
 import { createRestoreCopy } from './ui/restore-copy.mjs';
 import { createRecoveryView } from './ui/recovery-view.mjs';
+import { createExportQr } from './ui/export-qr.mjs';
 import { setUpPasswordFields } from './ui/password-fields.mjs';
 import { setUpPasswordHints } from './ui/password-meter.mjs';
 
@@ -210,6 +211,7 @@ const restoreCopy = createRestoreCopy({
   onDone: () => leaveRestore(t('vaultBack')),
   onExit: () => leaveRestore(),
 });
+const exporter = createExportQr({ vault, views, onCancel: () => leaveVaultChange() });
 const session = createUnlockSession({
   vault, list, auth, onEnded: lockVault,
   onFollowed: () => showUnlockedView(),
@@ -241,6 +243,8 @@ const back = {
   'restore-open': () => restoreCopy.back(),
   'restore-codes': () => restoreCopy.back(),
   'new-key': () => leaveVaultChange(),
+  export: () => leaveVaultChange(),
+  'export-qr': () => exporter.back(),
   other: () => afterUnlock.back(),
   'remove-vault': () => afterUnlock.back(),
   duplicates: () => afterUnlock.back(),
@@ -336,8 +340,8 @@ async function openAddWindow() {
     setLaunchersDisabled(false);
   }
 }
-// Change password and New recovery key, from Settings: the password first, then the change. Back on either page,
-// and the end of the change, return to Settings.
+// Change password, New recovery key and Export codes, from Settings: the password first, then the change. Back on
+// either page, and the end of the change, return to Settings.
 const VAULT_CHANGES = {
   password: {
     setting: '#change-password',
@@ -370,6 +374,17 @@ const VAULT_CHANGES = {
       return views.navigate('new-key');
     },
   },
+  export: {
+    setting: '#export-codes',
+    title: t('exportQrCodes'),
+    description: t('exportQrPrompt'),
+    prepare: () => exporter.reset(),
+    // The password only proves who asks: the QR code is made from the unlocked vault.
+    async next() {
+      await exporter.load();
+      return views.navigate('export');
+    },
+  },
 };
 let vaultChange = null;
 // state: what a popup that closed kept of New recovery key.
@@ -384,6 +399,7 @@ function clearVaultChange() {
   check.reset();
   newPassword.reset();
   recovery.reset();
+  exporter.reset();
   vaultChange = null;
 }
 // saved: the change is done. Back is ignored while a page is busy; the end of a change waits instead, since the
@@ -516,6 +532,7 @@ browser.storage.onChanged.addListener((changes, area) => {
   }
 });
 element('#new-recovery-key').addEventListener('click', () => startVaultChange('recovery'));
+element('#export-codes').addEventListener('click', () => startVaultChange('export'));
 settingsButton.addEventListener('click', async () => {
   if (search.value) { search.value = ''; list.filter(); search.focus(); return; }
   // Another vault shows while there is one, copied or not.

@@ -2,7 +2,7 @@ import { brandOf } from '../../core/brands.mjs';
 import { duplicateReasons, findDuplicate } from '../../core/duplicates.mjs';
 import { cleanName } from '../../core/limits.mjs';
 import { isSiteImage } from '../../core/site-icons.mjs';
-import { displayHost, hostFromUrl, siteKey } from '../../core/sites.mjs';
+import { displayHost, hostFromUrl, siteKey, validSites } from '../../core/sites.mjs';
 import { t } from '../../shared/i18n.mjs';
 import { readPageIcon } from '../../shared/site-icon.mjs';
 import { createAccountIcon } from './account-icon.mjs';
@@ -12,7 +12,8 @@ import { createMigrationPreview } from './migration-preview.mjs';
 import { createSiteList } from './site-list.mjs';
 
 // The Scanned code page confirms a code picked with Scan page: one account with an editable name and its sites, the
-// scanned page's to begin with, or an export's list, which takes no site. A single code already stored gets the
+// scanned page's to begin with, or an export's list, whose accounts keep the sites an export of Authenticator gives
+// them. A single code already stored gets the
 // notice page instead. Above the name of one account come the icon it will have, the scanned page's site and its
 // address: a bundled icon that the site or the name finds, else the page's own, which is kept with the account
 // (core/site-icons.mjs), else the first letter. An unsaved code is lost on leaving.
@@ -133,8 +134,8 @@ export function createScanConfirm({ vault, notice, active, onSaved, onCancel }) 
     const siteEntries = isExport() ? [] : sites.readSites();
     if (!siteEntries) return;
     const records = (isExport() ? preview.selected() : [{ ...record, name: label }])
-      .map(({ name: accountName, secret, type, counter }) => ({
-        name: accountName, secret, type, counter, sites: siteEntries,
+      .map(({ name: accountName, secret, type, counter, sites: own }) => ({
+        name: accountName, secret, type, counter, sites: isExport() ? validSites(own) : siteEntries,
       }));
     if (!records.length) return;
     const current = revision;

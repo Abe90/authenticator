@@ -19,12 +19,15 @@ const PAGES = {
     focus: '#fill-panel .search-field:not([hidden]) input, #fill-panel .fill-account',
   },
   remove: { nodes: ['#remove-header', '#remove-panel'], focus: '#remove-cancel' },
-  // Change password and New recovery key: the password first, on a page like the password page.
+  // Change password, New recovery key and Export codes: the password first, on a page like the password page.
   verify: { nodes: ['#verify-header', '#verify-form'], focus: '#verify-password' },
   password: { nodes: ['#password-header', '#password-form'], focus: '#password-new' },
   // Forgot password: the recovery key first, then the new password on the page of Change password.
   reset: { nodes: ['#reset-header', '#reset-form'], focus: '#reset-key' },
   'new-key': { nodes: ['#new-key-header', '#new-key-form'], focus: '#new-key-saved' },
+  // Export codes, after the password: the accounts to choose, then their QR code.
+  export: { nodes: ['#export-header', '#export-form'], focus: '#export-cancel' },
+  'export-qr': { nodes: ['#export-qr-header', '#export-qr-panel'], focus: '#export-qr-back' },
   // After an unlock: another vault, its removal, and a key added on two computers.
   other: { nodes: ['#other-header', '#other-panel'], focus: '#other-add' },
   'remove-vault': { nodes: ['#remove-vault-header', '#remove-vault-panel'], focus: '#remove-vault-cancel' },

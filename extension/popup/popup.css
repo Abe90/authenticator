@@ -183,6 +183,9 @@ input, textarea {
 .icon-copy {
   mask-image: url('../assets/icons/copy.svg');
 }
+.icon-download {
+  mask-image: url('../assets/icons/download.svg');
+}
 .icon-eye {
   mask-image: url('../assets/icons/eye.svg');
 }
@@ -221,6 +224,12 @@ input, textarea {
 }
 .icon-refresh {
   mask-image: url('../assets/icons/refresh.svg');
+}
+.icon-zoom-in {
+  mask-image: url('../assets/icons/zoom-in.svg');
+}
+.icon-zoom-out {
+  mask-image: url('../assets/icons/zoom-out.svg');
 }
 .icon-search {
   mask-image: url('../assets/icons/search.svg');
@@ -792,6 +801,96 @@ main {
 /* An account already in the list is not an error in the export, so its note is grey. */
 .migration-account small.duplicate {
   color: var(--text-muted);
+}
+/* Export codes: the accounts under Select all, then the QR code, black on white in both themes. The QR code is a
+   button in a square nearly as wide as the page, which it fills once clicked: what is under it, a short note that it is not encrypted, never moves. Under the
+   mouse it darkens and shows a magnifying glass. The arrows that turn its pages, when there are several, are on
+   the right of the header. Copy and Save have each its icon. */
+.export-all {
+  margin-top: 8px;
+  font-weight: 500;
+}
+.export-qr-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  height: 296px;
+}
+#export-zoom {
+  position: relative;
+  width: 232px;
+  height: 232px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  cursor: zoom-in;
+  transition: width 200ms ease, height 200ms ease, outline-color 150ms ease;
+}
+#export-zoom[aria-pressed="true"] {
+  width: 296px;
+  height: 296px;
+  cursor: zoom-out;
+}
+#export-qr {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: filter 150ms ease;
+}
+#export-zoom:hover #export-qr, #export-zoom:focus-visible #export-qr {
+  filter: brightness(.75);
+}
+.export-zoom-badge {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin: auto;
+  border-radius: 50%;
+  background: rgb(0 0 0 / .75);
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+#export-zoom:hover .export-zoom-badge, #export-zoom:focus-visible .export-zoom-badge {
+  opacity: 1;
+}
+.export-zoom-badge .icon {
+  width: 26px;
+  height: 26px;
+  color: #fff;
+}
+.export-note {
+  margin-top: 6px;
+  text-align: center;
+  text-wrap: balance;
+}
+#export-pager {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+}
+#export-pager p {
+  min-width: 64px;
+  margin: 0;
+  font-size: 13px;
+  text-align: center;
+}
+.export-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.export-actions .icon {
+  width: 16px;
+  height: 16px;
+  color: inherit;
 }
 /* Scanned code: the icon the account will have, the site of the scanned page and the page's address. */
 .scan-site {
@@ -1669,6 +1768,9 @@ output.key {
     transition: none;
   }
   #settings .icon, .back .icon, .counter-next .icon {
+    transition: none;
+  }
+  #export-zoom, #export-qr, .export-zoom-badge {
     transition: none;
   }
   #account-menu button {

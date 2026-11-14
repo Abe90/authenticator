@@ -874,5 +874,44 @@
   },
   "deleteCopyFailed": {
     "message": "Die Kopie konnte nicht gelöscht werden. Bitte versuchen Sie es erneut."
+  },
+  "exportQrCodes": {
+    "message": "Codes exportieren"
+  },
+  "exportQrPrompt": {
+    "message": "Geben Sie Ihr Passwort ein, um Ihre Codes zu exportieren."
+  },
+  "exportQrIntro": {
+    "message": "Wählen Sie die Codes, die in den QR-Code sollen."
+  },
+  "exportQrAll": {
+    "message": "Alle auswählen"
+  },
+  "exportQrAction": {
+    "message": "Exportieren"
+  },
+  "exportQrTitle": {
+    "message": "QR-Code"
+  },
+  "exportQrWarning": {
+    "message": "Nicht verschlüsselt: Wer ihn sieht, kann Ihre Codes kopieren. Löschen Sie das Bild nach dem Import."
+  },
+  "exportQrPage": {
+    "message": "QR $1 von $2"
+  },
+  "exportQrPrevious": {
+    "message": "Vorheriger QR-Code"
+  },
+  "exportQrNext": {
+    "message": "Nächster QR-Code"
+  },
+  "exportQrCopy": {
+    "message": "Kopieren"
+  },
+  "exportQrFailed": {
+    "message": "Der QR-Code konnte nicht erstellt werden. Bitte versuchen Sie es erneut."
+  },
+  "exportQrZoom": {
+    "message": "QR-Code vergrößern"
   }
 }

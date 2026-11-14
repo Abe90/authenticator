@@ -874,5 +874,44 @@
   },
   "deleteCopyFailed": {
     "message": "Impossible de supprimer la copie. Veuillez réessayer."
+  },
+  "exportQrCodes": {
+    "message": "Exporter les codes"
+  },
+  "exportQrPrompt": {
+    "message": "Saisissez votre mot de passe pour exporter vos codes."
+  },
+  "exportQrIntro": {
+    "message": "Choisissez les codes à mettre dans le code QR."
+  },
+  "exportQrAll": {
+    "message": "Tout sélectionner"
+  },
+  "exportQrAction": {
+    "message": "Exporter"
+  },
+  "exportQrTitle": {
+    "message": "Code QR"
+  },
+  "exportQrWarning": {
+    "message": "Non chiffré : qui le voit peut copier vos codes. Supprimez l’image après l’import."
+  },
+  "exportQrPage": {
+    "message": "QR $1 sur $2"
+  },
+  "exportQrPrevious": {
+    "message": "Code QR précédent"
+  },
+  "exportQrNext": {
+    "message": "Code QR suivant"
+  },
+  "exportQrCopy": {
+    "message": "Copier"
+  },
+  "exportQrFailed": {
+    "message": "Impossible de créer le code QR. Veuillez réessayer."
+  },
+  "exportQrZoom": {
+    "message": "Agrandir le code QR"
   }
 }
