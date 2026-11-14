@@ -3,14 +3,13 @@ import { siteKey, validSites } from './sites.mjs';
 // The bundled icons of the services where people use codes: for each, its file assets/brands/<icon>.svg, the sites
 // that show it, as registrable domains, and the names that do. Adding an icon is its file and one entry here
 // (tools/check.mjs compares the two). The files come from Simple Icons, filled with the service's colour, and, for
-// google, microsoft, aws, linkedin, slack, zoom, adobe, yahoo, gitlab, figma, trello, openai, paypal, meta, steam,
-// salesforce, ibm, sap, stackoverflow, googlecloud, firebase, atlassian, mongodb, tiktok, namecheap and claude, from
-// Logos by Gil Barbara (the README's License section); ebay comes from eBay's official logo package, with a separate
-// path per letter; snapchat uses the outlined Ghost from snapchat.com and huggingface the logo without border from
-// huggingface.co; ea, unity and pinterest are the marks of the logos on Wikimedia Commons, without the words. A
-// colour too light for the light theme gives way to a dark one in the file; dark marks the icons too dark for the
-// dark theme, which shows them in the colour of its text. The logos belong to their owners and show only next to an
-// account.
+// google, microsoft, aws, linkedin, slack, zoom, yahoo, gitlab, figma, trello, openai, paypal, meta, salesforce,
+// ibm, sap, googlecloud, firebase, atlassian, mongodb, tiktok and namecheap, from Logos by Gil Barbara (the README's
+// License section); ebay comes from eBay's official logo package, with a separate path per letter; snapchat uses the
+// outlined Ghost from snapchat.com and huggingface the logo without border from huggingface.co; ea and unity are the
+// marks of the logos on Wikimedia Commons, without the words. A colour too light for the light theme gives way to a
+// dark one in the file; dark marks the icons too dark for the dark theme, which shows them in the colour of its
+// text. The logos belong to their owners and show only next to an account.
 export const BRANDS = [
   { icon: 'google', sites: ['google.com'], names: ['Google', 'Gmail'] },
   { icon: 'microsoft', sites: ['microsoft.com', 'live.com', 'microsoftonline.com', 'outlook.com', 'office.com', 'azure.com'],
@@ -30,34 +29,27 @@ export const BRANDS = [
   { icon: 'twitch', sites: ['twitch.tv'], names: ['Twitch'] },
   { icon: 'snapchat', dark: true, sites: ['snapchat.com'], names: ['Snapchat'] },
   { icon: 'tiktok', dark: true, sites: ['tiktok.com'], names: ['TikTok'] },
-  { icon: 'pinterest', sites: ['pinterest.com'], names: ['Pinterest'] },
   { icon: 'tumblr', dark: true, sites: ['tumblr.com'], names: ['Tumblr'] },
   { icon: 'slack', sites: ['slack.com'], names: ['Slack'] },
   { icon: 'zoom', sites: ['zoom.us', 'zoom.com'], names: ['Zoom'] },
   { icon: 'dropbox', sites: ['dropbox.com'], names: ['Dropbox'] },
   { icon: 'box', sites: ['box.com'], names: ['Box'] },
-  { icon: 'adobe', sites: ['adobe.com'], names: ['Adobe'] },
   { icon: 'yahoo', dark: true, sites: ['yahoo.com'], names: ['Yahoo'] },
   { icon: 'github', dark: true, sites: ['github.com'], names: ['GitHub'] },
   { icon: 'gitlab', sites: ['gitlab.com'], names: ['GitLab'] },
   { icon: 'bitbucket', sites: ['bitbucket.org'], names: ['Bitbucket'] },
   { icon: 'atlassian', sites: ['atlassian.com', 'atlassian.net'], names: ['Atlassian'] },
-  { icon: 'npm', sites: ['npmjs.com'], names: ['npm'] },
   { icon: 'docker', sites: ['docker.com'], names: ['Docker'] },
   { icon: 'unity', dark: true, sites: ['unity.com', 'unity3d.com'], names: ['Unity'] },
   { icon: 'figma', sites: ['figma.com'], names: ['Figma'] },
   { icon: 'trello', sites: ['trello.com'], names: ['Trello'] },
   { icon: 'asana', sites: ['asana.com'], names: ['Asana'] },
-  { icon: 'linear', sites: ['linear.app'], names: ['Linear'] },
   { icon: 'evernote', sites: ['evernote.com'], names: ['Evernote'] },
-  { icon: 'grafana', sites: ['grafana.com'], names: ['Grafana'] },
   { icon: 'mongodb', sites: ['mongodb.com'], names: ['MongoDB'] },
   { icon: 'cloudflare', sites: ['cloudflare.com'], names: ['Cloudflare'] },
   { icon: 'akamai', sites: ['akamai.com', 'linode.com'], names: ['Akamai', 'Linode'] },
   { icon: 'huggingface', sites: ['huggingface.co'], names: ['Hugging Face', 'HuggingFace'] },
   { icon: 'openai', dark: true, sites: ['openai.com', 'chatgpt.com'], names: ['OpenAI', 'ChatGPT'] },
-  { icon: 'anthropic', dark: true, sites: ['anthropic.com'], names: ['Anthropic'] },
-  { icon: 'claude', sites: ['claude.ai', 'claude.com'], names: ['Claude'] },
   { icon: 'namecheap', sites: ['namecheap.com'], names: ['Namecheap'] },
   { icon: 'godaddy', sites: ['godaddy.com'], names: ['GoDaddy'] },
   { icon: 'wordpress', sites: ['wordpress.com', 'wordpress.org'], names: ['WordPress'] },
@@ -75,7 +67,6 @@ export const BRANDS = [
   { icon: 'teamviewer', dark: true, sites: ['teamviewer.com'], names: ['TeamViewer'] },
   { icon: 'paypal', dark: true, sites: ['paypal.com'], names: ['PayPal'] },
   { icon: 'stripe', sites: ['stripe.com'], names: ['Stripe'] },
-  { icon: 'revolut', dark: true, sites: ['revolut.com'], names: ['Revolut'] },
   { icon: 'epicgames', dark: true, sites: ['epicgames.com', 'unrealengine.com'], names: ['Epic Games'] },
   { icon: 'ubisoft', dark: true, sites: ['ubisoft.com', 'ubi.com'], names: ['Ubisoft'] },
   { icon: 'ea', sites: ['ea.com'], names: ['EA', 'Electronic Arts'] },
@@ -83,7 +74,6 @@ export const BRANDS = [
   { icon: 'playstation', sites: ['playstation.com', 'sonyentertainmentnetwork.com'], names: ['PlayStation', 'PSN'] },
   { icon: 'gogdotcom', sites: ['gog.com'], names: ['GOG'] },
   { icon: 'ebay', sites: ['ebay.com', 'ebay.de', 'ebay.co.uk', 'ebay.fr', 'ebay.it', 'ebay.es'], names: ['eBay'] },
-  { icon: 'airbnb', sites: ['airbnb.com'], names: ['Airbnb'] },
   { icon: 'bookingdotcom', dark: true, sites: ['booking.com'], names: ['Booking.com', 'Booking'] },
   { icon: 'uber', dark: true, sites: ['uber.com'], names: ['Uber'] },
   { icon: 'patreon', dark: true, sites: ['patreon.com'], names: ['Patreon'] },
@@ -95,16 +85,12 @@ export const BRANDS = [
   { icon: 'plex', sites: ['plex.tv'], names: ['Plex'] },
   { icon: 'nextcloud', sites: ['nextcloud.com'], names: ['Nextcloud'] },
   { icon: 'homeassistant', sites: ['home-assistant.io'], names: ['Home Assistant'] },
-  { icon: 'apple', dark: true, sites: ['apple.com', 'icloud.com'], names: ['Apple', 'iCloud'] },
   { icon: 'meta', sites: ['meta.com'], names: ['Meta'] },
   { icon: 'tesla', sites: ['tesla.com'], names: ['Tesla'] },
-  { icon: 'steam', dark: true, sites: ['steampowered.com', 'steamcommunity.com'], names: ['Steam'] },
   { icon: 'rockstargames', dark: true, sites: ['rockstargames.com'], names: ['Rockstar'] },
-  { icon: 'n26', sites: ['n26.com'], names: ['N26'] },
   { icon: 'salesforce', sites: ['salesforce.com', 'force.com'], names: ['Salesforce'] },
   { icon: 'ibm', dark: true, sites: ['ibm.com'], names: ['IBM'] },
   { icon: 'sap', sites: ['sap.com'], names: ['SAP'] },
-  { icon: 'stackoverflow', sites: ['stackoverflow.com', 'stackexchange.com'], names: ['Stack Overflow', 'Stack Exchange'] },
   { icon: 'googlecloud', sites: [], names: ['Google Cloud', 'GCP'] },
   { icon: 'firebase', sites: [], names: ['Firebase'] },
 ];
